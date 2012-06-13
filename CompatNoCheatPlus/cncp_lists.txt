@@ -1,0 +1,18 @@
+CompatNoCheatPlus lists file
+-------------------------------------------------------
+
+
+
+STACK
+---------
+?(add) more intricate load order stuff ?
+!(add) Limit blockbreaking speed by mcmmo (config) !
+
+
+***
+!(add) reload command
+
+
+VERSION HISTORY
+---------------------------
+(0.0.0) [initial version]
