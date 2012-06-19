@@ -12,6 +12,8 @@ STACK
 ***
 !(add) reload command
 
+? another sequence number (for standard events)
+
 
 VERSION HISTORY
 ---------------------------
