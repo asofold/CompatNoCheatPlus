@@ -1,6 +1,9 @@
 CompatNoCheatPlus lists file
 -------------------------------------------------------
 
+LICENSE
+-------------------------
+Minimal license + NCP: Minimal on top of what can be done with the licenses of Bukkit/CraftBukkit/NoCheatPlus.
 
 
 STACK
