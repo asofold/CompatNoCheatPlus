@@ -178,6 +178,18 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		settings.fromConfig(cfg);
 		// Re-enable plugins that were not yet on the list:
 		Server server = getServer();
+		Logger logger = server.getLogger();
+		for (String plgName : settings.loadPlugins){
+			try{
+				if (CompatNoCheatPlus.enablePlugin(plgName)){
+					System.out.println("[cncp] Ensured that the following plugin is enabled: " + plgName);
+				}
+			}
+			catch (Throwable t){
+				logger.severe("[cncp] Failed to enable the plugin: " + plgName);
+				logger.severe(Utils.toString(t));
+			}
+		}
 		BukkitScheduler sched = server.getScheduler();
 		for (String plgName : settings.forceEnableLater){
 			if (!oldForceEnableLater.remove(plgName)) oldForceEnableLater.add(plgName);
