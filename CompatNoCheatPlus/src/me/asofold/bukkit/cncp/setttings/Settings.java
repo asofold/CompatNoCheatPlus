@@ -15,7 +15,7 @@ public class Settings {
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
 		cfg.set("plugins.force-enable-later", Arrays.asList(new String[]{ "NoCheatPlus" }));
-		cfg.set("plugins.load", Arrays.asList(new String[]{ "WorldGuard" }));
+		cfg.set("plugins.ensure-enable", Arrays.asList(new String[]{ "WorldGuard" }));
 		return cfg;
 	}
 	
@@ -26,7 +26,7 @@ public class Settings {
 	public boolean fromConfig(CompatConfig cfg){
 		// plugins to force enabling after this plugin.
 		ConfigUtil.readStringSetFromList(cfg, "plugins.force-enable-later", forceEnableLater,  true, true, false);
-		ConfigUtil.readStringSetFromList(cfg, "plugins.load", loadPlugins,  true, true, false);
+		ConfigUtil.readStringSetFromList(cfg, "plugins.ensure-enable", loadPlugins,  true, true, false);
 		return true;
 	}
 
