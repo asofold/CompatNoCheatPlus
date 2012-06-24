@@ -3,7 +3,7 @@ package me.asofold.bukkit.cncp;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -168,7 +168,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	}
 
 	public boolean reloadSettings() {
-		final Set<String> oldForceEnableLater = new HashSet<String>();
+		final Set<String> oldForceEnableLater = new LinkedHashSet<String>();
 		oldForceEnableLater.addAll(settings.forceEnableLater);
 		// Read and apply config to settings:
 		File file = new File(getDataFolder() , "cncp.yml");

@@ -1,7 +1,7 @@
 package me.asofold.bukkit.cncp.setttings;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import me.asofold.bukkit.cncp.config.compatlayer.CompatConfig;
@@ -9,8 +9,8 @@ import me.asofold.bukkit.cncp.config.compatlayer.ConfigUtil;
 import me.asofold.bukkit.cncp.config.compatlayer.NewConfig;
 
 public class Settings {
-	public Set<String> forceEnableLater = new HashSet<String>();
-	public Set<String> loadPlugins = new HashSet<String>();
+	public Set<String> forceEnableLater = new LinkedHashSet<String>();
+	public Set<String> loadPlugins = new LinkedHashSet<String>();
 	
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
