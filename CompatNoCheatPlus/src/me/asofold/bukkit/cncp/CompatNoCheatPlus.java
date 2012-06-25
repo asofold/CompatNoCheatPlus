@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import me.asofold.bukkit.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bukkit.cncp.config.compatlayer.NewConfig;
 import me.asofold.bukkit.cncp.hooks.Hook;
-import me.asofold.bukkit.cncp.hooks.mcmmo.HookmcMMO;
 import me.asofold.bukkit.cncp.setttings.GroupHooks;
 import me.asofold.bukkit.cncp.setttings.Settings;
 import me.asofold.bukkit.cncp.utils.Utils;
@@ -146,7 +145,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 */
 	private void addAvailableHooks() {
 		try{
-			addHook(new HookmcMMO());
+			addHook(new me.asofold.bukkit.cncp.hooks.mcmmo.HookmcMMO());
 		}
 		catch (Throwable t){}
 	}
