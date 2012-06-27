@@ -14,8 +14,8 @@ public class Settings {
 	
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
-		cfg.set("plugins.force-enable-later", Arrays.asList(new String[]{ "NoCheatPlus" }));
-		cfg.set("plugins.ensure-enable", Arrays.asList(new String[]{ "WorldGuard" }));
+		cfg.set("plugins.force-enable-later", ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
+		cfg.set("plugins.ensure-enable", ConfigUtil.asList(new String[]{ "WorldGuard" }));
 		return cfg;
 	}
 	
