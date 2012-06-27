@@ -16,11 +16,15 @@ public abstract class AbstractNewConfig extends AbstractConfig {
 	MemoryConfiguration config = null;
 	
 	public AbstractNewConfig(File file){
+		setFile(file);
+	}
+	
+	public void setFile(File file) {
 		this.file = file;
 		this.config = new MemoryConfiguration();
 		setOptions(config);
 	}
-	
+
 	@Override
 	public boolean hasEntry(String path) {
 		return config.contains(path) || (config.get(path) != null);

@@ -1,5 +1,6 @@
 package me.asofold.bukkit.cncp.config.compatlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -113,4 +114,83 @@ public class ConfigUtil {
 			}
 		}
 	}
+	
+	/**
+	 * Return an ArrayList.
+	 * @param input
+	 * @return
+	 */
+	public static final <T>  List<T> asList(final T[] input){
+		final List<T> out = new ArrayList<T>(input.length);
+		for (int i = 0; i < input.length; i++){
+			out.add(input[i]);
+		}
+		return out;
+	}
+	
+	/**
+	 * Return an ArrayList.
+	 * @param input
+	 * @return
+	 */
+	public static final List<Integer> asList(final int[] input){
+		final List<Integer> out = new ArrayList<Integer>(input.length);
+		for (int i = 0; i < input.length; i++){
+			out.add(input[i]);
+		}
+		return out;
+	}
+	
+	/**
+	 * Return an ArrayList.
+	 * @param input
+	 * @return
+	 */
+	public static final List<Long> asList(final long[] input){
+		final List<Long> out = new ArrayList<Long>(input.length);
+		for (int i = 0; i < input.length; i++){
+			out.add(input[i]);
+		}
+		return out;
+	}
+	
+	/**
+	 * Return an ArrayList.
+	 * @param input
+	 * @return
+	 */
+	public static final List<Double> asList(final double[] input){
+		final List<Double> out = new ArrayList<Double>(input.length);
+		for (int i = 0; i < input.length; i++){
+			out.add(input[i]);
+		}
+		return out;
+	}
+	
+	/**
+	 * Return an ArrayList.
+	 * @param input
+	 * @return
+	 */
+	public static final List<Float> asList(final float[] input){
+		final List<Float> out = new ArrayList<Float>(input.length);
+		for (int i = 0; i < input.length; i++){
+			out.add(input[i]);
+		}
+		return out;
+	}
+	
+	/**
+	 * Return an ArrayList.
+	 * @param input
+	 * @return
+	 */
+	public static final List<Boolean> asList(final boolean[] input){
+		final List<Boolean> out = new ArrayList<Boolean>(input.length);
+		for (int i = 0; i < input.length; i++){
+			out.add(input[i]);
+		}
+		return out;
+	}
+	
 }

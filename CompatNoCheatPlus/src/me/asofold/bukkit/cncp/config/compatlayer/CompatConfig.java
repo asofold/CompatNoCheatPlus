@@ -124,5 +124,22 @@ public interface CompatConfig {
 	
 	public boolean save();
 	
+	/**
+	 * Clear all contents.
+	 */
+	public void clear();
+
+	/**
+	 * Return a YAML-String representation of the contents, null if not supported.
+	 * @return null if not supported.
+	 */
+	public String getYAMLString();
+	
+	/**
+	 * Add all entries from the YAML-String representation to the configuration, forget or clear all previous entries. 
+	 * @return
+	 */
+	public boolean fromYamlString(String input);
+	
 
 }
