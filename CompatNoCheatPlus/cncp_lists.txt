@@ -24,5 +24,6 @@ VERSION HISTORY
 - (add) List to enable plugins: plugins.ensure-enable [Forces their events to be processed before NoCheatPlus gets them!]
 - (bugfix) Remove import of mcMMO-hook (use direct package reference instead).
 - (bugfix) Preserve order of entries in the lists read from the configuration.
+- (update) config/comaptlayer
 
 (0.0.0) [initial version]

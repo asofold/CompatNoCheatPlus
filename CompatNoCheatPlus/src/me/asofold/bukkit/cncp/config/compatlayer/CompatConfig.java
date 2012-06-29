@@ -60,7 +60,17 @@ public interface CompatConfig {
 	public Object getProperty(String path, Object defaultValue);
 	public void set(String path, Object value);
 	public void setProperty(String path, Object value);
+	
+	/**
+	 * Remove a path (would also remove sub sections, unless for path naming problems).
+	 * @param path
+	 */
 	public void remove(String path);
+	
+	/**
+	 * Works same as remove(path): removes properties and sections alike.
+	 * @param path
+	 */
 	public void removeProperty(String path);
 	
 	// Contains/has

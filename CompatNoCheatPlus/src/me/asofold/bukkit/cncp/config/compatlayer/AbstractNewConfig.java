@@ -118,16 +118,29 @@ public abstract class AbstractNewConfig extends AbstractConfig {
 
 	@Override
 	public void removeProperty(String path) {
+		if (path.startsWith(".")) path = path.substring(1);
 		// VERY EXPENSIVE
 		MemoryConfiguration temp = new MemoryConfiguration();
 		setOptions(temp);
 		Map<String, Object> values = config.getValues(true);
-		values.remove(path);
-		for ( String p : values.keySet()){
-			temp.set(p, values.get(p));
+		if (values.containsKey(path)) values.remove(path);
+		else{
+			final String altPath = "."+path;
+			if (values.containsKey(altPath)) values.remove(altPath);
+		}
+		for ( String _p : values.keySet()){
+			Object v = values.get(_p);
+			if (v == null) continue;
+			else if (v instanceof ConfigurationSection) continue;
+			String p;
+			if (_p.startsWith(".")) p = _p.substring(1);
+			else p = _p;
+			if (p.startsWith(path)) continue;
+			temp.set(p, v);
 		}
 		config = temp;
 	}
+
 
 	@Override
 	public Boolean getBoolean(String path, Boolean defaultValue) {
