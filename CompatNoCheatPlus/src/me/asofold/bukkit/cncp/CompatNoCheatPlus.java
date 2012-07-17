@@ -148,6 +148,10 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 			addHook(new me.asofold.bukkit.cncp.hooks.mcmmo.HookmcMMO());
 		}
 		catch (Throwable t){}
+		try{
+			addHook(new me.asofold.bukkit.cncp.hooks.citizens.HookCitizens());
+		}
+		catch (Throwable t){}
 	}
 	
 	@Override
