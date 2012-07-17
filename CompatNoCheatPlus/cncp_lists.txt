@@ -18,9 +18,6 @@ STACK
 ? another sequence number (for standard events)
 
 
-*** 0.2.0
-
-!(check) NCP: cancellation of events: do actions have to be reset too ?
 
 VERSION HISTORY
 ---------------------------
