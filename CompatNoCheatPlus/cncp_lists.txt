@@ -22,6 +22,9 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+(0.2.1)
+- (bugfix) Checks if plugins are present for hooks.
+
 (0.2.0)
 - (add) Simple Citizens hook.
 
