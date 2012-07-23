@@ -22,6 +22,9 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+(0.2.2)
+- (bugfix) Add noswing treatment for mcMMO.
+
 (0.2.1)
 - (bugfix) Checks if plugins are present for hooks.
 

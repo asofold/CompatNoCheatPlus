@@ -26,8 +26,10 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 	private static final Map<String, Integer> cancelChecksBlockDamage = new HashMap<String, Integer>();
 	private static final Map<String, Integer> cancelChecksDamage = new HashMap<String, Integer>();
 	static{
+		cancelChecksBlockBreak.put("noswing", 1);
 		cancelChecksBlockBreak.put("fastbreak", 2);
 		cancelChecksBlockDamage.put("fastbreak", 1);
+		
 		cancelChecksDamage.put("angle", 1);
 		cancelChecksDamage.put("speed", 1);
 	}
@@ -59,7 +61,7 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 	@Override
 	public String[][] getCheckSpec() {
 		return new String[][]{
-				{"blockbreak", "fastbreak"},
+				{"blockbreak", "fastbreak", "noswing"},
 				{"fight", "angle", "speed"},
 				};
 	}
