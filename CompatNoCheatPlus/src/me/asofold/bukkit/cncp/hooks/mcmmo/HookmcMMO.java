@@ -32,6 +32,10 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 		cancelChecksDamage.put("speed", 1);
 	}
 	
+	public HookmcMMO(){
+		assertPluginPresent("mcMMO");
+	}
+	
 	
 	private final PluginGetter<mcMMO> fetch = new PluginGetter<mcMMO>("mcMMO");
 	
