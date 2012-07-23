@@ -9,7 +9,11 @@ import org.bukkit.entity.Player;
 import fr.neatmonster.nocheatplus.checks.CheckEvent;
 
 public final class HookCitizens extends AbstractHook {
-
+	
+	public HookCitizens(){
+		assertPluginPresent("Citizens");
+	}
+	
 	@Override
 	public String getHookName() {
 		return "Citizens(default)";
