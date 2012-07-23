@@ -1,5 +1,6 @@
 package me.asofold.bukkit.cncp.hooks;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 /**
@@ -21,6 +22,14 @@ public abstract class AbstractHook implements Hook{
 	public Listener[] getListeners() {
 		// No listeners (improbable).
 		return null;
+	}
+	
+	/**
+	 * Throw a runtime exception if the plugin is not present.
+	 * @param pluginName
+	 */
+	protected void assertPluginPresent(String pluginName){
+		if (Bukkit.getPluginManager().getPlugin(pluginName) == null) throw new RuntimeException("Assertion, " + getHookName() + ": Plugin " + pluginName + " is not present.");
 	}
 
 }
