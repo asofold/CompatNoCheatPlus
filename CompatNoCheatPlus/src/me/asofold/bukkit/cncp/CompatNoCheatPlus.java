@@ -99,6 +99,10 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 */
 	public static boolean addHook(Hook hook){
 		if (!enabled) return false;
+		if (Settings.preventAddHooks.contains(hook.getHookName())){
+			System.out.println("[cncp] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
+			return false;
+		}
 		Listener[] listeners = hook.getListeners();
 		if (listeners != null){
 			// attempt to register events:

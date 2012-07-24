@@ -17,6 +17,11 @@ public class Settings {
 	public String playerClassName = "CraftPlayer";
 	public boolean exemptSuperClass = true;
 	
+	/**
+	 * TODO: I don't like this too much :)
+	 */
+	public static Set<String> preventAddHooks = new HashSet<String>();
+	
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
 		Settings ref = new Settings();
@@ -26,6 +31,7 @@ public class Settings {
 		cfg.set("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
 		cfg.set("hooks.player-class.class-name", ref.playerClassName);
 		cfg.set("hooks.player-class.super-class", ref.exemptSuperClass);
+		cfg.set("hooks.prevent-add", new LinkedList<String>());
 		return cfg;
 	}
 	
@@ -43,6 +49,7 @@ public class Settings {
 		exemptAllPlayerClassNames = cfg.getBoolean("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
 		playerClassName = cfg.getString("hooks.player-class.class-name", ref.playerClassName);
 		exemptSuperClass = cfg.getBoolean("hooks.player-class.super-class", ref.exemptSuperClass);
+		ConfigUtil.readStringSetFromList(cfg, "hooks.prevent-add", preventAddHooks, true, true, false);
 		return true;
 	}
 
