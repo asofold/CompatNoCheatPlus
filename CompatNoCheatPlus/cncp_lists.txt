@@ -26,7 +26,8 @@ VERSION HISTORY
 ---------------------------
 
 (0.3.0)
-- (remove) Direct hooking of Citizens.
+- (add) Generic hook for the Player class name, defaults to exempt all non CraftPlayer classes from checks.
+- (remove) Direct hooking of Citizens (+direct CraftBukkit dependency).
 
 (0.2.2)
 - (bugfix) Add noswing treatment for mcMMO.

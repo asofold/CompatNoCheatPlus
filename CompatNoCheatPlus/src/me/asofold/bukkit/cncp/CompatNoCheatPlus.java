@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import me.asofold.bukkit.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bukkit.cncp.config.compatlayer.NewConfig;
 import me.asofold.bukkit.cncp.hooks.Hook;
+import me.asofold.bukkit.cncp.hooks.generic.HookPlayerClass;
 import me.asofold.bukkit.cncp.setttings.GroupHooks;
 import me.asofold.bukkit.cncp.setttings.Settings;
 import me.asofold.bukkit.cncp.utils.Utils;
@@ -46,6 +47,8 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	private static final Map<String, GroupHooks> hooksGroups = new HashMap<String, GroupHooks>(20);
 	
 	private final Settings settings = new Settings();
+	
+	private final HookPlayerClass hookPlayerClass = new HookPlayerClass();
 	
 	/**
 	 * Flag if plugin is enabled.
@@ -144,6 +147,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 * Add standard hooks if available.
 	 */
 	private void addAvailableHooks() {
+		addHook(hookPlayerClass);
 		try{
 			addHook(new me.asofold.bukkit.cncp.hooks.mcmmo.HookmcMMO());
 		}
@@ -175,6 +179,10 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		cfg.load();
 		if (Settings.addDefaults(cfg)) cfg.save();
 		settings.fromConfig(cfg);
+		// Set hookPlayerClass properties
+		hookPlayerClass.setClassNames(settings.exemptPlayerClassNames);
+		hookPlayerClass.setExemptAll(settings.exemptAllPlayerClassNames);
+		hookPlayerClass.setPlayerClassName(settings.playerClassName);
 		// Re-enable plugins that were not yet on the list:
 		Server server = getServer();
 		Logger logger = server.getLogger();
@@ -217,6 +225,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 				}
 			}); 
 		}
+		
 		return true;
 	}
 
