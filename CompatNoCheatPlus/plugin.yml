@@ -1,6 +1,6 @@
 name: CompatNoCheatPlus
 main: me.asofold.bukkit.cncp.CompatNoCheatPlus
-version: 0.3.0 beta
+version: 0.3.0
 depend:
 - NoCheatPlus
 softdepend:
