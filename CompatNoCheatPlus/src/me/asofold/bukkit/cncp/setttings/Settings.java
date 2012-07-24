@@ -22,10 +22,10 @@ public class Settings {
 		Settings ref = new Settings();
 		cfg.set("plugins.force-enable-later", ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
 		cfg.set("plugins.ensure-enable", ConfigUtil.asList(new String[]{ "WorldGuard" }));
-		cfg.set("plugins.hooks.player-class.exempt-names", new LinkedList<String>());
-		cfg.set("plugins.hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
-		cfg.set("plugins.hooks.player-class.class-name", ref.playerClassName);
-		cfg.set("plugins.hooks.player-class.super-class", ref.exemptSuperClass);
+		cfg.set("hooks.player-class.exempt-names", new LinkedList<String>());
+		cfg.set("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
+		cfg.set("hooks.player-class.class-name", ref.playerClassName);
+		cfg.set("hooks.player-class.super-class", ref.exemptSuperClass);
 		return cfg;
 	}
 	
@@ -39,10 +39,10 @@ public class Settings {
 		ConfigUtil.readStringSetFromList(cfg, "plugins.force-enable-later", forceEnableLater,  true, true, false);
 		ConfigUtil.readStringSetFromList(cfg, "plugins.ensure-enable", loadPlugins,  true, true, false);
 		// Generic player class name hook:
-		ConfigUtil.readStringSetFromList(cfg, "plugins.hooks.player-class.exempt-names", exemptPlayerClassNames, true, true, false);
-		exemptAllPlayerClassNames = cfg.getBoolean("plugins.hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
-		playerClassName = cfg.getString("plugins.hooks.player-class.class-name", ref.playerClassName);
-		exemptSuperClass = cfg.getBoolean("plugins.hooks.player-class.super-class", ref.exemptSuperClass);
+		ConfigUtil.readStringSetFromList(cfg, "hooks.player-class.exempt-names", exemptPlayerClassNames, true, true, false);
+		exemptAllPlayerClassNames = cfg.getBoolean("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
+		playerClassName = cfg.getString("hooks.player-class.class-name", ref.playerClassName);
+		exemptSuperClass = cfg.getBoolean("hooks.player-class.super-class", ref.exemptSuperClass);
 		return true;
 	}
 
