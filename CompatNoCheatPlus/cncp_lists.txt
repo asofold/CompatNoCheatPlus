@@ -17,10 +17,16 @@ STACK
 
 ? another sequence number (for standard events)
 
+*** 0.3.0
 
+!(add) Option to prevent adding hooks by name.
+!(add) Refactor citizens hook into a general hook using reflection (PlayerClassHook).
 
 VERSION HISTORY
 ---------------------------
+
+(0.3.0)
+- (remove) Direct hooking of Citizens.
 
 (0.2.2)
 - (bugfix) Add noswing treatment for mcMMO.
