@@ -183,6 +183,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		hookPlayerClass.setClassNames(settings.exemptPlayerClassNames);
 		hookPlayerClass.setExemptAll(settings.exemptAllPlayerClassNames);
 		hookPlayerClass.setPlayerClassName(settings.playerClassName);
+		hookPlayerClass.setCheckSuperClass(settings.exemptSuperClass);
 		// Re-enable plugins that were not yet on the list:
 		Server server = getServer();
 		Logger logger = server.getLogger();
