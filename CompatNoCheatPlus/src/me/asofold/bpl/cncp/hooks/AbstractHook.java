@@ -1,4 +1,4 @@
-package me.asofold.bukkit.cncp.hooks;
+package me.asofold.bpl.cncp.hooks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;

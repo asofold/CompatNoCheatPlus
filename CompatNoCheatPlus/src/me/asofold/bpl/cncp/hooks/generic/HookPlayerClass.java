@@ -1,10 +1,10 @@
-package me.asofold.bukkit.cncp.hooks.generic;
+package me.asofold.bpl.cncp.hooks.generic;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import me.asofold.bukkit.cncp.hooks.AbstractHook;
+import me.asofold.bpl.cncp.hooks.AbstractHook;
 import fr.neatmonster.nocheatplus.checks.CheckEvent;
 
 public final class HookPlayerClass extends AbstractHook {

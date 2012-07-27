@@ -1,4 +1,4 @@
-package me.asofold.bukkit.cncp.utils;
+package me.asofold.bpl.cncp.utils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

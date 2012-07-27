@@ -1,4 +1,4 @@
-package me.asofold.bukkit.cncp.utils;
+package me.asofold.bpl.cncp.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;

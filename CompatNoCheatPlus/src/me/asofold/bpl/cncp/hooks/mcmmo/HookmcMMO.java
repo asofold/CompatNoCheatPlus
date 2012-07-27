@@ -1,10 +1,10 @@
-package me.asofold.bukkit.cncp.hooks.mcmmo;
+package me.asofold.bpl.cncp.hooks.mcmmo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import me.asofold.bukkit.cncp.hooks.AbstractHook;
-import me.asofold.bukkit.cncp.utils.PluginGetter;
+import me.asofold.bpl.cncp.hooks.AbstractHook;
+import me.asofold.bpl.cncp.utils.PluginGetter;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

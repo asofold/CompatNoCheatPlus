@@ -1,13 +1,13 @@
-package me.asofold.bukkit.cncp.setttings;
+package me.asofold.bpl.cncp.setttings;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import me.asofold.bukkit.cncp.config.compatlayer.CompatConfig;
-import me.asofold.bukkit.cncp.config.compatlayer.ConfigUtil;
-import me.asofold.bukkit.cncp.config.compatlayer.NewConfig;
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
+import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
+import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 
 public class Settings {
 	public Set<String> forceEnableLater = new LinkedHashSet<String>();

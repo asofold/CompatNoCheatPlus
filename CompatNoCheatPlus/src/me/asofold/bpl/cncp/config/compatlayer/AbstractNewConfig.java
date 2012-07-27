@@ -1,4 +1,4 @@
-package me.asofold.bukkit.cncp.config.compatlayer;
+package me.asofold.bpl.cncp.config.compatlayer;
 
 import java.io.File;
 import java.util.LinkedList;

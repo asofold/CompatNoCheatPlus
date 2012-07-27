@@ -20,6 +20,8 @@ STACK
 
 VERSION HISTORY
 ---------------------------
+(1.0.0)
+- (CHANGE) Packet naming.
 
 (0.3.0)
 - (add) Option to prevent adding hooks (only is effective if cncp has been loaded already).

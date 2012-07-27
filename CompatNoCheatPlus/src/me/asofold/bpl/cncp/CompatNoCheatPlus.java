@@ -1,4 +1,4 @@
-package me.asofold.bukkit.cncp;
+package me.asofold.bpl.cncp;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import me.asofold.bukkit.cncp.config.compatlayer.CompatConfig;
-import me.asofold.bukkit.cncp.config.compatlayer.NewConfig;
-import me.asofold.bukkit.cncp.hooks.Hook;
-import me.asofold.bukkit.cncp.hooks.generic.HookPlayerClass;
-import me.asofold.bukkit.cncp.setttings.GroupHooks;
-import me.asofold.bukkit.cncp.setttings.Settings;
-import me.asofold.bukkit.cncp.utils.Utils;
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
+import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
+import me.asofold.bpl.cncp.hooks.Hook;
+import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
+import me.asofold.bpl.cncp.setttings.GroupHooks;
+import me.asofold.bpl.cncp.setttings.Settings;
+import me.asofold.bpl.cncp.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -153,7 +153,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	private void addAvailableHooks() {
 		addHook(hookPlayerClass);
 		try{
-			addHook(new me.asofold.bukkit.cncp.hooks.mcmmo.HookmcMMO());
+			addHook(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
 		}
 		catch (Throwable t){}
 	}

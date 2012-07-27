@@ -1,10 +1,10 @@
-package me.asofold.bukkit.cncp.setttings;
+package me.asofold.bpl.cncp.setttings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.asofold.bukkit.cncp.hooks.Hook;
+import me.asofold.bpl.cncp.hooks.Hook;
 
 /**
  * Check group specific lists of hooks.
