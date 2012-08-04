@@ -29,7 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 /**
- * Quick attempt to provide compatibility to NoCheatPlus for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
+ * Quick attempt to provide compatibility to DeadNoCheat (former NoCheatPlus by NeatMonster) for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
  * @author mc_dev
  *
  */

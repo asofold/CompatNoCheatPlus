@@ -25,7 +25,7 @@ public class Settings {
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
 		Settings ref = new Settings();
-		cfg.set("plugins.force-enable-later", ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
+		cfg.set("plugins.force-enable-later", ConfigUtil.asList(new String[]{ "DeadNoCheat" }));
 		cfg.set("plugins.ensure-enable", ConfigUtil.asList(new String[]{ "WorldGuard" }));
 		cfg.set("hooks.player-class.exempt-names", new LinkedList<String>());
 		cfg.set("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
