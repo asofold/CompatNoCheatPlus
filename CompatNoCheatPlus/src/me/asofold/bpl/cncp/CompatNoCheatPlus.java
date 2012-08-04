@@ -15,6 +15,8 @@ import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
 import me.asofold.bpl.cncp.setttings.GroupHooks;
 import me.asofold.bpl.cncp.setttings.Settings;
 import me.asofold.bpl.cncp.utils.Utils;
+import me.asofold.bpl.dead.nocheat.checks.Check;
+import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -25,9 +27,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-
-import fr.neatmonster.nocheatplus.checks.Check;
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
 
 /**
  * Quick attempt to provide compatibility to NoCheatPlus for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 

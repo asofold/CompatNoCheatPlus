@@ -1,8 +1,8 @@
 package me.asofold.bpl.cncp.hooks;
 
-import org.bukkit.event.Listener;
+import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
 
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
+import org.bukkit.event.Listener;
 
 /**
  * Interface for hooking into another plugin.<br>

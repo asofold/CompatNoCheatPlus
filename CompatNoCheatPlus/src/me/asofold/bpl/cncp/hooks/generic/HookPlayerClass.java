@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
+import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
 
 public final class HookPlayerClass extends AbstractHook {
 	
