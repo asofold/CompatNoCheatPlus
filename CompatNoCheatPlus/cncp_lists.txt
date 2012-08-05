@@ -22,6 +22,10 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+
+(2.0.1)
+- (bugfix?) Re release with corrected class name (something went wrong).
+
 (2.0.0)
 - (BIG CHANGE) THIS NOW IS FOR: DeadNoCheat
 

@@ -6,7 +6,7 @@ import java.util.Map;
 import me.asofold.bpl.cncp.hooks.AbstractHook;
 import me.asofold.bpl.cncp.utils.PluginGetter;
 import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
-import me.asofold.bpl.dead.nocheat.players.NCPPlayer;
+import me.asofold.bpl.dead.nocheat.players.DNCPlayer;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -126,7 +126,7 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 //			System.out.println("[cncp] Return on cancel == null: "+event.getPlayer().getName());
 			return;
 		}
-		final NCPPlayer ncpPlayer = event.getPlayer();
+		final DNCPlayer ncpPlayer = event.getPlayer();
 		
 		final String name = ncpPlayer.getName();
 		if (cancel.equals(name)){

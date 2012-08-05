@@ -1,6 +1,6 @@
 name: CompatNoCheatPlus
 main: me.asofold.bpl.cncp.CompatNoCheatPlus
-version: 2.0.0
+version: 2.0.1
 depend:
 - DeadNoCheat
 softdepend:
