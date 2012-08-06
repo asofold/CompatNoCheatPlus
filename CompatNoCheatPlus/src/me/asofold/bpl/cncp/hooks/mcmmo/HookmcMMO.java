@@ -5,8 +5,6 @@ import java.util.Map;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
 import me.asofold.bpl.cncp.utils.PluginGetter;
-import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
-import me.asofold.bpl.dead.nocheat.players.DNCPlayer;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,6 +16,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
+
+import fr.neatmonster.nocheatplus.checks.CheckEvent;
 
 public final class HookmcMMO extends AbstractHook implements Listener {
 	
@@ -54,7 +54,7 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 
 	@Override
 	public String getHookVersion() {
-		return "0.0";
+		return "0.1";
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 		return new String[][]{
 				{"blockbreak", "fastbreak", "noswing"},
 				{"fight", "angle", "speed"},
-				};
+			};
 	}
 	
 	@Override
@@ -126,11 +126,12 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 //			System.out.println("[cncp] Return on cancel == null: "+event.getPlayer().getName());
 			return;
 		}
-		final DNCPlayer ncpPlayer = event.getPlayer();
+
+		final Player player = event.getPlayer();
 		
-		final String name = ncpPlayer.getName();
+		final String name = player.getName();
 		if (cancel.equals(name)){
-			final Player player = ncpPlayer.getBukkitPlayer();
+			
 			if (player == null || player.getTicksLived() != cancelTicks){
 //				System.out.println("[cncp] No cancel (ticks/player): "+event.getPlayer().getName());
 				cancel = null;

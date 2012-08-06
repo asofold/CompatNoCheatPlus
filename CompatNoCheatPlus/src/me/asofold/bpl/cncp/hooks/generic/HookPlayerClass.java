@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
-import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
+import fr.neatmonster.nocheatplus.checks.CheckEvent;
 
 public final class HookPlayerClass extends AbstractHook {
 	
@@ -48,15 +48,15 @@ public final class HookPlayerClass extends AbstractHook {
 
 	@Override
 	public final String getHookVersion() {
-		return "0.0";
+		return "0.1";
 	}
 
 	@Override
 	public final void processEvent(final String group, final String check, final CheckEvent event) {
-		if (exemptAll && !event.getPlayer().getBukkitPlayer().getClass().getSimpleName().equals(playerClassName)) event.setCancelled(true);
+		if (exemptAll && !event.getPlayer().getClass().getSimpleName().equals(playerClassName)) event.setCancelled(true);
 		else {
 			if (classNames.isEmpty()) return;
-			final Class<?> clazz = event.getPlayer().getBukkitPlayer().getClass();
+			final Class<?> clazz = event.getPlayer().getClass();
 			final String name = clazz.getSimpleName();
 			if (classNames.contains(name)) event.setCancelled(true);
 			else if (checkSuperClass){

@@ -15,8 +15,6 @@ import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
 import me.asofold.bpl.cncp.setttings.GroupHooks;
 import me.asofold.bpl.cncp.setttings.Settings;
 import me.asofold.bpl.cncp.utils.Utils;
-import me.asofold.bpl.dead.nocheat.checks.Check;
-import me.asofold.bpl.dead.nocheat.checks.CheckEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -28,8 +26,18 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import fr.neatmonster.nocheatplus.checks.CheckEvent;
+import fr.neatmonster.nocheatplus.checks.blockbreak.Direction.DirectionEvent;
+import fr.neatmonster.nocheatplus.checks.blockbreak.FastBreak.FastBreakEvent;
+import fr.neatmonster.nocheatplus.checks.blockbreak.NoSwing.NoSwingEvent;
+import fr.neatmonster.nocheatplus.checks.fight.Angle.AngleEvent;
+import fr.neatmonster.nocheatplus.checks.fight.Speed.SpeedEvent;
+import fr.neatmonster.nocheatplus.checks.moving.CreativeFly.CreativeFlyEvent;
+import fr.neatmonster.nocheatplus.checks.moving.NoFall.NoFallEvent;
+import fr.neatmonster.nocheatplus.checks.moving.SurvivalFly.SurvivalFlyEvent;
+
 /**
- * Quick attempt to provide compatibility to DeadNoCheat (former NoCheatPlus by NeatMonster) for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
+ * Quick attempt to provide compatibility to NoCheatPlus (by NeatMonster) for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
  * @author mc_dev
  *
  */
@@ -243,9 +251,48 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled=true)
 	final void onCheckFail(final CheckEvent event){
 		// Check hooks, most specific first:
-		final Check check = event.getCheck();
-		final String gn = check.getGroup();
-		final String cn = check.getName();
+		final String gn;
+		final String cn;
+		
+		
+		if (event instanceof SurvivalFlyEvent){
+			gn = "moving";
+			cn = "survivalfly";
+		}
+		else if (event instanceof CreativeFlyEvent){
+			gn = "moving";
+			cn = "creativefly";
+		}
+		else if (event instanceof NoFallEvent){
+			gn = "moving";
+			cn = "nofall";
+		}
+		else if (event instanceof FastBreakEvent){
+			gn = "blockbreak";
+			cn = "fastbreak";
+		}
+		else if (event instanceof NoSwingEvent){
+			gn = "blockbreak";
+			cn = "noswing";
+		}
+		else if (event instanceof DirectionEvent){
+			gn = "blockbreak";
+			cn = "direction";
+		}
+		else if (event instanceof SpeedEvent){
+			gn = "fight";
+			cn = "speed";
+		}
+		else if (event instanceof AngleEvent){
+			gn = "fight";
+			cn = "angle";
+		}
+		else{
+			// TODO: ...
+			gn = "";
+			cn = "";	
+		}
+		
 		final GroupHooks gh = hooksGroups.get(gn.trim().toLowerCase());
 		if (gh != null){
 			final ArrayList<Hook> hooks = gh.byCheck.get(cn.trim().toLowerCase());

@@ -22,6 +22,15 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+(3.0.0)
+- (BIG CHANGE) Back to NoCheatPlus !
+    This is a quick adaption only for a few check types,
+    it would probably not work with all thinkable external hooks.
+    Supported mappings: 
+        (all)
+        fight: speed, angle
+        moving: survivalfly, creativefly, nofall 
+        blockbreak: fastbreak, noswing, direction
 
 (2.0.1)
 - (bugfix?) Re release with corrected class name (something went wrong).
