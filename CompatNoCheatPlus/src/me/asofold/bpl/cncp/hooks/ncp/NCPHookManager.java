@@ -35,17 +35,24 @@ public final class NCPHookManager {
 	 */
 	
 	// ALL
-	public static final Integer ALL = 0;
+	public static final Integer ALL 					= 0;
 	
 	// MOVING
-	public static final Integer MOVING = 1000;
-	
-	public static final Integer MOVING_NOFALL = 1001;
+	public static final Integer MOVING 					= 1000;
+	public static final Integer MOVING_NOFALL 			= 1001;
+	public static final Integer MOVING_SURVIVALFLY 		= 1002;
+	public static final Integer MOVING_CREATIVEFLY 		= 1003;
 	
 	// FIGHT
-	public static final Integer FIGHT = 2000;
+	public static final Integer FIGHT 					= 2000;
+	public static final Integer FIGHT_SPEED 			= 2001;
+	public static final Integer FIGHT_ANGLE 			= 2002;
 	
-	public static final Integer FIGHT_SPEED =  2001;
+	// BLOCKBREAK
+	
+	// BLOCKPLACE
+	
+	
 	
 	// ...
 	
@@ -253,7 +260,7 @@ public final class NCPHookManager {
 	}
 
 	/**
-	 * Register a hook for several individual checks id (all, group, or an individual checks).
+	 * Register a hook for several individual checks ids (all, group, or an individual checks).
 	 * @param checkIds Array of ids to register the hook for.
 	 * @param hook
 	 * @return
@@ -268,7 +275,7 @@ public final class NCPHookManager {
 	}
 
 	/**
-	 * 
+	 * Remove a hook.
 	 * @param hook
 	 * @return hook id if present, null otherwise.
 	 */
@@ -288,7 +295,7 @@ public final class NCPHookManager {
 
 
 	/**
-	 * 
+	 * Remove a hook by its hook id (returned on adding hooks).
 	 * @param hookId if present, null otherwise.
 	 * @return
 	 */
@@ -300,6 +307,11 @@ public final class NCPHookManager {
 		return hook;
 	}
 	
+	/**
+	 * Remove a hook by its name (case sensitive, exact match).
+	 * @param hookName
+	 * @return
+	 */
 	public static NCPHook removeHook(String hookName){
 		NCPHook hook = getHookByName(hookName);
 		if (hook == null) return null;
