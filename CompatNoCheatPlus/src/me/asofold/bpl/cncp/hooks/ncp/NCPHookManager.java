@@ -274,7 +274,7 @@ public final class NCPHookManager {
 
 	/**
 	 * Register a hook for several individual checks ids (all, group, or an individual checks).
-	 * @param checkIds Array of ids to register the hook for.
+	 * @param checkIds Array of ids to register the hook for. If you pass null this hok will be registered for all checks.
 	 * @param hook
 	 * @return
 	 */
