@@ -35,8 +35,16 @@ public final class NCPHookManager {
 	 * This is important for also being able to check the check group for the check.
 	 */
 	
-	// ALL
+	// GENERAL
+	/**
+	 * Use to register for all checkfailures.
+	 */
 	public static final Integer ALL 					= 0;
+	/**
+	 * Do not use to register, only for internals / compatibility issues,
+	 * it might be passed to NCPHook.onCheckFailure.
+	 */
+	public static final Integer UNKNOWN 				= -1;
 	
 	// MOVING
 	public static final Integer MOVING 					= 1000;
