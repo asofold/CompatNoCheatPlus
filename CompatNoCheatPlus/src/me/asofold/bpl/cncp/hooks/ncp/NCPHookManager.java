@@ -2,6 +2,7 @@ package me.asofold.bpl.cncp.hooks.ncp;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -331,6 +332,14 @@ public final class NCPHookManager {
 		return hook;
 	}
 	
+	public static Collection<NCPHook> removeAllHooks(){
+		Collection<NCPHook> hooks = getAllHooks();
+		for (NCPHook hook : hooks){
+			removeHook(hook);
+		}
+		return hooks;
+	}
+	
 	/**
 	 * Get the hook by the hook name.
 	 * @param hookName case sensitive (exact match).
@@ -342,6 +351,16 @@ public final class NCPHookManager {
 			if (hook.getHookName().equals(hookName)) return hook;
 		}
 		return null;
+	}
+	
+	/**
+	 * Get a collection of all hooks.
+	 * @return
+	 */
+	public static Collection<NCPHook> getAllHooks(){
+		List<NCPHook> hooks = new LinkedList<NCPHook>();
+		hooks.addAll(allHooks.values());
+		return hooks;
 	}
 	
 }
