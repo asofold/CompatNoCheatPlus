@@ -279,6 +279,7 @@ public final class NCPHookManager {
 	 * @return
 	 */
 	public static Integer addHook(Integer[] checkIds, NCPHook hook){
+		if (checkIds == null) checkIds = new Integer[]{NCPHookManager.ALL};
 		Integer hookId = getId(hook);
 		for (Integer checkId : checkIds){
 			addToMappings(checkId, hook);
