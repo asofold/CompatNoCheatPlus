@@ -4,9 +4,11 @@ package me.asofold.bpl.cncp.hooks.ncp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -331,6 +333,20 @@ public final class NCPHookManager {
 		if (hook == null) return null;
 		removeHook(hook);
 		return hook;
+	}
+	
+	/**
+	 * Remove a collection of hooks.
+	 * @param hooks
+	 * @return A set of the removed hooks ids.
+	 */
+	public static Set<Integer> removeHooks( Collection<NCPHook> hooks){
+		Set<Integer> ids = new HashSet<Integer>();
+		for (NCPHook hook : hooks){
+			Integer id = removeHook(hook);
+			if (id != null) ids.add(id);
+		}
+		return ids;
 	}
 	
 	public static Collection<NCPHook> removeAllHooks(){
