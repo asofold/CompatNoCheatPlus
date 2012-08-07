@@ -97,13 +97,22 @@ public final class NCPHookManager {
 	}
 	
 	/**
+	 * Get the Id of the group for a given check id. (If the given id is a group id it will return the same value but a different object).
+	 * @param checkId
+	 * @return
+	 */
+	private final static Integer getGroupId(final Integer checkId){
+		return (checkId.intValue() / 1000) * 1000;
+	}
+	
+	/**
 	 * Add hook to the hooksByChecks mappings, for the check id and if different group id. 
 	 * assumes that the hook already has been registered in the allHooks map.
 	 * @param checkId
 	 * @param hook
 	 */
 	private static void addToMappings(Integer checkId, NCPHook hook) {
-		Integer groupId = (checkId.intValue() / 1000) * 1000; // NOTE: group id  calculation
+		Integer groupId = getGroupId(checkId);
 		addToMapping(checkId, hook);
 		if (checkId.intValue() != groupId.intValue()) addToMapping(groupId, hook);
 	}
@@ -201,7 +210,7 @@ public final class NCPHookManager {
 		
 		// checks for hooks registered for all events, only for the group and specifically for the check.
 		// A Paradigm could be to return true as soon as one hook has returned true.
-		final Integer groupId = (checkId.intValue() / 1000) * 1000; // NOTE: group id  calculation
+		final Integer groupId = getGroupId(checkId);
 		
 		// Most specific:
 		final List<NCPHook> hooksCheck = hooksByChecks.get(checkId);
