@@ -5,9 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
-import me.asofold.bpl.cncp.hooks.ncp.CheckType;
 
 import org.bukkit.entity.Player;
+
+import fr.neatmonster.nocheatplus.checks.CheckType;
 
 public final class HookPlayerClass extends AbstractHook {
 	

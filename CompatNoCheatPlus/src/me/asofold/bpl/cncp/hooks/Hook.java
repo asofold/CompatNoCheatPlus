@@ -1,9 +1,9 @@
 package me.asofold.bpl.cncp.hooks;
 
-import me.asofold.bpl.cncp.hooks.ncp.CheckType;
-import me.asofold.bpl.cncp.hooks.ncp.NCPHook;
-
 import org.bukkit.event.Listener;
+
+import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 /**
  * Interface for hooking into another plugin.<br>

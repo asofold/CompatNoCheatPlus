@@ -1,9 +1,9 @@
 package me.asofold.bpl.cncp.hooks;
 
-import me.asofold.bpl.cncp.hooks.ncp.CheckType;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+
+import fr.neatmonster.nocheatplus.checks.CheckType;
 
 /**
  * Extend this to make sure that future changes will not break your hooks.<br>

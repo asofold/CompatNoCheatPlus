@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
-import me.asofold.bpl.cncp.hooks.ncp.CheckType;
 import me.asofold.bpl.cncp.utils.PluginGetter;
 
 import org.bukkit.entity.Entity;
@@ -17,6 +16,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
+
+import fr.neatmonster.nocheatplus.checks.CheckType;
 
 public final class HookmcMMO extends AbstractHook implements Listener {
 	

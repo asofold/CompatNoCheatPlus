@@ -12,31 +12,20 @@ import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 import me.asofold.bpl.cncp.hooks.Hook;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
-import me.asofold.bpl.cncp.hooks.ncp.CheckType;
-import me.asofold.bpl.cncp.hooks.ncp.NCPHook;
-import me.asofold.bpl.cncp.hooks.ncp.NCPHookManager;
 import me.asofold.bpl.cncp.setttings.Settings;
 import me.asofold.bpl.cncp.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
-import fr.neatmonster.nocheatplus.checks.blockbreak.Direction.DirectionEvent;
-import fr.neatmonster.nocheatplus.checks.blockbreak.FastBreak.FastBreakEvent;
-import fr.neatmonster.nocheatplus.checks.blockbreak.NoSwing.NoSwingEvent;
-import fr.neatmonster.nocheatplus.checks.fight.Angle.AngleEvent;
-import fr.neatmonster.nocheatplus.checks.fight.Speed.SpeedEvent;
-import fr.neatmonster.nocheatplus.checks.moving.CreativeFly.CreativeFlyEvent;
-import fr.neatmonster.nocheatplus.checks.moving.NoFall.NoFallEvent;
-import fr.neatmonster.nocheatplus.checks.moving.SurvivalFly.SurvivalFlyEvent;
+import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.hooks.NCPHook;
+import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
 
 /**
  * Quick attempt to provide compatibility to NoCheatPlus (by NeatMonster) for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
@@ -245,25 +234,5 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		super.onDisable();
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled=true)
-	final void onCheckFail(final CheckEvent event){
-		
-		// TODO: This will be replaced by NCP invoking NCPHookManager.should... directly.
-		
-		final CheckType checkId;
-		
-		// horrible :) 
-		if (event instanceof SurvivalFlyEvent) checkId = CheckType.MOVING_SURVIVALFLY;
-		else if (event instanceof CreativeFlyEvent) checkId = CheckType.MOVING_CREATIVEFLY;
-		else if (event instanceof NoFallEvent) checkId = CheckType.MOVING_NOFALL;
-		else if (event instanceof FastBreakEvent) checkId = CheckType.BLOCKBREAK_FASTBREAK;
-		else if (event instanceof NoSwingEvent) checkId = CheckType.BLOCKBREAK_NOSWING;
-		else if (event instanceof DirectionEvent) checkId = CheckType.BLOCKBREAK_DIRECTION;
-		else if (event instanceof SpeedEvent) checkId = CheckType.FIGHT_SPEED;
-		else if (event instanceof AngleEvent) checkId = CheckType.FIGHT_ANGLE;
-		else checkId = CheckType.UNKNOWN;
-		
-		if (NCPHookManager.shouldCancelVLProcessing(checkId, event.getPlayer())) event.setCancelled(true);
-	}
 
 }
