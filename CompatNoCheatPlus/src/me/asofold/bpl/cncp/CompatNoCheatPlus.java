@@ -12,6 +12,7 @@ import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 import me.asofold.bpl.cncp.hooks.Hook;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
+import me.asofold.bpl.cncp.hooks.ncp.CheckType;
 import me.asofold.bpl.cncp.hooks.ncp.NCPHook;
 import me.asofold.bpl.cncp.hooks.ncp.NCPHookManager;
 import me.asofold.bpl.cncp.setttings.Settings;
@@ -103,7 +104,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 			return false;
 		}
 		if (enabled) registerListeners(hook);
-		Integer[] checkIds = hook.getCheckSpec();
+		CheckType[] checkIds = hook.getCheckTypes();
 		NCPHookManager.addHook(checkIds, hook); // This logs the message.
 		return true;
 	}
@@ -249,18 +250,18 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		
 		// TODO: This will be replaced by NCP invoking NCPHookManager.should... directly.
 		
-		final Integer checkId;
+		final CheckType checkId;
 		
 		// horrible :) 
-		if (event instanceof SurvivalFlyEvent) checkId = NCPHookManager.MOVING_SURVIVALFLY;
-		else if (event instanceof CreativeFlyEvent) checkId = NCPHookManager.MOVING_CREATIVEFLY;
-		else if (event instanceof NoFallEvent) checkId = NCPHookManager.MOVING_NOFALL;
-		else if (event instanceof FastBreakEvent) checkId = NCPHookManager.BLOCKBREAK_FASTBREAK;
-		else if (event instanceof NoSwingEvent) checkId = NCPHookManager.BLOCKBREAK_NOSWING;
-		else if (event instanceof DirectionEvent) checkId = NCPHookManager.BLOCKBREAK_DIRECTION;
-		else if (event instanceof SpeedEvent) checkId = NCPHookManager.FIGHT_SPEED;
-		else if (event instanceof AngleEvent) checkId = NCPHookManager.FIGHT_ANGLE;
-		else checkId = NCPHookManager.UNKNOWN;
+		if (event instanceof SurvivalFlyEvent) checkId = CheckType.MOVING_SURVIVALFLY;
+		else if (event instanceof CreativeFlyEvent) checkId = CheckType.MOVING_CREATIVEFLY;
+		else if (event instanceof NoFallEvent) checkId = CheckType.MOVING_NOFALL;
+		else if (event instanceof FastBreakEvent) checkId = CheckType.BLOCKBREAK_FASTBREAK;
+		else if (event instanceof NoSwingEvent) checkId = CheckType.BLOCKBREAK_NOSWING;
+		else if (event instanceof DirectionEvent) checkId = CheckType.BLOCKBREAK_DIRECTION;
+		else if (event instanceof SpeedEvent) checkId = CheckType.FIGHT_SPEED;
+		else if (event instanceof AngleEvent) checkId = CheckType.FIGHT_ANGLE;
+		else checkId = CheckType.UNKNOWN;
 		
 		if (NCPHookManager.shouldCancelVLProcessing(checkId, event.getPlayer())) event.setCancelled(true);
 	}

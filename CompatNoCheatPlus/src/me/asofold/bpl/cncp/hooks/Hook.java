@@ -1,5 +1,6 @@
 package me.asofold.bpl.cncp.hooks;
 
+import me.asofold.bpl.cncp.hooks.ncp.CheckType;
 import me.asofold.bpl.cncp.hooks.ncp.NCPHook;
 
 import org.bukkit.event.Listener;
@@ -16,9 +17,9 @@ import org.bukkit.event.Listener;
 public interface Hook extends NCPHook{
 	
 	/**
-	 * The check ids to register for, see NCPHookManager for reference, you can use ALL,   
+	 * The check types to register for, see NCPHookManager for reference, you can use ALL,   
 	 */
-	public Integer[] getCheckSpec();
+	public CheckType[] getCheckTypes();
 	
 	/**
 	 * Get listener instances to be registered with cncp.

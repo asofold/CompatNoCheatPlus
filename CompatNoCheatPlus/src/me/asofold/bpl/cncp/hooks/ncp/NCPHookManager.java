@@ -26,51 +26,6 @@ import org.bukkit.entity.Player;
 public final class NCPHookManager {	
 	
 	
-	/* ----------------------------------------------------------------------------*
-	/*
-	 * Ids for groups and checks:
-	 * 
-	 * TODO: could change to Enums with int values.
-	 * 
-	 * A check group starts at thousands and covers all
-	 * ids till next thousand - 1, for instance 1000 to 1999.
-	 * 
-	 * This is important for also being able to check the check group for the check.
-	 */
-	
-	// GENERAL
-	/**
-	 * Use to register for all checkfailures.
-	 */
-	public static final Integer ALL 					= 0;
-	/**
-	 * Do not use to register, only for internals / compatibility issues,
-	 * it might be passed to NCPHook.onCheckFailure.
-	 */
-	public static final Integer UNKNOWN 				= -1;
-	
-	// MOVING
-	public static final Integer MOVING 					= 1000;
-	public static final Integer MOVING_NOFALL 			= 1001;
-	public static final Integer MOVING_SURVIVALFLY 		= 1002;
-	public static final Integer MOVING_CREATIVEFLY 		= 1003;
-	
-	// FIGHT
-	public static final Integer FIGHT 					= 2000;
-	public static final Integer FIGHT_SPEED 			= 2001;
-	public static final Integer FIGHT_ANGLE 			= 2002;
-	
-	// BLOCKBREAK
-	public static final Integer BLOCKBREAK 				= 3000;
-	public static final Integer BLOCKBREAK_FASTBREAK	= 3001;
-	public static final Integer BLOCKBREAK_NOSWING		= 3002;
-	public static final Integer BLOCKBREAK_DIRECTION	= 3003;
-	
-	// BLOCKPLACE
-	
-	// ...
-	
-	
 	/* ----------------------------------------------------------------------- */
 	/* Internal data: */
 	
@@ -87,7 +42,7 @@ public final class NCPHookManager {
 	/**
 	 * Mapping the check ids to the hooks.
 	 */
-	private static final Map<Integer, List<NCPHook>> hooksByChecks = new HashMap<Integer, List<NCPHook>>();
+	private static final Map<CheckType, List<NCPHook>> hooksByChecks = new HashMap<CheckType, List<NCPHook>>();
 	
 	/* ----------------------------------------------------------------- */
 	/* Internals: manage hooks internally */
@@ -119,37 +74,27 @@ public final class NCPHookManager {
 	}
 	
 	/**
-	 * Get the Id of the group for a given check id. (If the given id is a group id it will return the same value but a different object).
-	 * @param checkId
-	 * @return
-	 */
-	private final static Integer getGroupId(final Integer checkId){
-		return (checkId.intValue() / 1000) * 1000;
-	}
-	
-	/**
 	 * Add hook to the hooksByChecks mappings, for the check id and if different group id. 
 	 * assumes that the hook already has been registered in the allHooks map.
-	 * @param checkId
+	 * @param checkType
 	 * @param hook
 	 */
-	private static void addToMappings(Integer checkId, NCPHook hook) {
-		Integer groupId = getGroupId(checkId);
-		addToMapping(checkId, hook);
-		if (checkId.intValue() != groupId.intValue()) addToMapping(groupId, hook);
+	private static void addToMappings(CheckType checkType, NCPHook hook) {
+		addToMapping(checkType, hook);
+		if (checkType.group != null) addToMapping(checkType.group, hook);
 	}
 	
 	/**
-	 * 
+	 * Add to the mapping for given check type (only).
 	 * @param checkId
 	 * @param hook
 	 */
-	private static void addToMapping(Integer checkId, NCPHook hook) {
-		List<NCPHook> hooks = hooksByChecks.get(checkId);
+	private static void addToMapping(CheckType checkType, NCPHook hook) {
+		List<NCPHook> hooks = hooksByChecks.get(checkType);
 		if (hooks == null){
 			hooks = new ArrayList<NCPHook>();
 			hooks.add(hook);
-			hooksByChecks.put(checkId, hooks);
+			hooksByChecks.put(checkType, hooks);
 		}
 		else if (!hooks.contains(hook)) hooks.add(hook);
 	}
@@ -161,14 +106,14 @@ public final class NCPHookManager {
 	 */
 	private static void removeFromMappings(NCPHook hook, Integer hookId) {
 		allHooks.remove(hookId);
-		List<Integer> rem = new LinkedList<Integer>();
-		for (Integer checkId : hooksByChecks.keySet()){
+		List<CheckType> rem = new LinkedList<CheckType>();
+		for (CheckType checkId : hooksByChecks.keySet()){
 			List<NCPHook> hooks = hooksByChecks.get(checkId);
 			if (hooks.remove(hook)){
 				if (hooks.isEmpty()) rem.add(checkId);
 			}
 		}  
-		for (Integer checkId : rem){
+		for (CheckType checkId : rem){
 			hooksByChecks.remove(checkId);
 		}
 	}
@@ -185,13 +130,13 @@ public final class NCPHookManager {
 		Bukkit.getLogger().info("[NoCheatPlus/Compat] Removed hook: " + getHookDescription(hook));
 	}
 	
-	private static final void logHookFailure(final Integer groupId, final Integer checkId, final Player player, final NCPHook hook, final Throwable t){
+	private static final void logHookFailure(final CheckType checkType, final Player player, final NCPHook hook, final Throwable t){
 		// TODO: might accumulate failure rate and only log every so and so seconds or disable hook if spamming (leads to ncp spam though)?
 		final StringBuilder builder = new StringBuilder(1024);
 		builder.append("[NoCheatPlus/Compat] Hook " + getHookDescription(hook) + " encountered an unexpected exception:\n");
 		builder.append("Processing: ");
-		if (checkId.intValue() != groupId.intValue())  builder.append("Group " + groupId + " ");
-		builder.append("Check " + checkId);
+		if (checkType.group != null)  builder.append("Group " + checkType.group + " ");
+		builder.append("Check " + checkType);
 		builder.append(" Player " + player.getName());
 		builder.append("\n");
 		builder.append("Exception (" + t.getClass().getSimpleName() + "): " + t.getMessage() + "\n");
@@ -202,15 +147,15 @@ public final class NCPHookManager {
 		Bukkit.getLogger().severe(builder.toString());
 	}
 	
-	private static final boolean applyHooks(final Integer groupId, final Integer checkId, final Player player, final List<NCPHook> hooks) {
+	private static final boolean applyHooks(final CheckType checkType, final Player player, final List<NCPHook> hooks) {
 		for (int i = 0; i < hooks.size(); i ++){
 			final NCPHook hook = hooks.get(i);
 			try{
-				if (hook.onCheckFailure(groupId, checkId, player)) return true;
+				if (hook.onCheckFailure(checkType, player)) return true;
 			}
 			catch (Throwable t){
 				// TODO: maybe distinguish some exceptions here (Interrupted ?).
-				logHookFailure(groupId, checkId, player, hook, t);
+				logHookFailure(checkType, player, hook, t);
 			}
 		}
 		return false;
@@ -228,30 +173,29 @@ public final class NCPHookManager {
 	 * @param player The player that fails the check.
 	 * @return if to cancel the VL processing.
 	 */
-	public static final boolean shouldCancelVLProcessing(final Integer checkId, final Player player){
+	public static final boolean shouldCancelVLProcessing(final CheckType checkType, final Player player){
 		
 		// checks for hooks registered for all events, only for the group and specifically for the check.
 		// A Paradigm could be to return true as soon as one hook has returned true.
-		final Integer groupId = getGroupId(checkId);
 		
 		// Most specific:
-		final List<NCPHook> hooksCheck = hooksByChecks.get(checkId);
+		final List<NCPHook> hooksCheck = hooksByChecks.get(checkType);
 		if (hooksCheck != null){
-			if (applyHooks(groupId, checkId, player, hooksCheck)) return true;
+			if (applyHooks(checkType, player, hooksCheck)) return true;
 		}
 		
 		// Group:
-		if (checkId.intValue() != groupId.intValue()){
-			final List<NCPHook> hooksGroup= hooksByChecks.get(groupId);
+		if (checkType.group != null){
+			final List<NCPHook> hooksGroup= hooksByChecks.get(checkType);
 			if (hooksCheck != null){
-				if (applyHooks(groupId, checkId, player, hooksGroup)) return true;
+				if (applyHooks(checkType, player, hooksGroup)) return true;
 			}
 		}
 		
 		// general (all):
-		final List<NCPHook> hooksAll = hooksByChecks.get(ALL);
+		final List<NCPHook> hooksAll = hooksByChecks.get(CheckType.ALL);
 		if (hooksAll != null){
-			if (applyHooks(groupId, checkId, player, hooksAll)) return true;
+			if (applyHooks(checkType, player, hooksAll)) return true;
 		}
 		
 		return false;
@@ -263,13 +207,13 @@ public final class NCPHookManager {
 
 	/**
 	 * Register a hook for a specific check id (all, group, or an individual check).
-	 * @param checkId 
+	 * @param checkType 
 	 * @param hook
 	 * @return An id to identify the hook, will return the existing id if the hook was already present somewhere. 
 	 */
-	public static Integer addHook(Integer checkId, NCPHook hook){
+	public static Integer addHook(CheckType checkType, NCPHook hook){
 		Integer hookId = getId(hook);
-		addToMappings(checkId, hook);
+		addToMappings(checkType, hook);
 		logHookAdded(hook);
 		return hookId;
 	}
@@ -280,10 +224,10 @@ public final class NCPHookManager {
 	 * @param hook
 	 * @return
 	 */
-	public static Integer addHook(Integer[] checkIds, NCPHook hook){
-		if (checkIds == null) checkIds = new Integer[]{NCPHookManager.ALL};
+	public static Integer addHook(CheckType[] checkIds, NCPHook hook){
+		if (checkIds == null) checkIds = new CheckType[]{CheckType.ALL};
 		Integer hookId = getId(hook);
-		for (Integer checkId : checkIds){
+		for (CheckType checkId : checkIds){
 			addToMappings(checkId, hook);
 		}
 		logHookAdded(hook);

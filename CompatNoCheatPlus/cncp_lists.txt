@@ -18,6 +18,12 @@ STACK
 
 ? another sequence number (for standard events)
 
+*** ADD MORE GENERIC HOOKS
+
+!add check type and permission hooks, also for worldguard regions.
+
+*** ADAPT TO FINAL API FOR NCP 
+
 
 VERSION HISTORY
 ---------------------------

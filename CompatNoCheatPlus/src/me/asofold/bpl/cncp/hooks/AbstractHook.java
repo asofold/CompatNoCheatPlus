@@ -1,5 +1,7 @@
 package me.asofold.bpl.cncp.hooks;
 
+import me.asofold.bpl.cncp.hooks.ncp.CheckType;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -13,7 +15,7 @@ import org.bukkit.event.Listener;
 public abstract class AbstractHook implements Hook{
 
 	@Override
-	public Integer[] getCheckSpec() {
+	public CheckType[] getCheckTypes() {
 		// Handle all CheckEvents (improbable).
 		return null;
 	}

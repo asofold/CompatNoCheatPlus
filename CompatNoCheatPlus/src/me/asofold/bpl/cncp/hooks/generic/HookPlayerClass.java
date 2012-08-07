@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
+import me.asofold.bpl.cncp.hooks.ncp.CheckType;
 
 import org.bukkit.entity.Player;
 
@@ -54,7 +55,7 @@ public final class HookPlayerClass extends AbstractHook {
 
 
 	@Override
-	public final boolean onCheckFailure(final Integer groupId, final Integer checkId, final Player player) {
+	public final boolean onCheckFailure(CheckType checkType, final Player player) {
 		if (exemptAll && !player.getClass().getSimpleName().equals(playerClassName)) return true;
 		else {
 			if (classNames.isEmpty()) return false;

@@ -28,12 +28,11 @@ public interface NCPHook{
 	 * This is the minimal interface, one should probably add specific information 
 	 * like (target) locations and VL,  but with this a lot is possible already (cncp).<br>
 	 * See AbstractNCPHook for future questions.
-	 * @param groupId Check group id.
-	 * @param checkId Check id for the specific check (for instance: NCPHookManager.MOVING_NOFALL).
+	 * @param checkType the check that failed.
 	 * @param player The player that failed the check.
 	 * @return If to cancel the check failure processing.
 	 */
-	public boolean onCheckFailure(Integer groupId, Integer checkId, Player player);
+	public boolean onCheckFailure(CheckType checkType, Player player);
 	
 }
 
