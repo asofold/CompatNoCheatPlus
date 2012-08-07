@@ -272,7 +272,7 @@ public final class NCPHookManager {
 	 * @param hookName
 	 * @return
 	 */
-	public static Collection<NCPHook> removeHook(String hookName){
+	public static Collection<NCPHook> removeHooks(String hookName){
 		Collection<NCPHook> hooks = getHooksByName(hookName);
 		if (hooks.isEmpty()) return null;
 		removeHooks(hooks);
@@ -284,7 +284,7 @@ public final class NCPHookManager {
 	 * @param hooks
 	 * @return A set of the removed hooks ids.
 	 */
-	public static Set<Integer> removeHooks( Collection<NCPHook> hooks){
+	public static Set<Integer> removeHooks(Collection<NCPHook> hooks){
 		Set<Integer> ids = new HashSet<Integer>();
 		for (NCPHook hook : hooks){
 			Integer id = removeHook(hook);
