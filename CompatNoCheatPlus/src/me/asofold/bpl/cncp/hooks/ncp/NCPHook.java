@@ -25,9 +25,9 @@ public interface NCPHook{
 	
 	/**
 	 * This is called on failure of a check.<br>
-	 * This is the minimal interface, one should probably add specific information 
-	 * like (target) locations and VL,  but with this a lot is possible already (cncp).<br>
-	 * See AbstractNCPHook for future questions.
+	 * This is the minimal interface, it might later be extended by specific information 
+	 * like (target) locations and VL,  but with this a lot is possible already (see cncp).<br>
+	 * See AbstractNCPHook for future compatibility questions.
 	 * @param checkType the check that failed.
 	 * @param player The player that failed the check.
 	 * @return If to cancel the check failure processing.

@@ -1,7 +1,10 @@
 package me.asofold.bpl.cncp.hooks.ncp;
 
-
-
+/**
+ * Type of checks and their groups (potentially parents).
+ * @author mc_dev
+ *
+ */
 public enum CheckType {
 	
 	// GENERAL
@@ -32,7 +35,8 @@ public enum CheckType {
 	BLOCKBREAK_FASTBREAK(BLOCKBREAK),
 	BLOCKBREAK_NOSWING(BLOCKBREAK),
 	BLOCKBREAK_DIRECTION(BLOCKBREAK),
-	// ....
+	
+	// TODO: add more ....
 	
 	; // end of members.
 	

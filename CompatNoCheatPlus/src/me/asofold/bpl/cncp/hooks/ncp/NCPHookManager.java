@@ -40,7 +40,7 @@ public final class NCPHookManager {
 	private final static Map<Integer, NCPHook> allHooks = new HashMap<Integer, NCPHook>();
 	
 	/**
-	 * Mapping the check ids to the hooks.
+	 * Mapping the check types to the hooks.
 	 */
 	private static final Map<CheckType, List<NCPHook>> hooksByChecks = new HashMap<CheckType, List<NCPHook>>();
 	
@@ -74,7 +74,7 @@ public final class NCPHookManager {
 	}
 	
 	/**
-	 * Add hook to the hooksByChecks mappings, for the check id and if different group id. 
+	 * Add hook to the hooksByChecks mappings, for the check type and if present, group type. 
 	 * assumes that the hook already has been registered in the allHooks map.
 	 * @param checkType
 	 * @param hook
@@ -206,7 +206,7 @@ public final class NCPHookManager {
 	/* External API for adding hooks  etc. */
 
 	/**
-	 * Register a hook for a specific check id (all, group, or an individual check).
+	 * Register a hook for a specific check type (all, group, or an individual check).
 	 * @param checkType 
 	 * @param hook
 	 * @return An id to identify the hook, will return the existing id if the hook was already present somewhere. 
@@ -220,15 +220,15 @@ public final class NCPHookManager {
 
 	/**
 	 * Register a hook for several individual checks ids (all, group, or an individual checks).
-	 * @param checkIds Array of ids to register the hook for. If you pass null this hok will be registered for all checks.
+	 * @param checkTypes Array of check types to register the hook for. If you pass null this hook will be registered for all checks.
 	 * @param hook
 	 * @return
 	 */
-	public static Integer addHook(CheckType[] checkIds, NCPHook hook){
-		if (checkIds == null) checkIds = new CheckType[]{CheckType.ALL};
+	public static Integer addHook(CheckType[] checkTypes, NCPHook hook){
+		if (checkTypes == null) checkTypes = new CheckType[]{CheckType.ALL};
 		Integer hookId = getId(hook);
-		for (CheckType checkId : checkIds){
-			addToMappings(checkId, hook);
+		for (CheckType checkType : checkTypes){
+			addToMappings(checkType, hook);
 		}
 		logHookAdded(hook);
 		return hookId;
