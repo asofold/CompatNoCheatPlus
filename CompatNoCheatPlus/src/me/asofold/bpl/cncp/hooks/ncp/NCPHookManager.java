@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
  */
 public final class NCPHookManager {	
 	
+	
 	/* ----------------------------------------------------------------------------*
 	/*
 	 * Ids for groups and checks:
@@ -49,12 +50,15 @@ public final class NCPHookManager {
 	public static final Integer FIGHT_ANGLE 			= 2002;
 	
 	// BLOCKBREAK
+	public static final Integer BLOCKBREAK 				= 3000;
+	public static final Integer BLOCKBREAK_FASTBREAK	= 3001;
+	public static final Integer BLOCKBREAK_NOSWING		= 3002;
+	public static final Integer BLOCKBREAK_DIRECTION	= 3003;
 	
 	// BLOCKPLACE
 	
-	
-	
 	// ...
+	
 	
 	/* ----------------------------------------------------------------------- */
 	/* Internal data: */
