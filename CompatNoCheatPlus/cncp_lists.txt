@@ -22,6 +22,8 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+(4.0.0)
+
 (3.0.0)
 - (BIG CHANGE) Back to NoCheatPlus !
     This is a quick adaption only for a few check types,
