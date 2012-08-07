@@ -291,4 +291,24 @@ public final class NCPHookManager {
 		return hook;
 	}
 	
+	public static NCPHook removeHook(String hookName){
+		NCPHook hook = getHookByName(hookName);
+		if (hook == null) return null;
+		removeHook(hook);
+		return hook;
+	}
+	
+	/**
+	 * Get the hook by the hook name.
+	 * @param hookName case sensitive (exact match).
+	 * @return NCPHook if found, null otherwise.
+	 */
+	public static NCPHook getHookByName(String hookName){
+		for (Integer refId : allHooks.keySet()){
+			NCPHook hook = allHooks.get(refId);
+			if (hook.getHookName().equals(hookName)) return hook;
+		}
+		return null;
+	}
+	
 }
