@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
+import me.asofold.bpl.cncp.hooks.ncp.NCPHookManager;
 import me.asofold.bpl.cncp.utils.PluginGetter;
 
 import org.bukkit.entity.Entity;
@@ -17,20 +18,18 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
-
 public final class HookmcMMO extends AbstractHook implements Listener {
 	
-	private static final Map<String, Integer> cancelChecksBlockBreak = new HashMap<String, Integer>();
-	private static final Map<String, Integer> cancelChecksBlockDamage = new HashMap<String, Integer>();
-	private static final Map<String, Integer> cancelChecksDamage = new HashMap<String, Integer>();
+	private static final Map<Integer, Integer> cancelChecksBlockBreak = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> cancelChecksBlockDamage = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> cancelChecksDamage = new HashMap<Integer, Integer>();
 	static{
-		cancelChecksBlockBreak.put("noswing", 1);
-		cancelChecksBlockBreak.put("fastbreak", 2);
-		cancelChecksBlockDamage.put("fastbreak", 1);
+		cancelChecksBlockBreak.put(NCPHookManager.BLOCKBREAK_NOSWING, 1);
+		cancelChecksBlockBreak.put(NCPHookManager.BLOCKBREAK_FASTBREAK, 2);
+		cancelChecksBlockDamage.put(NCPHookManager.BLOCKBREAK_FASTBREAK, 1);
 		
-		cancelChecksDamage.put("angle", 1);
-		cancelChecksDamage.put("speed", 1);
+		cancelChecksDamage.put(NCPHookManager.FIGHT_ANGLE, 1);
+		cancelChecksDamage.put(NCPHookManager.FIGHT_SPEED, 1);
 	}
 	
 	public HookmcMMO(){
@@ -43,7 +42,7 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 	private String cancel = null;
 	private long cancelTicks = 0;
 	
-	private final Map<String, Integer> cancelChecks = new HashMap<String, Integer>();
+	private final Map<Integer, Integer> cancelChecks = new HashMap<Integer, Integer>();
 	
 
 	
@@ -58,10 +57,10 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 	}
 
 	@Override
-	public String[][] getCheckSpec() {
-		return new String[][]{
-				{"blockbreak", "fastbreak", "noswing"},
-				{"fight", "angle", "speed"},
+	public Integer[] getCheckSpec() {
+		return new Integer[]{
+				NCPHookManager.BLOCKBREAK_FASTBREAK, NCPHookManager.BLOCKBREAK_NOSWING,
+				NCPHookManager.FIGHT_ANGLE, NCPHookManager.FIGHT_SPEED,
 			};
 	}
 	
@@ -71,14 +70,14 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 		return new Listener[]{this, fetch};
 	}
 	
-	private  final void setPlayer(final Entity entity, Map<String, Integer> cancelChecks){
+	private  final void setPlayer(final Entity entity, Map<Integer, Integer> cancelChecks){
 		if (entity instanceof Player){
 			setPlayer((Player) entity, cancelChecks);
 		}
 		// no projectiles etc.
 	}
 	
-	private  final void setPlayer(final Player player, Map<String, Integer> cancelChecks){
+	private  final void setPlayer(final Player player, Map<Integer, Integer> cancelChecks){
 		cancel = player.getName();
 		cancelTicks = player.getTicksLived();
 		this.cancelChecks.clear();
@@ -119,15 +118,14 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 //		cancel = null;
 //	}
 	
+
 	@Override
-	public void processEvent(final String group, final String check, final CheckEvent event) {
+	public final boolean onCheckFailure(final Integer groupId, final Integer checkId, final Player player) {
 //		System.out.println("[cncp] Handle event: " + event.getEventName());
 		if (cancel == null){
 //			System.out.println("[cncp] Return on cancel == null: "+event.getPlayer().getName());
-			return;
+			return false;
 		}
-
-		final Player player = event.getPlayer();
 		
 		final String name = player.getName();
 		if (cancel.equals(name)){
@@ -137,21 +135,22 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 				cancel = null;
 			}
 			else{
-				final Integer n = cancelChecks.get(check);
+				final Integer n = cancelChecks.get(checkId);
 				if (n == null){
 //					System.out.println("[cncp] Expired("+check+"): "+event.getPlayer().getName());
-					return;
+					return false;
 				}
 				else if (n > 0){
 //					System.out.println("Check with n = "+n);
-					if (n == 1) cancelChecks.remove(check);
-					else cancelChecks.put(check,  n - 1);
+					if (n == 1) cancelChecks.remove(checkId);
+					else cancelChecks.put(checkId,  n - 1);
 				}
 				// else: allow arbitrary numbers
 //				System.out.println("[cncp] Cancel: "+event.getPlayer().getName());
-				event.setCancelled(true);
+				return true;
 			}
 		}
+		return false;
 	}
 
 }

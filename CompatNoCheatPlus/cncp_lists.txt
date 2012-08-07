@@ -23,6 +23,7 @@ VERSION HISTORY
 ---------------------------
 
 (4.0.0)
+- (BIG CHANGE) Internal structure and hooks.
 
 (3.0.0)
 - (BIG CHANGE) Back to NoCheatPlus !

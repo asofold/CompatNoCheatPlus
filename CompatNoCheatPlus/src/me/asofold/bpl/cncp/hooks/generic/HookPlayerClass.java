@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import me.asofold.bpl.cncp.hooks.AbstractHook;
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
+
+import org.bukkit.entity.Player;
 
 public final class HookPlayerClass extends AbstractHook {
 	
@@ -51,27 +52,30 @@ public final class HookPlayerClass extends AbstractHook {
 		return "0.1";
 	}
 
+
 	@Override
-	public final void processEvent(final String group, final String check, final CheckEvent event) {
-		if (exemptAll && !event.getPlayer().getClass().getSimpleName().equals(playerClassName)) event.setCancelled(true);
+	public final boolean onCheckFailure(final Integer groupId, final Integer checkId, final Player player) {
+		if (exemptAll && !player.getClass().getSimpleName().equals(playerClassName)) return true;
 		else {
-			if (classNames.isEmpty()) return;
-			final Class<?> clazz = event.getPlayer().getClass();
+			if (classNames.isEmpty()) return false;
+			final Class<?> clazz = player.getClass();
 			final String name = clazz.getSimpleName();
-			if (classNames.contains(name)) event.setCancelled(true);
+			if (classNames.contains(name)) return true;
 			else if (checkSuperClass){
 				while (true){
 					final Class<?> superClass = clazz.getSuperclass();
-					if (superClass  == null) return;
-					final String superName = superClass.getSimpleName();
-					if (superName.equals("Object")) return;
-					else if (classNames.contains(superName)){
-						event.setCancelled(true);
-						return;
+					if (superClass  == null) return false;
+					else{
+						final String superName = superClass.getSimpleName();
+						if (superName.equals("Object")) return false;
+						else if (classNames.contains(superName)){
+							return true;
+						}
 					}
 				} 
 			}
 		}
+		return false; // ECLIPSE
 	}
 
 }

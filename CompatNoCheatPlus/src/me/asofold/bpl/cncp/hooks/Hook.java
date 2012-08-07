@@ -1,53 +1,29 @@
 package me.asofold.bpl.cncp.hooks;
 
-import org.bukkit.event.Listener;
+import me.asofold.bpl.cncp.hooks.ncp.NCPHook;
 
-import fr.neatmonster.nocheatplus.checks.CheckEvent;
+import org.bukkit.event.Listener;
 
 /**
  * Interface for hooking into another plugin.<br>
+ * NOTE: You also have to implement the methods described in NCPHook.<br>
+ * If you do not use listeners or don't want the prevent-hooks configuration feature 
+ * to take effect, you can also register directly with NCPHookManager.
  * 
  * @author mc_dev
  *
  */
-public interface Hook{
-	/**
-	 * Must not cause exceptions.
-	 * @return
-	 */
-	public String getHookName();
+public interface Hook extends NCPHook{
 	
 	/**
-	 * Must not cause exceptions.
-	 * @return
+	 * The check ids to register for, see NCPHookManager for reference, you can use ALL,   
 	 */
-	public String getHookVersion();
-	
-	/**
-	 * Get the specification for which checks to call this.<br>
-	 * <hr>
-	 * The return value should be an array of arrays, each of which specifies the group name and the check names within that group.<br>
-	 * You can return null to register for ALL checks.<br>
-	 * You can just register the group name to get all checks for that group.<br>
-	 * <hr>
-	 * Currently group and check names are processed with trim().toLowerCase() !
-	 * @return (see description)
-	 */
-	public String[][] getCheckSpec();
+	public Integer[] getCheckSpec();
 	
 	/**
 	 * Get listener instances to be registered with cncp.
 	 * @return null if unused.
 	 */
 	public Listener[] getListeners();
-	
-	/**
-	 * This will only be called if the event has not yet been cancelled !<br>
-	 * Cancel the event, and no further hooks will process this.
-	 * @param group Name of check group
-	 * @param check Name of check .
-	 * @param event
-	 */
-	public void processEvent(final String group, final String check, final CheckEvent event);
 	
 }

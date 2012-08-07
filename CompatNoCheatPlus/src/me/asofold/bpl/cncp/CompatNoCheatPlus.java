@@ -1,10 +1,10 @@
 package me.asofold.bpl.cncp;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -12,7 +12,8 @@ import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 import me.asofold.bpl.cncp.hooks.Hook;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
-import me.asofold.bpl.cncp.setttings.GroupHooks;
+import me.asofold.bpl.cncp.hooks.ncp.NCPHook;
+import me.asofold.bpl.cncp.hooks.ncp.NCPHookManager;
 import me.asofold.bpl.cncp.setttings.Settings;
 import me.asofold.bpl.cncp.utils.Utils;
 
@@ -43,15 +44,6 @@ import fr.neatmonster.nocheatplus.checks.moving.SurvivalFly.SurvivalFlyEvent;
  */
 public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	
-	/**
-	 * Storage of hooks that are called for all events.
-	 */
-	private static final ArrayList<Hook> hooksAll = new ArrayList<Hook>(10);
-	
-	/**
-	 * Storage of hooks that are called for certain groups and checks.
-	 */
-	private static final Map<String, GroupHooks> hooksGroups = new HashMap<String, GroupHooks>(20);
 	
 	private final Settings settings = new Settings();
 	
@@ -100,16 +92,29 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * API to add a hook.
+	 * API to add a hook. Adds the hook AND registers listeners if enabled. Also respects the configuration for preventing hooks.<br>
+	 * If you want to not register the listeners use NCPHookManager.
 	 * @param hook
 	 * @return
 	 */
 	public static boolean addHook(Hook hook){
-		if (!enabled) return false;
 		if (Settings.preventAddHooks.contains(hook.getHookName())){
 			System.out.println("[cncp] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
 			return false;
 		}
+		if (enabled) registerListeners(hook);
+		Integer[] checkIds = hook.getCheckSpec();
+		NCPHookManager.addHook(checkIds, hook); // This logs the message.
+		return true;
+	}
+	
+	/**
+	 * Conveniently register the listeners, do not use if you add/added the hook with addHook. 
+	 * @param hook
+	 * @return
+	 */
+	public  static boolean registerListeners(Hook hook) {
+		if (!enabled) return false;
 		Listener[] listeners = hook.getListeners();
 		if (listeners != null){
 			// attempt to register events:
@@ -120,40 +125,9 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 				pm.registerEvents(listener, plg);
 			}
 		}
-		String[][] specs = hook.getCheckSpec();
-		if (specs == null) hooksAll.add(hook);
-		else{
-			for (String[] spec : specs){
-				String group = spec[0].trim().toLowerCase();
-				GroupHooks gh = hooksGroups.get(group);
-				if (gh == null){
-					gh = new GroupHooks();
-					hooksGroups.put(group, gh);
-				}
-				if (spec.length == 1) gh.all.add(hook);
-				else{
-					for (int i = 1; i < spec.length; i++){
-						String check = spec[i].trim().toLowerCase();
-						ArrayList<Hook> hooks = gh.byCheck.get(check);
-						if (hooks == null){
-							hooks = new ArrayList<Hook>(10);
-							gh.byCheck.put(check, hooks);
-						}
-						hooks.add(hook);
-					}
-				}
-			}
-		}
-		System.out.println("[cncp] Added hook: "+hook.getHookName() + " / " + hook.getHookVersion());
 		return true;
 	}
-	
 
-	public void clearHooks() {
-		hooksAll.clear();
-		hooksGroups.clear();
-	}
-	
 	/**
 	 * Add standard hooks if available.
 	 */
@@ -167,8 +141,9 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
-		// cleanup
-		clearHooks();
+		enabled = false; // make sure
+		// (no cleanup)
+		
 		// Settings:
 		settings.clear();
 		reloadSettings();
@@ -176,9 +151,27 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		final PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
 		super.onEnable();
-		enabled = true;
+		
 		// Add  Hooks:
-		addAvailableHooks();
+		addAvailableHooks(); // add before enable is set to not yet register listeners.
+		enabled = true;
+		
+		// register all listeners:
+		for (Hook hook : getAllHooks()){
+			registerListeners(hook);
+		}
+	}
+	
+	/**
+	 * Get all cncp Hook instances that are registered with NCPHookManager.
+	 * @return
+	 */
+	public static Collection<Hook> getAllHooks() {
+		List<Hook> hooks = new LinkedList<Hook>();
+		for (NCPHook hook : NCPHookManager.getAllHooks()){
+			if (hook instanceof Hook) hooks.add((Hook) hook);
+		}
+		return hooks;
 	}
 
 	public boolean reloadSettings() {
@@ -244,80 +237,32 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		enabled = false;
-		clearHooks();
+		// remove all registered cncp hooks:
+		for (Hook hook : getAllHooks()){
+			NCPHookManager.removeHook(hook);
+		}
 		super.onDisable();
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled=true)
 	final void onCheckFail(final CheckEvent event){
-		// Check hooks, most specific first:
-		final String gn;
-		final String cn;
 		
+		// TODO: This will be replaced by NCP invoking NCPHookManager.should... directly.
 		
-		if (event instanceof SurvivalFlyEvent){
-			gn = "moving";
-			cn = "survivalfly";
-		}
-		else if (event instanceof CreativeFlyEvent){
-			gn = "moving";
-			cn = "creativefly";
-		}
-		else if (event instanceof NoFallEvent){
-			gn = "moving";
-			cn = "nofall";
-		}
-		else if (event instanceof FastBreakEvent){
-			gn = "blockbreak";
-			cn = "fastbreak";
-		}
-		else if (event instanceof NoSwingEvent){
-			gn = "blockbreak";
-			cn = "noswing";
-		}
-		else if (event instanceof DirectionEvent){
-			gn = "blockbreak";
-			cn = "direction";
-		}
-		else if (event instanceof SpeedEvent){
-			gn = "fight";
-			cn = "speed";
-		}
-		else if (event instanceof AngleEvent){
-			gn = "fight";
-			cn = "angle";
-		}
-		else{
-			// TODO: ...
-			gn = "";
-			cn = "";	
-		}
+		final Integer checkId;
 		
-		final GroupHooks gh = hooksGroups.get(gn.trim().toLowerCase());
-		if (gh != null){
-			final ArrayList<Hook> hooks = gh.byCheck.get(cn.trim().toLowerCase());
-			if (hooks != null) applyHooks(gn, cn, event, hooks);
-			if (event.isCancelled()) return;
-			if (!gh.all.isEmpty()) applyHooks(gn, cn, event, gh.all);
-		}
-		if (event.isCancelled()) return;
-		if (!hooksAll.isEmpty()) applyHooks(gn, cn, event, hooksAll);
-	}
-
-	private final void applyHooks(final String group, final String check, final CheckEvent event, final ArrayList<Hook> hooks) {
-		for (int i = 0; i < hooks.size(); i++){
-			if (event.isCancelled()) return;
-			final Hook hook = hooks.get(i);
-			try{
-				hook.processEvent(group, check, event);
-			}
-			catch (final Throwable t){
-				final Logger logger = getServer().getLogger();
-				logger.warning("[cncp][" + group + "/" + check + "] Unexpected exception on for hook ("+hook.getHookName()+" / "+hook.getHookVersion()+"):");
-				// TODO: maybe add more info about the CheckEvent ?
-				logger.warning(Utils.toString(t));
-			}
-		}
+		// horrible :) 
+		if (event instanceof SurvivalFlyEvent) checkId = NCPHookManager.MOVING_SURVIVALFLY;
+		else if (event instanceof CreativeFlyEvent) checkId = NCPHookManager.MOVING_CREATIVEFLY;
+		else if (event instanceof NoFallEvent) checkId = NCPHookManager.MOVING_NOFALL;
+		else if (event instanceof FastBreakEvent) checkId = NCPHookManager.BLOCKBREAK_FASTBREAK;
+		else if (event instanceof NoSwingEvent) checkId = NCPHookManager.BLOCKBREAK_NOSWING;
+		else if (event instanceof DirectionEvent) checkId = NCPHookManager.BLOCKBREAK_DIRECTION;
+		else if (event instanceof SpeedEvent) checkId = NCPHookManager.FIGHT_SPEED;
+		else if (event instanceof AngleEvent) checkId = NCPHookManager.FIGHT_ANGLE;
+		else checkId = NCPHookManager.UNKNOWN;
+		
+		if (NCPHookManager.shouldCancelVLProcessing(checkId, event.getPlayer())) event.setCancelled(true);
 	}
 
 }

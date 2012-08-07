@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 public abstract class AbstractHook implements Hook{
 
 	@Override
-	public String[][] getCheckSpec() {
+	public Integer[] getCheckSpec() {
 		// Handle all CheckEvents (improbable).
 		return null;
 	}
