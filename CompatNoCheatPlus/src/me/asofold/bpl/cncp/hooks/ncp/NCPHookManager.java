@@ -272,11 +272,11 @@ public final class NCPHookManager {
 	 * @param hookName
 	 * @return
 	 */
-	public static NCPHook removeHook(String hookName){
-		NCPHook hook = getHookByName(hookName);
-		if (hook == null) return null;
-		removeHook(hook);
-		return hook;
+	public static Collection<NCPHook> removeHook(String hookName){
+		Collection<NCPHook> hooks = getHooksByName(hookName);
+		if (hooks.isEmpty()) return null;
+		removeHooks(hooks);
+		return hooks;
 	}
 	
 	/**
@@ -306,12 +306,13 @@ public final class NCPHookManager {
 	 * @param hookName case sensitive (exact match).
 	 * @return NCPHook if found, null otherwise.
 	 */
-	public static NCPHook getHookByName(String hookName){
+	public static Collection<NCPHook> getHooksByName(String hookName){
+		List<NCPHook> hooks = new LinkedList<NCPHook>();
 		for (Integer refId : allHooks.keySet()){
 			NCPHook hook = allHooks.get(refId);
-			if (hook.getHookName().equals(hookName)) return hook;
+			if (hook.getHookName().equals(hookName) && !hooks.contains(hook)) hooks.add(hook);
 		}
-		return null;
+		return hooks;
 	}
 	
 	/**
