@@ -1,7 +1,8 @@
 name: CompatNoCheatPlus
 main: me.asofold.bpl.cncp.CompatNoCheatPlus
-version: 5.0.0
+version: 5.1.0
 depend:
 - NoCheatPlus
 softdepend:
 - mcMMO
+- Citizens
