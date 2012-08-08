@@ -122,6 +122,10 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 * Add standard hooks if available.
 	 */
 	private void addAvailableHooks() {
+		try{
+			addHook(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
+		}
+		catch (Throwable t){}
 		addHook(hookPlayerClass);
 		try{
 			addHook(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());

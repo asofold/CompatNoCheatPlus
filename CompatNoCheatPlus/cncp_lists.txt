@@ -26,6 +26,9 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+(5.1.0)
+- (add) Hook for Citizens 2 .
+
 (5.0.0)
 - (BIG CHANGE) Finally adapt to the new API fo NoCheatPlus (moved over there). 
 
