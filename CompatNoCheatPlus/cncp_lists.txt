@@ -22,11 +22,12 @@ STACK
 
 !add check type and permission hooks, also for worldguard regions.
 
-*** ADAPT TO FINAL API FOR NCP 
-
 
 VERSION HISTORY
 ---------------------------
+
+(5.0.0)
+- (BIG CHANGE) Finally adapt to the new API fo NoCheatPlus (moved over there). 
 
 (4.0.0)
 - (BIG CHANGE) Internal structure and hooks.
