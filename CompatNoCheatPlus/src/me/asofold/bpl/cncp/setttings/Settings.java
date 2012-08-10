@@ -13,13 +13,14 @@ public class Settings {
 	public Set<String> forceEnableLater = new LinkedHashSet<String>();
 	public Set<String> loadPlugins = new LinkedHashSet<String>();
 	public Set<String> exemptPlayerClassNames = new HashSet<String>();
+	
 	public boolean exemptAllPlayerClassNames = true;
 	public String playerClassName = "CraftPlayer";
-	public boolean exemptSuperClass = true;
+    public boolean exemptSuperClass = true;
+    
+    public float flySpeed = 1.0f;
+    public float walkSpeed = 1.0f;
 	
-	/**
-	 * TODO: I don't like this too much :)
-	 */
 	public static Set<String> preventAddHooks = new HashSet<String>();
 	
 	public static CompatConfig getDefaultConfig(){
@@ -31,6 +32,8 @@ public class Settings {
 		cfg.set("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
 		cfg.set("hooks.player-class.class-name", ref.playerClassName);
 		cfg.set("hooks.player-class.super-class", ref.exemptSuperClass);
+		cfg.set("hooks.set-speed.fly-speed", ref.flySpeed);
+		cfg.set("hooks.set-speed.walk-speed", ref.walkSpeed);
 		cfg.set("hooks.prevent-add", new LinkedList<String>());
 		return cfg;
 	}
@@ -49,6 +52,8 @@ public class Settings {
 		exemptAllPlayerClassNames = cfg.getBoolean("hooks.player-class.exempt-all", ref.exemptAllPlayerClassNames);
 		playerClassName = cfg.getString("hooks.player-class.class-name", ref.playerClassName);
 		exemptSuperClass = cfg.getBoolean("hooks.player-class.super-class", ref.exemptSuperClass);
+		flySpeed = cfg.getDouble("hooks.set-speed.fly-speed", (double) ref.flySpeed).floatValue();
+		walkSpeed = cfg.getDouble("hooks.set-speed.walk-speed", (double) ref.walkSpeed).floatValue();
 		ConfigUtil.readStringSetFromList(cfg, "hooks.prevent-add", preventAddHooks, true, true, false);
 		return true;
 	}

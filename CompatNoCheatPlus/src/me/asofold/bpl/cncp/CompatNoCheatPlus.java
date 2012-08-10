@@ -12,6 +12,7 @@ import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 import me.asofold.bpl.cncp.hooks.Hook;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
+import me.asofold.bpl.cncp.hooks.generic.HookSetSpeed;
 import me.asofold.bpl.cncp.setttings.Settings;
 import me.asofold.bpl.cncp.utils.Utils;
 
@@ -38,6 +39,8 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	private final Settings settings = new Settings();
 	
 	private final HookPlayerClass hookPlayerClass = new HookPlayerClass();
+	
+	private HookSetSpeed hookSetSpeed = null;
 	
 	/**
 	 * Flag if plugin is enabled.
@@ -123,6 +126,14 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 */
 	private void addAvailableHooks() {
 		try{
+			hookSetSpeed = new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed();
+			hookSetSpeed.setFlySpeed(settings.flySpeed);
+			hookSetSpeed.setWalkSpeed(settings.walkSpeed);
+			hookSetSpeed.init();
+			addHook(hookSetSpeed);
+		}
+		catch (Throwable t){}
+		try{
 			addHook(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
 		}
 		catch (Throwable t){}
@@ -140,7 +151,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		
 		// Settings:
 		settings.clear();
-		reloadSettings();
+		loadSettings();
 		// Register own listener:
 		final PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
@@ -168,7 +179,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		return hooks;
 	}
 
-	public boolean reloadSettings() {
+	public boolean loadSettings() {
 		final Set<String> oldForceEnableLater = new LinkedHashSet<String>();
 		oldForceEnableLater.addAll(settings.forceEnableLater);
 		// Read and apply config to settings:
@@ -182,6 +193,11 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		hookPlayerClass.setExemptAll(settings.exemptAllPlayerClassNames);
 		hookPlayerClass.setPlayerClassName(settings.playerClassName);
 		hookPlayerClass.setCheckSuperClass(settings.exemptSuperClass);
+		// Set hookSetSpeed properties (for future purposes):
+		if (hookSetSpeed != null){
+			hookSetSpeed.setFlySpeed(settings.flySpeed);
+			hookSetSpeed.setWalkSpeed(settings.walkSpeed);
+		}
 		// Re-enable plugins that were not yet on the list:
 		Server server = getServer();
 		Logger logger = server.getLogger();

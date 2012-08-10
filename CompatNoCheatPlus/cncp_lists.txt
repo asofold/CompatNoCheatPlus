@@ -22,9 +22,11 @@ STACK
 
 !add check type and permission hooks, also for worldguard regions.
 
-
 VERSION HISTORY
 ---------------------------
+
+(5.2.0)
+- (add) Add hook to set player speed (simple).
 
 (5.1.0)
 - (add) Hook for Citizens 2 .
