@@ -1,6 +1,6 @@
 name: CompatNoCheatPlus
 main: me.asofold.bpl.cncp.CompatNoCheatPlus
-version: 5.2.0
+version: 5.3.0
 depend:
 - NoCheatPlus
 softdepend:
