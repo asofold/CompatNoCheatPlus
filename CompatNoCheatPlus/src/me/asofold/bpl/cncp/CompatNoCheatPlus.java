@@ -125,19 +125,26 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 * Add standard hooks if available.
 	 */
 	private void addAvailableHooks() {
-		try{
-			hookSetSpeed = new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed();
-			hookSetSpeed.setFlySpeed(settings.flySpeed);
-			hookSetSpeed.setWalkSpeed(settings.walkSpeed);
-			hookSetSpeed.init();
-			addHook(hookSetSpeed);
+		// Set speed
+		if (settings.setSpeedEnabled){
+			try{
+				hookSetSpeed = new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed();
+				hookSetSpeed.setFlySpeed(settings.flySpeed);
+				hookSetSpeed.setWalkSpeed(settings.walkSpeed);
+				hookSetSpeed.init();
+				addHook(hookSetSpeed);
+			}
+			catch (Throwable t){}
 		}
-		catch (Throwable t){}
+		// Citizens 2
 		try{
 			addHook(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
 		}
 		catch (Throwable t){}
-		addHook(hookPlayerClass);
+		// Player class (NPCs, Citizens 1)
+		if (settings.playerClassEnabled)
+			addHook(hookPlayerClass);
+		// mcMMO
 		try{
 			addHook(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
 		}

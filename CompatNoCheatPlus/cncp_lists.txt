@@ -25,6 +25,10 @@ STACK
 VERSION HISTORY
 ---------------------------
 
+(5.3.0)
+- (change) Set speed is disabled by default and needs to be anabled by the config flag.
+- (add) Enable flags for the built in generic hooks.
+
 (5.2.0)
 - (add) Add hook to set player speed (simple).
 
