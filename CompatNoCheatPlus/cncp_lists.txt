@@ -22,6 +22,10 @@ STACK
 
 !add check type and permission hooks, also for worldguard regions.
 
+***
+
+Citizens2 / Player class: make configurable (hidden) Or do internally: List of checks to use , exclude moving if possible.
+
 VERSION HISTORY
 ---------------------------
 
