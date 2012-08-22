@@ -9,6 +9,7 @@ import me.asofold.bpl.cncp.hooks.AbstractHook;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public final class HookPlayerClass extends AbstractHook {
 	
@@ -17,6 +18,8 @@ public final class HookPlayerClass extends AbstractHook {
 	private boolean exemptAll = true;
 	
 	private boolean checkSuperClass = true;
+	
+	private Object ncpHook = null;
 	
 	/**
 	 * Normal class name.
@@ -51,33 +54,52 @@ public final class HookPlayerClass extends AbstractHook {
 
 	@Override
 	public final String getHookVersion() {
-		return "0.1";
+		return "1.0";
 	}
 
+	
 
 	@Override
-	public final boolean onCheckFailure(CheckType checkType, final Player player) {
-		if (exemptAll && !player.getClass().getSimpleName().equals(playerClassName)) return true;
-		else {
-			if (classNames.isEmpty()) return false;
-			final Class<?> clazz = player.getClass();
-			final String name = clazz.getSimpleName();
-			if (classNames.contains(name)) return true;
-			else if (checkSuperClass){
-				while (true){
-					final Class<?> superClass = clazz.getSuperclass();
-					if (superClass  == null) return false;
-					else{
-						final String superName = superClass.getSimpleName();
-						if (superName.equals("Object")) return false;
-						else if (classNames.contains(superName)){
-							return true;
+	public NCPHook getNCPHook() {
+		if (ncpHook == null){
+			ncpHook = new NCPHook() {
+				@Override
+				public boolean onCheckFailure(CheckType checkType, Player player) {
+					if (exemptAll && !player.getClass().getSimpleName().equals(playerClassName)) return true;
+					else {
+						if (classNames.isEmpty()) return false;
+						final Class<?> clazz = player.getClass();
+						final String name = clazz.getSimpleName();
+						if (classNames.contains(name)) return true;
+						else if (checkSuperClass){
+							while (true){
+								final Class<?> superClass = clazz.getSuperclass();
+								if (superClass  == null) return false;
+								else{
+									final String superName = superClass.getSimpleName();
+									if (superName.equals("Object")) return false;
+									else if (classNames.contains(superName)){
+										return true;
+									}
+								}
+							} 
 						}
 					}
-				} 
-			}
+					return false; // ECLIPSE
+				}
+				
+				@Override
+				public String getHookVersion() {
+					return "1.0";
+				}
+				
+				@Override
+				public String getHookName() {
+					return "PlayerClass(cncp)";
+				}
+			};
 		}
-		return false; // ECLIPSE
+		return (NCPHook) ncpHook;
 	}
 
 }

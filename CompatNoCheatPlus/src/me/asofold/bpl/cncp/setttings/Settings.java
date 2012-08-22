@@ -10,6 +10,8 @@ import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 
 public class Settings {
+	public int configVersion = 1;
+	
 	public Set<String> forceEnableLater = new LinkedHashSet<String>();
 	public Set<String> loadPlugins = new LinkedHashSet<String>();
 	public Set<String> exemptPlayerClassNames = new HashSet<String>();
@@ -22,13 +24,14 @@ public class Settings {
     public boolean setSpeedEnabled = false;
     public float flySpeed = 1.0f;
     public float walkSpeed = 1.0f;
+//    public String allowFlightPerm = "cncp.allow-flight";
 	
 	public static Set<String> preventAddHooks = new HashSet<String>();
 	
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
 		Settings ref = new Settings();
-		cfg.set("plugins.force-enable-later", ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
+		cfg.set("plugins.force-enable-later", new LinkedList<String>()); // ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
 		cfg.set("plugins.ensure-enable", ConfigUtil.asList(new String[]{ "WorldGuard" }));
 		cfg.set("hooks.player-class.enabled", ref.playerClassEnabled);
 		cfg.set("hooks.player-class.exempt-names", new LinkedList<String>());
@@ -38,7 +41,9 @@ public class Settings {
 		cfg.set("hooks.set-speed.enabled", ref.setSpeedEnabled);
 		cfg.set("hooks.set-speed.fly-speed", ref.flySpeed);
 		cfg.set("hooks.set-speed.walk-speed", ref.walkSpeed);
+//		cfg.set("hooks.set-speed.allow-flight-permission", ref.allowFlightPerm);
 		cfg.set("hooks.prevent-add", new LinkedList<String>());
+		cfg.set("configversion", ref.configVersion);
 		return cfg;
 	}
 	
@@ -62,6 +67,7 @@ public class Settings {
 		setSpeedEnabled = cfg.getBoolean("hooks.set-speed.enabled", ref.setSpeedEnabled);
 		flySpeed = cfg.getDouble("hooks.set-speed.fly-speed", (double) ref.flySpeed).floatValue();
 		walkSpeed = cfg.getDouble("hooks.set-speed.walk-speed", (double) ref.walkSpeed).floatValue();
+//		allowFlightPerm = cfg.getString("hooks.set-speed.allow-flight-permission", ref.allowFlightPerm);
 		
 		// General
 		ConfigUtil.readStringSetFromList(cfg, "hooks.prevent-add", preventAddHooks, true, true, false);

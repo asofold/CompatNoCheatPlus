@@ -1,10 +1,8 @@
 package me.asofold.bpl.cncp;
 
 import java.io.File;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -18,13 +16,16 @@ import me.asofold.bpl.cncp.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
 
@@ -37,6 +38,8 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	
 	
 	private final Settings settings = new Settings();
+	
+	private static final Set<Hook> registeredHooks = new HashSet<Hook>();
 	
 	private final HookPlayerClass hookPlayerClass = new HookPlayerClass();
 	
@@ -92,15 +95,32 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 */
 	public static boolean addHook(Hook hook){
 		if (Settings.preventAddHooks.contains(hook.getHookName())){
-			System.out.println("[cncp] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
+			Bukkit.getLogger().info("[cncp] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
 			return false;
 		}
 		if (enabled) registerListeners(hook);
-		CheckType[] checkIds = hook.getCheckTypes();
-		NCPHookManager.addHook(checkIds, hook); // This logs the message.
+		boolean added = checkAddNCPHook(hook); // Add if plugin is present, otherwise queue for adding.
+		Bukkit.getLogger().info("[cncp] Registered hook"+(added?"":"(NCPHook might get added later)")+": "+hook.getHookName() + " / " + hook.getHookVersion());
 		return true;
 	}
 	
+	/**
+	 * If already added to NCP
+	 * @param hook
+	 * @return
+	 */
+	private static boolean checkAddNCPHook(Hook hook) {
+		registeredHooks.add(hook);
+		PluginManager pm =  Bukkit.getPluginManager();
+		Plugin plugin = pm.getPlugin("NoCheatPlus");
+		if (plugin == null || !pm.isPluginEnabled(plugin))
+			return false;
+		NCPHook ncpHook = hook.getNCPHook();
+		if (ncpHook != null)
+			NCPHookManager.addHook(hook.getCheckTypes(), ncpHook);
+		return true;
+	}
+
 	/**
 	 * Conveniently register the listeners, do not use if you add/added the hook with addHook. 
 	 * @param hook
@@ -131,6 +151,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 				hookSetSpeed = new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed();
 				hookSetSpeed.setFlySpeed(settings.flySpeed);
 				hookSetSpeed.setWalkSpeed(settings.walkSpeed);
+//				hookSetSpeed.setAllowFlightPerm(settings.allowFlightPerm);
 				hookSetSpeed.init();
 				addHook(hookSetSpeed);
 			}
@@ -169,21 +190,9 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		enabled = true;
 		
 		// register all listeners:
-		for (Hook hook : getAllHooks()){
+		for (Hook hook : registeredHooks){
 			registerListeners(hook);
 		}
-	}
-	
-	/**
-	 * Get all cncp Hook instances that are registered with NCPHookManager.
-	 * @return
-	 */
-	public static Collection<Hook> getAllHooks() {
-		List<Hook> hooks = new LinkedList<Hook>();
-		for (NCPHook hook : NCPHookManager.getAllHooks()){
-			if (hook instanceof Hook) hooks.add((Hook) hook);
-		}
-		return hooks;
 	}
 
 	public boolean loadSettings() {
@@ -193,7 +202,13 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		File file = new File(getDataFolder() , "cncp.yml");
 		CompatConfig cfg = new NewConfig(file);
 		cfg.load();
-		if (Settings.addDefaults(cfg)) cfg.save();
+		boolean changed = false;
+		if (cfg.getInt("configversion", 0) == 0){
+			cfg.remove("plugins");
+			changed = true;
+		}
+		if (Settings.addDefaults(cfg)) changed = true;
+		if (changed) cfg.save();
 		settings.fromConfig(cfg);
 		// Set hookPlayerClass properties
 		hookPlayerClass.setClassNames(settings.exemptPlayerClassNames);
@@ -204,6 +219,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		if (hookSetSpeed != null){
 			hookSetSpeed.setFlySpeed(settings.flySpeed);
 			hookSetSpeed.setWalkSpeed(settings.walkSpeed);
+//			hookSetSpeed.setAllowFlightPerm(settings.allowFlightPerm);
 		}
 		// Re-enable plugins that were not yet on the list:
 		Server server = getServer();
@@ -255,11 +271,50 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	public void onDisable() {
 		enabled = false;
 		// remove all registered cncp hooks:
-		for (Hook hook : getAllHooks()){
-			NCPHookManager.removeHook(hook);
-		}
+		unregisterHooks();
 		super.onDisable();
 	}
+	
+	private int unregisterHooks() {
+		int n = 0;
+		for (Hook hook : registeredHooks){
+			NCPHook ncpHook = hook.getNCPHook();
+			if (ncpHook != null){
+				NCPHookManager.removeHook(ncpHook);
+				n ++;
+			}
+		}
+		getLogger().info("[cncp] Removed "+n+" registered hooks from NoCheatPlus.");
+		return n;
+	}
+	
+	private int registerHooks() {
+		int n = 0;
+		for (Hook hook : registeredHooks){
+			// TODO: try catch
+			NCPHook ncpHook = hook.getNCPHook();
+			if (ncpHook == null) continue;
+			NCPHookManager.addHook(hook.getCheckTypes(), ncpHook);
+			n ++;
+		}
+		getLogger().info("[cncp] Added "+n+" registered hooks to NoCheatPlus.");
+		return n;
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	void onPluginEnable(PluginEnableEvent event){
+		Plugin plugin = event.getPlugin();
+		if (!plugin.getName().equals("NoCheatPlus")) return;
+		if (registeredHooks.isEmpty()) return;
+		registerHooks();
+	}
 
+	@EventHandler(priority = EventPriority.NORMAL)
+	void onPluginDisable(PluginDisableEvent event){
+		Plugin plugin = event.getPlugin();
+		if (!plugin.getName().equals("NoCheatPlus")) return;
+		if (registeredHooks.isEmpty()) return;
+		unregisterHooks();
+	}
 
 }

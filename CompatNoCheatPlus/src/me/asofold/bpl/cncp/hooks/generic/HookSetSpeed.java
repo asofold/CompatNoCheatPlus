@@ -15,6 +15,8 @@ public class HookSetSpeed extends AbstractHook implements Listener{
 	
 	private float walkSpeed = 1.0f;
 	
+//	private String allowFlightPerm = "cncp.allow-flight";
+	
 	public HookSetSpeed() throws SecurityException, NoSuchMethodException{
 		Player.class.getDeclaredMethod("setFlySpeed", float.class);
 	}
@@ -32,7 +34,7 @@ public class HookSetSpeed extends AbstractHook implements Listener{
 
 	@Override
 	public String getHookVersion() {
-		return "0.0";
+		return "1.0";
 	}
 
 	@Override
@@ -43,12 +45,6 @@ public class HookSetSpeed extends AbstractHook implements Listener{
 	@Override
 	public Listener[] getListeners() {
 		return new Listener[]{this}	;
-	}
-
-	@Override
-	public final boolean onCheckFailure(final CheckType checkType, final Player player) {
-		// UNUSED :)
-		return false;
 	}
 
 	public float getFlySpeed() {
@@ -68,6 +64,7 @@ public class HookSetSpeed extends AbstractHook implements Listener{
 	}
 	
 	public final void setSpeed(final Player player){
+//		if (allowFlightPerm.equals("") || player.hasPermission(allowFlightPerm)) player.setAllowFlight(true);
 		player.setWalkSpeed(walkSpeed);
 		player.setFlySpeed(flySpeed);
 	}
@@ -75,5 +72,13 @@ public class HookSetSpeed extends AbstractHook implements Listener{
 	final void onPlayerJoin(final PlayerJoinEvent event){
 		setSpeed(event.getPlayer());
 	}
+
+//	public String getAllowFlightPerm() {
+//		return allowFlightPerm;
+//	}
+
+//	public void setAllowFlightPerm(String allowFlightPerm) {
+//		this.allowFlightPerm = allowFlightPerm;
+//	}
 
 }

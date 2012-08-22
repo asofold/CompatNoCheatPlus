@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 /**
  * Extend this to make sure that future changes will not break your hooks.<br>
@@ -22,10 +23,18 @@ public abstract class AbstractHook implements Hook{
 
 	@Override
 	public Listener[] getListeners() {
-		// No listeners (improbable).
+		// No listeners to register with cncp.
 		return null;
 	}
 	
+	
+	
+	@Override
+	public NCPHook getNCPHook() {
+		// No hooks to add to NCP.
+		return null;
+	}
+
 	/**
 	 * Throw a runtime exception if the plugin is not present.
 	 * @param pluginName

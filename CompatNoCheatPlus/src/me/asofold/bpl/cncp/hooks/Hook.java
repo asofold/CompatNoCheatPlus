@@ -14,7 +14,19 @@ import fr.neatmonster.nocheatplus.hooks.NCPHook;
  * @author mc_dev
  *
  */
-public interface Hook extends NCPHook{
+public interface Hook{
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getHookName();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getHookVersion();
 	
 	/**
 	 * The check types to register for, see NCPHookManager for reference, you can use ALL,   
@@ -26,5 +38,11 @@ public interface Hook extends NCPHook{
 	 * @return null if unused.
 	 */
 	public Listener[] getListeners();
+	
+	/**
+	 * Get the hook to be registered with NCP, the registration will take place after NoCheatPlus has been enabled.
+	 * @return Should always return the same hook or null if not used.
+	 */
+	public NCPHook getNCPHook();
 	
 }
