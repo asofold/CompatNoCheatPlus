@@ -51,7 +51,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 		final String name = player.getName();
 		if (cancel.equals(name)){
 			
-			if (player == null || player.getTicksLived() != cancelTicks){
+			if (player.getTicksLived() != cancelTicks){
 //				System.out.println("[cncp] No cancel (ticks/player): "+event.getPlayer().getName());
 				cancel = null;
 			}

@@ -34,6 +34,9 @@ Generic abstract class for the mcMMO style cancelling of next x events + ticks a
 VERSION HISTORY
 ---------------------------
 
+(6.0.1)
+- (bugfix) Citizens2 hook should unregister correctly on reloading etc.
+
 (6.0.0)
 - (BIG CHANGE) Restructure to load before NoCheatPlus.  
 

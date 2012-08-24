@@ -30,7 +30,7 @@ public class HookCitizens2 extends AbstractHook {
 	@Override
 	public NCPHook getNCPHook() {
 		if (ncpHook == null){
-			return new NCPHook() {
+			ncpHook = new NCPHook() {
 				@Override
 				public boolean onCheckFailure(CheckType checkType, Player player) {
 					return CitizensAPI.getNPCRegistry().isNPC(player);
