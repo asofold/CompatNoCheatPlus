@@ -16,7 +16,7 @@ public class Settings {
 	public Set<String> loadPlugins = new LinkedHashSet<String>();
 	public Set<String> exemptPlayerClassNames = new HashSet<String>();
 	
-	public boolean playerClassEnabled = true;
+	public boolean playerClassEnabled = false;
 	public boolean exemptAllPlayerClassNames = true;
 	public String playerClassName = "CraftPlayer";
     public boolean exemptSuperClass = true;
