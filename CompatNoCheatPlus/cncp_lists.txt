@@ -29,10 +29,22 @@ Citizens2 / Player class: make configurable (hidden) Or do internally: List of c
 
 Generic abstract class for the mcMMO style cancelling of next x events + ticks alive etc
 
+add stats hook ?
 
+
+*** 6.1.X
+!(add) Use some exemption mechanism for npcs (generic player class hook + citizens).
+? add event before reading config (for better hook integration).
+
+*** 6.1.0
+consider adding a permission to hooksetspeed.
 
 VERSION HISTORY
 ---------------------------
+
+(6.1.0)
+- (add) Generic hooks: block-break and block-place. Some defaults added for MachinaCraft.
+- (refactor) Re structured generic hooks configuration handling.
 
 (6.0.1)
 - (bugfix) Citizens2 hook should unregister correctly on reloading etc.

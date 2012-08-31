@@ -3,15 +3,19 @@ package me.asofold.bpl.cncp;
 import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import me.asofold.bpl.cncp.config.Settings;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
 import me.asofold.bpl.cncp.hooks.Hook;
+import me.asofold.bpl.cncp.hooks.generic.ConfigurableHook;
+import me.asofold.bpl.cncp.hooks.generic.HookBlockBreak;
+import me.asofold.bpl.cncp.hooks.generic.HookBlockPlace;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
-import me.asofold.bpl.cncp.hooks.generic.HookSetSpeed;
-import me.asofold.bpl.cncp.setttings.Settings;
 import me.asofold.bpl.cncp.utils.Utils;
 
 import org.bukkit.Bukkit;
@@ -41,9 +45,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	
 	private static final Set<Hook> registeredHooks = new HashSet<Hook>();
 	
-	private final HookPlayerClass hookPlayerClass = new HookPlayerClass();
-	
-	private HookSetSpeed hookSetSpeed = null;
+	private final List<Hook> builtinHooks = new LinkedList<Hook>();
 	
 	/**
 	 * Flag if plugin is enabled.
@@ -140,31 +142,51 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		}
 		return true;
 	}
+	
+	/**
+	 * Called before loading settings.
+	 */
+	private void setupBuiltinHooks() {
+		builtinHooks.clear();
+		// Might-fail hooks:
+		try{
+			builtinHooks.add(new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed());
+		}
+		catch (Throwable t){}
+		// Simple hooks:
+		for (Hook hook : new Hook[]{
+			new HookPlayerClass(),
+			new HookBlockBreak(),
+			new HookBlockPlace(),
+		}){
+			builtinHooks.add(hook);
+		}
+	}
 
 	/**
 	 * Add standard hooks if available.
 	 */
 	private void addAvailableHooks() {
-		// Set speed
-		if (settings.setSpeedEnabled){
-			try{
-				hookSetSpeed = new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed();
-				hookSetSpeed.setFlySpeed(settings.flySpeed);
-				hookSetSpeed.setWalkSpeed(settings.walkSpeed);
-//				hookSetSpeed.setAllowFlightPerm(settings.allowFlightPerm);
-				hookSetSpeed.init();
-				addHook(hookSetSpeed);
+		
+		// Add built in hooks:
+		for (Hook hook : builtinHooks){
+			boolean add = true;
+			if (hook instanceof ConfigurableHook){
+				if (!((ConfigurableHook)hook).isEnabled()) add = false;
 			}
-			catch (Throwable t){}
+			if (add){
+				try{
+					addHook(hook);
+				}
+				catch (Throwable t){}
+			}
 		}
+		
 		// Citizens 2
 		try{
 			addHook(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
 		}
 		catch (Throwable t){}
-		// Player class (NPCs, Citizens 1)
-		if (settings.playerClassEnabled)
-			addHook(hookPlayerClass);
 		// mcMMO
 		try{
 			addHook(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
@@ -179,6 +201,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		
 		// Settings:
 		settings.clear();
+		setupBuiltinHooks();
 		loadSettings();
 		// Register own listener:
 		final PluginManager pm = getServer().getPluginManager();
@@ -203,24 +226,28 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		CompatConfig cfg = new NewConfig(file);
 		cfg.load();
 		boolean changed = false;
-		if (cfg.getInt("configversion", 0) == 0){
-			cfg.remove("plugins");
-			changed = true;
-		}
+		// General settings:
 		if (Settings.addDefaults(cfg)) changed = true;
-		if (changed) cfg.save();
 		settings.fromConfig(cfg);
-		// Set hookPlayerClass properties
-		hookPlayerClass.setClassNames(settings.exemptPlayerClassNames);
-		hookPlayerClass.setExemptAll(settings.exemptAllPlayerClassNames);
-		hookPlayerClass.setPlayerClassName(settings.playerClassName);
-		hookPlayerClass.setCheckSuperClass(settings.exemptSuperClass);
-		// Set hookSetSpeed properties (for future purposes):
-		if (hookSetSpeed != null){
-			hookSetSpeed.setFlySpeed(settings.flySpeed);
-			hookSetSpeed.setWalkSpeed(settings.walkSpeed);
-//			hookSetSpeed.setAllowFlightPerm(settings.allowFlightPerm);
+		// Settings for builtin hooks:
+		for (Hook hook : builtinHooks){
+			if (hook instanceof ConfigurableHook){
+				try{
+					ConfigurableHook cfgHook = (ConfigurableHook) hook;
+					if (cfgHook.updateConfig(cfg, "hooks.")) changed = true;
+					cfgHook.applyConfig(cfg, "hooks.");
+				}
+				catch (Throwable t){
+					getLogger().severe("[cncp] Hook failed to process config ("+hook.getHookName() +" / " + hook.getHookVersion()+"): " + t.getClass().getSimpleName() + ": "+t.getMessage());
+					t.printStackTrace();
+				}
+			}
 		}
+		// save back config if changed:
+		if (changed) cfg.save();
+		
+		
+
 		// Re-enable plugins that were not yet on the list:
 		Server server = getServer();
 		Logger logger = server.getLogger();

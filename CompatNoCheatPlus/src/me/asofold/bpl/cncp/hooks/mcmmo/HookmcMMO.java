@@ -45,12 +45,12 @@ public final class HookmcMMO extends AbstractHook implements Listener {
 	
 	@Override
 	public String getHookName() {
-		return "mcMMO(default)";
+		return "mcMMO(cncp)";
 	}
 
 	@Override
 	public String getHookVersion() {
-		return "1.0";
+		return "1.1";
 	}
 
 	@Override
