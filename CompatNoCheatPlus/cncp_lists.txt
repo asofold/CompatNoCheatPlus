@@ -36,8 +36,6 @@ add stats hook ?
 !(add) Use some exemption mechanism for npcs (generic player class hook + citizens).
 ? add event before reading config (for better hook integration).
 
-*** 6.1.0
-consider adding a permission to hooksetspeed.
 
 VERSION HISTORY
 ---------------------------
