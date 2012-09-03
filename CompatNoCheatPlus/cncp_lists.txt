@@ -41,6 +41,9 @@ add stats hook ?
 VERSION HISTORY
 ---------------------------
 
+(6.1.1)
+- (bugfix) Corrected name of the mcMMO hook for cncp: mcMMO(default).
+
 (6.1.0)
 - (add) Generic hooks: block-break and block-place. Some defaults added for MachinaCraft.
 - (refactor) Re structured generic hooks configuration handling.
