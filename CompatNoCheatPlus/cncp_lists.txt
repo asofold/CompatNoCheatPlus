@@ -41,6 +41,9 @@ add stats hook ?
 VERSION HISTORY
 ---------------------------
 
+(6.1.2)
+- (adapt) To NoCheatPlus build 82 and up.
+
 (6.1.1)
 - (bugfix) Corrected name of the mcMMO hook for cncp: mcMMO(default).
 

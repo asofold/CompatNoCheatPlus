@@ -5,6 +5,7 @@ import java.util.Map;
 
 import me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO.HookFacade;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
@@ -94,6 +95,12 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 	@Override
 	public final void setPlayerBlockBreak(final Player player) {
 		setPlayer(player, cancelChecksBlockBreak);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("CompatNoCheatPlus"), new Runnable() {
+			@Override
+			public void run() {
+				CheckType.removeData(player.getName(), CheckType.BLOCKBREAK_FASTBREAK);
+			}
+		});
 	}
 
 
