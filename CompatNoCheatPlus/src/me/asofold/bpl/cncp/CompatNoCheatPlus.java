@@ -40,6 +40,7 @@ import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
  */
 public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	
+	private static CompatNoCheatPlus instance = null;
 	
 	private final Settings settings = new Settings();
 	
@@ -87,6 +88,14 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		if (!pm.isPluginEnabled(plugin)) return true;
 		pm.disablePlugin(plugin);
 		return true;
+	}
+	
+	/**
+	 * Get the plugin instance.
+	 * @return
+	 */
+	public static CompatNoCheatPlus getInstance(){
+		return instance;
 	}
 
 	/**
@@ -144,16 +153,27 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	}
 	
 	/**
-	 * Called before loading settings.
+	 * Called before loading settings, adds available hooks into a list, so they will be able to read config.
 	 */
 	private void setupBuiltinHooks() {
 		builtinHooks.clear();
 		// Might-fail hooks:
+		// Set speed
 		try{
 			builtinHooks.add(new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed());
 		}
 		catch (Throwable t){}
-		// Simple hooks:
+		// Citizens 2
+		try{
+			builtinHooks.add(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
+		}
+		catch (Throwable t){}
+		// mcMMO
+		try{
+			builtinHooks.add(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
+		}
+		catch (Throwable t){}
+		// Simple generic hooks
 		for (Hook hook : new Hook[]{
 			new HookPlayerClass(),
 			new HookBlockBreak(),
@@ -164,7 +184,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	}
 
 	/**
-	 * Add standard hooks if available.
+	 * Add standard hooks if enabled.
 	 */
 	private void addAvailableHooks() {
 		
@@ -181,22 +201,12 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 				catch (Throwable t){}
 			}
 		}
-		
-		// Citizens 2
-		try{
-			addHook(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
-		}
-		catch (Throwable t){}
-		// mcMMO
-		try{
-			addHook(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
-		}
-		catch (Throwable t){}
 	}
 	
 	@Override
 	public void onEnable() {
 		enabled = false; // make sure
+		instance = this;
 		// (no cleanup)
 		
 		// Settings:
@@ -299,6 +309,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		enabled = false;
 		// remove all registered cncp hooks:
 		unregisterHooks();
+		instance = null; // Set last.
 		super.onDisable();
 	}
 	

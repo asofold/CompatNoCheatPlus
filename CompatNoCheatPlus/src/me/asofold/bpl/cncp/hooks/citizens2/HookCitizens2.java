@@ -1,6 +1,10 @@
 package me.asofold.bpl.cncp.hooks.citizens2;
 
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfigFactory;
+import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
 import me.asofold.bpl.cncp.hooks.AbstractHook;
+import me.asofold.bpl.cncp.hooks.generic.ConfigurableHook;
 import net.citizensnpcs.api.CitizensAPI;
 
 import org.bukkit.entity.Player;
@@ -8,9 +12,13 @@ import org.bukkit.entity.Player;
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
-public class HookCitizens2 extends AbstractHook {
+public class HookCitizens2 extends AbstractHook implements ConfigurableHook{
 	
-	private Object ncpHook = null;
+	protected Object ncpHook = null;
+	
+	protected boolean enabled = true;
+	
+	protected String configPrefix = "citizens2.";
 	
 	public HookCitizens2(){
 		assertPluginPresent("Citizens");
@@ -48,6 +56,23 @@ public class HookCitizens2 extends AbstractHook {
 			};
 		}
 		return  (NCPHook) ncpHook;
+	}
+	
+	@Override
+	public void applyConfig(CompatConfig cfg, String prefix) {
+		enabled = cfg.getBoolean(prefix + configPrefix + "enabled",  true);
+	}
+
+	@Override
+	public boolean updateConfig(CompatConfig cfg, String prefix) {
+		CompatConfig defaults = CompatConfigFactory.getConfig(null);
+		defaults.set(prefix + configPrefix + "enabled",  true);
+		return ConfigUtil.forceDefaults(defaults, cfg);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 }

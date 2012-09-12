@@ -137,6 +137,7 @@ public class ExemptionManager{
 	public boolean addExemption(final Player player, final CheckType type){
 		final Status status = addExemption(player.getName(), type, NCPExemptionManager.isExempted(player, type));
 		if (status == Status.NEEDS_EXEMPTION) NCPExemptionManager.exemptPermanently(player, type);
+//		System.out.println("add: " + type.toString() + " -> " + status);
 		return status == Status.EXEMPTED;
 	}
 	
@@ -170,6 +171,7 @@ public class ExemptionManager{
 		final Status status = removeExemption(player.getName(), type, NCPExemptionManager.isExempted(player, type));
 		if (status == Status.NEEDS_EXEMPTION) NCPExemptionManager.exemptPermanently(player, type);
 		else if (status == Status.NEEDS_UNEXEMPTION) NCPExemptionManager.unexempt(player, type);
+//		System.out.println("remove: " + type.toString() + " -> " + status);
 		return status == Status.EXEMPTED || status == Status.NEEDS_EXEMPTION;
 	}
 	
