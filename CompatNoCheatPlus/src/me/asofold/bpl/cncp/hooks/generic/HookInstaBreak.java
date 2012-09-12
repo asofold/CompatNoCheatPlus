@@ -72,7 +72,7 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onBlockBreakMONITOR(final BlockBreakEvent event){
 		if (skipNext){
 			final Player player = event.getPlayer();

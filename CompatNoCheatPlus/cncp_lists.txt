@@ -43,6 +43,9 @@ add a good mechanism for adding external configurable hooks (read automatically 
 VERSION HISTORY
 ---------------------------
 
+(6.2.1)
+- (bugfix) Fix priorities of InstaBreak hook.
+
 (6.2.0)
 - (add) Generic insta break hook.
 - (add) Option to let mcMMO use the insta break hook.
