@@ -43,6 +43,10 @@ add a good mechanism for adding external configurable hooks (read automatically 
 VERSION HISTORY
 ---------------------------
 
+(6.2.0)
+- (add) Generic insta break hook.
+- (add) Option to let mcMMO use the insta break hook.
+
 (6.1.3)
 - (adapt) Adjust mcMMO hook to build 84 of NCP. Use exemption mechanisms where possible for better performance.
 

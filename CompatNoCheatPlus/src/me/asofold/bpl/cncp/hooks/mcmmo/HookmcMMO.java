@@ -48,6 +48,8 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 	
 	protected String configPrefix = "mcmmo.";
 	
+	protected boolean useInstaBreakHook = true;
+	
 
 	public HookmcMMO(){
 		assertPluginPresent("mcMMO");
@@ -94,7 +96,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 	@Override
 	public NCPHook getNCPHook() {
 		if (ncpHook == null){
-			ncpHook = new HookFacadeImpl(blocksPerSecond);
+			ncpHook = new HookFacadeImpl(useInstaBreakHook, blocksPerSecond);
 		}
 		return (NCPHook) ncpHook;
 	}
@@ -155,6 +157,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 	@Override
 	public void applyConfig(CompatConfig cfg, String prefix) {
 		enabled = cfg.getBoolean(prefix + configPrefix + "enabled",  true);
+		useInstaBreakHook = cfg.getBoolean(prefix + configPrefix + "use-insta-break-hook",  true);
 		blocksPerSecond  = cfg.getInt(prefix + configPrefix + "clickspersecond", 30);
 	}
 
@@ -162,6 +165,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 	public boolean updateConfig(CompatConfig cfg, String prefix) {
 		CompatConfig defaults = CompatConfigFactory.getConfig(null);
 		defaults.set(prefix + configPrefix + "enabled",  true);
+		defaults.set(prefix + configPrefix + "use-insta-break-hook",  true);
 		defaults.set(prefix + configPrefix + "clickspersecond", 30);
 		return ConfigUtil.forceDefaults(defaults, cfg);
 	}

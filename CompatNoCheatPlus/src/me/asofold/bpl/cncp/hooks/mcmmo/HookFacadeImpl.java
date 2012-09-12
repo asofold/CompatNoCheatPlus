@@ -49,6 +49,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 //	protected final Map<CheckType, Integer> cancelChecksBlockDamage = new HashMap<CheckType, Integer>();
 //	protected final Map<CheckType, Integer> cancelChecksDamage = new HashMap<CheckType, Integer>();
 	
+	protected boolean useInstaBreakHook;
 	protected int clicksPerSecond;
 	protected String cancel = null;
 	protected long cancelTicks = 0;
@@ -66,7 +67,8 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 	protected int lastBreakAddCount = 0;
 	protected long lastBreakCleanup = 0;
 	
-	public HookFacadeImpl(int clicksPerSecond){
+	public HookFacadeImpl(boolean useInstaBreakHook, int clicksPerSecond){
+		this.useInstaBreakHook = useInstaBreakHook;
 		this.clicksPerSecond = clicksPerSecond;
 		cancelChecksBlockBreak.put(CheckType.BLOCKBREAK_NOSWING, 1);
 		cancelChecksBlockBreak.put(CheckType.BLOCKBREAK_FASTBREAK, 1);
@@ -186,7 +188,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 		}
 		
 		addExemption(player, exemptBreakNormal);
-		if (!isAxe){
+		if (!useInstaBreakHook && !isAxe){
 			setPlayer(player, cancelChecksBlockBreak);
 			Bukkit.getScheduler().scheduleSyncDelayedTask(CompatNoCheatPlus.getInstance(), new Runnable() {
 				@Override

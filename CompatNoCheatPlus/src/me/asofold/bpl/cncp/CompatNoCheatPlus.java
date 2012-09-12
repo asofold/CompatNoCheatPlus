@@ -15,6 +15,7 @@ import me.asofold.bpl.cncp.hooks.Hook;
 import me.asofold.bpl.cncp.hooks.generic.ConfigurableHook;
 import me.asofold.bpl.cncp.hooks.generic.HookBlockBreak;
 import me.asofold.bpl.cncp.hooks.generic.HookBlockPlace;
+import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
 import me.asofold.bpl.cncp.utils.Utils;
 
@@ -178,6 +179,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 			new HookPlayerClass(),
 			new HookBlockBreak(),
 			new HookBlockPlace(),
+			new HookInstaBreak(),
 		}){
 			builtinHooks.add(hook);
 		}
