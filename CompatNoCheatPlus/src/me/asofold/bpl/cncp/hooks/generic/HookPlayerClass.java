@@ -16,20 +16,20 @@ import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public final class HookPlayerClass extends AbstractHook implements ConfigurableHook {
 	
-	private final Set<String> classNames = new HashSet<String>();
+	protected final Set<String> classNames = new HashSet<String>();
 	
-	private boolean exemptAll = true;
+	protected boolean exemptAll = true;
 	
-	private boolean checkSuperClass = true;
+	protected boolean checkSuperClass = true;
 	
-	private Object ncpHook = null;
+	protected Object ncpHook = null;
 	
-	private boolean enabled = true;
+	protected boolean enabled = true;
 	
 	/**
 	 * Normal class name.
 	 */
-	private String playerClassName = "CraftPlayer";
+	protected String playerClassName = "CraftPlayer";
 	
 	public HookPlayerClass(){
 		this.classNames.addAll(classNames);
@@ -42,7 +42,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 
 	@Override
 	public final String getHookVersion() {
-		return "1.0";
+		return "1.1";
 	}
 
 	@Override

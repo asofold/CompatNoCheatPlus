@@ -14,11 +14,11 @@ import fr.neatmonster.nocheatplus.checks.CheckType;
 
 public class HookSetSpeed extends AbstractHook implements Listener, ConfigurableHook{
 	
-	private float flySpeed = 1.0f;
+	protected float flySpeed = 1.0f;
 	
-	private float walkSpeed = 1.0f;
+	protected float walkSpeed = 1.0f;
 	
-	private boolean enabled = false;
+	protected boolean enabled = false;
 	
 //	private String allowFlightPerm = "cncp.allow-flight";
 	
@@ -39,7 +39,7 @@ public class HookSetSpeed extends AbstractHook implements Listener, Configurable
 
 	@Override
 	public String getHookVersion() {
-		return "2.0";
+		return "2.1";
 	}
 
 	@Override

@@ -8,19 +8,21 @@ import java.util.List;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfigFactory;
 import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
+import me.asofold.bpl.cncp.hooks.AbstractHook;
 
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 
 /**
  * Exempting players by class names for some class.
  * @author mc_dev
  *
  */
-public abstract class ClassExemptionHook extends ExemptionHook implements ConfigurableHook{
+public abstract class ClassExemptionHook extends AbstractHook implements ConfigurableHook{
 
+	protected final ExemptionManager man = new ExemptionManager();
+	
 	protected final List<String> defaultClasses = new LinkedList<String>();
 	protected final LinkedHashSet<String> classes = new LinkedHashSet<String>();
 	
@@ -47,9 +49,7 @@ public abstract class ClassExemptionHook extends ExemptionHook implements Config
 	 */
 	public boolean checkExempt(final Player player, final Class<?> clazz, final CheckType checkType){
 		if (!classes.contains(clazz.getSimpleName())) return false;
-		addExemption(player.getName());
-		exempt(player, checkType);
-		return true;
+		return man.addExemption(player, checkType);
 	}
 	
 	/**
@@ -60,29 +60,7 @@ public abstract class ClassExemptionHook extends ExemptionHook implements Config
 	 */
 	public boolean checkUnexempt(final Player player, final Class<?> clazz, final CheckType checkType){
 		if (!classes.contains(clazz.getSimpleName())) return false;
-		if (removeExemption(player.getName())) return true;
-		else {
-			unexempt(player, checkType);
-			return false;
-		}
-	}
-	
-	/**
-	 * Hides the API access from listeners potentially.
-	 * @param player
-	 * @param checkType
-	 */
-	public void exempt(final Player player, final CheckType checkType){
-		NCPExemptionManager.exemptPermanently(player, checkType);
-	}
-	
-	/**
-	 * Hides the API access from listeners potentially.
-	 * @param player
-	 * @param checkType
-	 */
-	public void unexempt(final Player player, final CheckType checkType){
-		NCPExemptionManager.unexempt(player, checkType);
+		return man.removeExemption(player, checkType);
 	}
 
 	@Override
