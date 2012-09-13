@@ -29,7 +29,7 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 
 	@Override
 	public String getHookVersion() {
-		return "1.0";
+		return "1.1";
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 	@Override
 	public boolean updateConfig(CompatConfig cfg, String prefix) {
 		CompatConfig defaults = CompatConfigFactory.getConfig(null);
-		defaults.set(prefix + "insta-break.enabled", true);
+		defaults.set(prefix + "insta-break.enabled", false);
 		return ConfigUtil.forceDefaults(defaults, cfg);
 	}
 

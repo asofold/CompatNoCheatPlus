@@ -69,7 +69,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 
 	@Override
 	public String getHookVersion() {
-		return "2.0";
+		return "2.1";
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 		CompatConfig defaults = CompatConfigFactory.getConfig(null);
 		defaults.set(prefix + configPrefix + "enabled",  true);
 		defaults.set(prefix + configPrefix + "use-insta-break-hook",  true);
-		defaults.set(prefix + configPrefix + "clickspersecond", 30);
+		defaults.set(prefix + configPrefix + "clickspersecond", 20);
 		return ConfigUtil.forceDefaults(defaults, cfg);
 	}
 

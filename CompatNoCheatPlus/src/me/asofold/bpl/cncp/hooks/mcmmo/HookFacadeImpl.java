@@ -29,7 +29,8 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 	/** Normal click per block skills. */
 	protected final CheckType[] exemptBreakNormal = new CheckType[]{
 			CheckType.BLOCKBREAK_FASTBREAK, CheckType.BLOCKBREAK_FREQUENCY,
-			CheckType.BLOCKBREAK_NOSWING,
+			CheckType.BLOCKBREAK_NOSWING, 
+			CheckType.BLOCKBREAK_WRONGBLOCK, // Not optimal but ok.
 	};
 	
 	
@@ -86,7 +87,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 
 	@Override
 	public String getHookVersion() {
-		return "2.0";
+		return "2.1";
 	}
 
 	@Override
