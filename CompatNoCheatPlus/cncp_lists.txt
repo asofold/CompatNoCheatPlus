@@ -40,10 +40,14 @@ add a good mechanism for adding external configurable hooks (read automatically 
 
 ! try: insta break: keep exemption (unless cancelled) for next block break event (!). -> maybe ncp
 
+
+? HookInstaBreak : add static method to sset check types to exempt from for next break ?
+
 VERSION HISTORY
 ---------------------------
 
 (6.2.2)
+- (bugfix) critical: Insta break hook uses a stack now.
 - (adjust) Also exempt mcMMO from WrongBlock check, limit to 20 blockbreaks per second by default.
 
 (6.2.1)

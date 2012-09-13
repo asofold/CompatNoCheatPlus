@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import me.asofold.bpl.cncp.CompatNoCheatPlus;
 import me.asofold.bpl.cncp.hooks.generic.ExemptionManager;
+import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO.HookFacade;
 
 import org.bukkit.Bukkit;
@@ -189,7 +190,10 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 		}
 		
 		addExemption(player, exemptBreakNormal);
-		if (!useInstaBreakHook && !isAxe){
+		if (useInstaBreakHook){
+			HookInstaBreak.addExemptNext(exemptBreakNormal);
+		}
+		else if (!isAxe){
 			setPlayer(player, cancelChecksBlockBreak);
 			Bukkit.getScheduler().scheduleSyncDelayedTask(CompatNoCheatPlus.getInstance(), new Runnable() {
 				@Override

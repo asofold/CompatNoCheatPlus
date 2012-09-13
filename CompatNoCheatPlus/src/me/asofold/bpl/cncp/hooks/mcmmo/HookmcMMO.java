@@ -158,7 +158,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 	public void applyConfig(CompatConfig cfg, String prefix) {
 		enabled = cfg.getBoolean(prefix + configPrefix + "enabled",  true);
 		useInstaBreakHook = cfg.getBoolean(prefix + configPrefix + "use-insta-break-hook",  true);
-		blocksPerSecond  = cfg.getInt(prefix + configPrefix + "clickspersecond", 30);
+		blocksPerSecond  = cfg.getInt(prefix + configPrefix + "clickspersecond", 20);
 	}
 
 	@Override
