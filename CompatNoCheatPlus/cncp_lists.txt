@@ -44,7 +44,7 @@ VERSION HISTORY
 ---------------------------
 
 (6.2.2)
-- (adjust) Also exempt mcMMO from WrongBlock check, disable insta break hook (for ncp 88+), limit to 20 blcokbreaks per second by default.
+- (adjust) Also exempt mcMMO from WrongBlock check, limit to 20 blockbreaks per second by default.
 
 (6.2.1)
 - (bugfix) Fix priorities of InstaBreak hook.
