@@ -18,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.utilities.ActionFrequency;
-import fr.neatmonster.nocheatplus.utilities.BlockUtils;
-import fr.neatmonster.nocheatplus.utilities.BlockUtils.ToolProps;
-import fr.neatmonster.nocheatplus.utilities.BlockUtils.ToolType;
+import fr.neatmonster.nocheatplus.utilities.BlockProperties;
+import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolProps;
+import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolType;
 
 public class HookFacadeImpl implements HookFacade, NCPHook {
 
@@ -129,8 +129,8 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 	}
 	
 	public ToolProps getToolProps(final ItemStack stack){
-		if (stack == null) return BlockUtils.noTool;
-		else return BlockUtils.getToolProps(stack.getTypeId());
+		if (stack == null) return BlockProperties.noTool;
+		else return BlockProperties.getToolProps(stack.getTypeId());
 	}
 	
 	public void addExemption(final Player player, final CheckType[] types){
