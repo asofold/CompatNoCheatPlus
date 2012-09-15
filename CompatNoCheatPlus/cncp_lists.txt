@@ -45,6 +45,8 @@ add a good mechanism for adding external configurable hooks (read automatically 
 
 VERSION HISTORY
 ---------------------------
+(6.2.4)
+- (adapt) Change default configuration to work with Spout (player-class hook).
 
 (6.2.3)
 - (adapt) To API change of build 92 of NCP.

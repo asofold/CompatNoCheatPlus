@@ -1,5 +1,6 @@
 package me.asofold.bpl.cncp.hooks.generic;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -29,10 +30,10 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 	/**
 	 * Normal class name.
 	 */
-	protected String playerClassName = "CraftPlayer";
+	protected Set<String> playerClassNames = new HashSet<String>();
 	
 	public HookPlayerClass(){
-		this.classNames.addAll(classNames);
+		this.playerClassNames.addAll(Arrays.asList(new String[]{"CraftPlayer", "SpoutPlayer"}));
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 
 	@Override
 	public final String getHookVersion() {
-		return "1.1";
+		return "2.0";
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 			ncpHook = new NCPHook() {
 				@Override
 				public boolean onCheckFailure(CheckType checkType, Player player) {
-					if (exemptAll && !player.getClass().getSimpleName().equals(playerClassName)) return true;
+					if (exemptAll && !playerClassNames.contains(player.getClass().getSimpleName())) return true;
 					else {
 						if (classNames.isEmpty()) return false;
 						final Class<?> clazz = player.getClass();
@@ -93,7 +94,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 		enabled = cfg.getBoolean(prefix + "player-class.enabled", true);
 		ConfigUtil.readStringSetFromList(cfg, prefix + "player-class.exempt-names", classNames, true, true, false);
 		exemptAll = cfg.getBoolean(prefix + "player-class.exempt-all",  true);
-		playerClassName = cfg.getString(prefix + "player-class.class-name", "CraftPlayer");
+		ConfigUtil.readStringSetFromList(cfg, prefix + "player-class.class-names", playerClassNames, true, true, false);
 		checkSuperClass = cfg.getBoolean(prefix + "player-class.super-class", true);
 	}
 
@@ -103,7 +104,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 		defaults.set(prefix + "player-class.enabled", true);
 		defaults.set(prefix + "player-class.exempt-names", new LinkedList<String>());
 		defaults.set(prefix + "player-class.exempt-all", true);
-		defaults.set(prefix + "player-class.class-name", "CraftPlayer");
+		defaults.set(prefix + "player-class.class-names", new LinkedList<String>(playerClassNames));
 		defaults.set(prefix + "player-class.super-class", true);
 		return ConfigUtil.forceDefaults(defaults, cfg);
 	}
