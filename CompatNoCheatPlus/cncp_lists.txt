@@ -46,6 +46,9 @@ add a good mechanism for adding external configurable hooks (read automatically 
 VERSION HISTORY
 ---------------------------
 
+(6.2.3)
+- (adapt) To API change of build 92 of NCP.
+
 (6.2.2)
 - (bugfix) critical: Insta break hook uses a stack now.
 - (adjust) Also exempt mcMMO from WrongBlock check, limit to 20 blockbreaks per second by default.
