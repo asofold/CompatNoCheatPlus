@@ -23,6 +23,8 @@ public class HookBlockBreak extends ClassExemptionHook implements Listener {
 		defaultClasses.addAll(Arrays.asList(new String[]{
 			// MachinaCraft
 			"ArtificialBlockBreakEvent",
+			// mcMMO
+			"FakeBlockBreakEvent",
 		}));
 	}
 
@@ -33,7 +35,7 @@ public class HookBlockBreak extends ClassExemptionHook implements Listener {
 
 	@Override
 	public String getHookVersion() {
-		return "1.0";
+		return "1.1";
 	}
 	
 	@Override
