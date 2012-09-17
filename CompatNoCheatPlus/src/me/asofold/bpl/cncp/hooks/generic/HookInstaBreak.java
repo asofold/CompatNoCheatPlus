@@ -1,8 +1,8 @@
 package me.asofold.bpl.cncp.hooks.generic;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +53,7 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 	
 	protected boolean enabled = true;
 	
-	protected final List<StackEntry> stack = new ArrayList<StackEntry>();
+	protected final List<StackEntry> stack = new LinkedList<StackEntry>();
 	
 	@Override
 	public String getHookName() {
@@ -145,15 +145,15 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 	
 	public void addExemption(final StackEntry entry){
 		entry.used = true;
-		for (final CheckType checkType : entry.checkTypes){
-			exMan.addExemption(entry.player, checkType);
+		for (int i = 0; i < entry.checkTypes.length; i++){
+			exMan.addExemption(entry.player, entry.checkTypes[i]);
 		}
 	}
 	
 	public void removeExemption(final StackEntry entry){
 		if (!entry.used) return;
-		for (final CheckType checkType : entry.checkTypes){
-			exMan.removeExemption(entry.player, checkType);
+		for (int i = 0; i < entry.checkTypes.length; i++){
+			exMan.removeExemption(entry.player, entry.checkTypes[i]);
 		}
 	}
 	
