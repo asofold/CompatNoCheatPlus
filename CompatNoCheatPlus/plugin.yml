@@ -1,6 +1,6 @@
 name: CompatNoCheatPlus
 main: me.asofold.bpl.cncp.CompatNoCheatPlus
-version: ${project.version}
+version: ${project.version}-b${BUILD_NUMBER}
 loadbefore:
 - NoCheatPlus
 softdepend:
