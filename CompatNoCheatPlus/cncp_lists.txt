@@ -45,6 +45,11 @@ add a good mechanism for adding external configurable hooks (read automatically 
 
 VERSION HISTORY
 ---------------------------
+
+(6.2.8) Add SpoutClientPlayer to default classes.
+
+(...)
+
 (6.2.4)
 - (adapt) Change default configuration to work with Spout (player-class hook).
 

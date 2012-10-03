@@ -33,7 +33,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 	protected Set<String> playerClassNames = new HashSet<String>();
 	
 	public HookPlayerClass(){
-		this.playerClassNames.addAll(Arrays.asList(new String[]{"CraftPlayer", "SpoutPlayer"}));
+		this.playerClassNames.addAll(Arrays.asList(new String[]{"CraftPlayer", "SpoutPlayer", "SpoutClientPlayer"}));
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 
 	@Override
 	public final String getHookVersion() {
-		return "2.0";
+		return "2.1";
 	}
 
 	@Override
