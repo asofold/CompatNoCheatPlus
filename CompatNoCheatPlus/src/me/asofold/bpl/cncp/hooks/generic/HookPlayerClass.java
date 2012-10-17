@@ -13,6 +13,7 @@ import me.asofold.bpl.cncp.hooks.AbstractHook;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.checks.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public final class HookPlayerClass extends AbstractHook implements ConfigurableHook {
@@ -43,7 +44,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 
 	@Override
 	public final String getHookVersion() {
-		return "2.1";
+		return "2.2";
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 		if (ncpHook == null){
 			ncpHook = new NCPHook() {
 				@Override
-				public boolean onCheckFailure(CheckType checkType, Player player) {
+				public final boolean onCheckFailure(final CheckType checkType, final Player player, final IViolationInfo info) {
 					if (exemptAll && !playerClassNames.contains(player.getClass().getSimpleName())) return true;
 					else {
 						if (classNames.isEmpty()) return false;
@@ -77,7 +78,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 				
 				@Override
 				public String getHookVersion() {
-					return "2.0";
+					return "3.0";
 				}
 				
 				@Override

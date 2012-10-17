@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.checks.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.utilities.ActionFrequency;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties;
@@ -92,7 +93,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 	}
 
 	@Override
-	public final boolean onCheckFailure(CheckType checkType, final Player player) {
+	public final boolean onCheckFailure(final CheckType checkType, final Player player, final IViolationInfo info) {
 //		System.out.println(player.getName() + " -> " + checkType + "---------------------------");
 		// Somewhat generic canceling mechanism (within the same tick).
 		// Might later fail, if block break event gets scheduled after block damage having set insta break, instead of letting them follow directly.

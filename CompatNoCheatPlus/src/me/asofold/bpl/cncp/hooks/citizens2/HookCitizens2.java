@@ -10,6 +10,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.checks.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public class HookCitizens2 extends AbstractHook implements ConfigurableHook{
@@ -32,7 +33,7 @@ public class HookCitizens2 extends AbstractHook implements ConfigurableHook{
 
 	@Override
 	public String getHookVersion() {
-		return "2.0";
+		return "2.1";
 	}
 	
 	@Override
@@ -40,17 +41,17 @@ public class HookCitizens2 extends AbstractHook implements ConfigurableHook{
 		if (ncpHook == null){
 			ncpHook = new NCPHook() {
 				@Override
-				public boolean onCheckFailure(CheckType checkType, Player player) {
+				public final boolean onCheckFailure(final CheckType checkType,  final Player player, IViolationInfo info) {
 					return CitizensAPI.getNPCRegistry().isNPC(player);
 				}
 				
 				@Override
-				public String getHookVersion() {
-					return "1.0";
+				public final String getHookVersion() {
+					return "2.0";
 				}
 				
 				@Override
-				public String getHookName() {
+				public final String getHookName() {
 					return "Citizens2(cncp)";
 				}
 			};
