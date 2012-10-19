@@ -10,7 +10,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.checks.IViolationInfo;
+import fr.neatmonster.nocheatplus.checks.access.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public class HookCitizens2 extends AbstractHook implements ConfigurableHook{
@@ -33,7 +33,7 @@ public class HookCitizens2 extends AbstractHook implements ConfigurableHook{
 
 	@Override
 	public String getHookVersion() {
-		return "2.1";
+		return "2.2";
 	}
 	
 	@Override

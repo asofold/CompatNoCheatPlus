@@ -13,7 +13,7 @@ import me.asofold.bpl.cncp.hooks.AbstractHook;
 import org.bukkit.entity.Player;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.checks.IViolationInfo;
+import fr.neatmonster.nocheatplus.checks.access.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public final class HookPlayerClass extends AbstractHook implements ConfigurableHook {
@@ -78,7 +78,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 				
 				@Override
 				public String getHookVersion() {
-					return "3.0";
+					return "3.1";
 				}
 				
 				@Override
