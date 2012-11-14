@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.checks.access.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
+import fr.neatmonster.nocheatplus.players.DataManager;
 import fr.neatmonster.nocheatplus.utilities.ActionFrequency;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolProps;
@@ -184,7 +185,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 		}
 		else if (!isAxe){
 			freq.add(now, 1f);
-			if (freq.getScore(1f) > (float) clicksPerSecond){
+			if (freq.score(1f) > (float) clicksPerSecond){
 				breakCancel ++;
 				return true;
 			}
@@ -199,7 +200,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(CompatNoCheatPlus.getInstance(), new Runnable() {
 				@Override
 				public void run() {
-					CheckType.removeData(player.getName(), CheckType.BLOCKBREAK_FASTBREAK);
+					DataManager.removeData(player.getName(), CheckType.BLOCKBREAK_FASTBREAK);
 				}
 			});
 		}
@@ -212,7 +213,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 		lastBreakCleanup = ts;
 		final List<String> rem = new LinkedList<String>();
 		for (final Entry<String, ActionFrequency> entry : lastBreak.entrySet()){
-			if (entry.getValue().getScore(1f) == 0f) rem.add(entry.getKey());
+			if (entry.getValue().score(1f) == 0f) rem.add(entry.getKey());
 		}
 		for (final String key :rem){
 			lastBreak.remove(key);
