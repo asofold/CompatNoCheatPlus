@@ -126,8 +126,8 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 	
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
 	public void onBlockBreakLowest(final BlockBreakEvent event){
+		checkStack();
 		if (!stack.isEmpty()){
-			checkStack();
 			final Player player = event.getPlayer();
 			final StackEntry entry = stack.get(stack.size() - 1);
 			if (player.equals(entry.player)) addExemption(entry);
