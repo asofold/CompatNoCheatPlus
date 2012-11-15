@@ -10,6 +10,7 @@ import me.asofold.bpl.cncp.CompatNoCheatPlus;
 import me.asofold.bpl.cncp.hooks.generic.ExemptionManager;
 import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO.HookFacade;
+import me.asofold.bpl.cncp.utils.TickTask2;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -138,6 +139,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 	public void addExemption(final Player player, final CheckType[] types){
 		for (final CheckType type : types){
 			exMan.addExemption(player, type);
+			TickTask2.addUnexemptions(player, types);
 		}
 	}
 	
@@ -194,6 +196,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 		addExemption(player, exemptBreakNormal);
 		if (useInstaBreakHook){
 			HookInstaBreak.addExemptNext(exemptBreakNormal);
+			TickTask2.addUnexemptions(player, exemptBreakNormal);
 		}
 		else if (!isAxe){
 			setPlayer(player, cancelChecksBlockBreak);

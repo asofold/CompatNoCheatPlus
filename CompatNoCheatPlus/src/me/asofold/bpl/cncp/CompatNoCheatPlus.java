@@ -17,6 +17,7 @@ import me.asofold.bpl.cncp.hooks.generic.HookBlockBreak;
 import me.asofold.bpl.cncp.hooks.generic.HookBlockPlace;
 import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
+import me.asofold.bpl.cncp.utils.TickTask2;
 import me.asofold.bpl.cncp.utils.Utils;
 
 import org.bukkit.Bukkit;
@@ -228,6 +229,9 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		for (Hook hook : registeredHooks){
 			registerListeners(hook);
 		}
+		
+		// Start ticktask 2
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickTask2(), 1, 1);
 	}
 
 	public boolean loadSettings() {
