@@ -212,11 +212,16 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 
 	protected void cleanupLastBreaks() {
 		final long ts = System.currentTimeMillis();
-		if (ts - lastBreakCleanup < 30000) return;
+		if (ts - lastBreakCleanup < 30000 && ts > lastBreakCleanup) return;
 		lastBreakCleanup = ts;
 		final List<String> rem = new LinkedList<String>();
-		for (final Entry<String, ActionFrequency> entry : lastBreak.entrySet()){
-			if (entry.getValue().score(1f) == 0f) rem.add(entry.getKey());
+		if (ts >= lastBreakCleanup){
+			for (final Entry<String, ActionFrequency> entry : lastBreak.entrySet()){
+				if (entry.getValue().score(1f) == 0f) rem.add(entry.getKey());
+			}
+		}
+		else{
+			rem.addAll(lastBreak.keySet());
 		}
 		for (final String key :rem){
 			lastBreak.remove(key);
