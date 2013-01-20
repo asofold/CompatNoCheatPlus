@@ -51,111 +51,15 @@ hookiinstabreak: let hooks fail completely if listeners are failing to register 
 
 *** CLEANUP THIS, BETTER METHODS, INTEGRATE SOME INTO NCP MAYBE
 
+* Auto detection of unknown events + log on disable + info command.
+? analysis tools like event-Mirror ?
 
-VERSION HISTORY
----------------------------
+* More generic hooks, clean methods!
 
-*** DISCONTINUED, see GitHub / Jenkins.
+! Strip down mcMMO hook to add a new one / integrate into instabreak
+! Clean up hooks, use TickTask and "next" to confine fuzzy unexemption to a minimum.
 
-(6.2.10)
-- Adapt to NCP API changes (NCP build 158 +).
+--------------------------
 
-(6.2.9)
-- Adapt API to NCP / 1.3.2.
 
-(6.2.8) Add SpoutClientPlayer to default classes.
-
-(...)
-
-(6.2.4)
-- (adapt) Change default configuration to work with Spout (player-class hook).
-
-(6.2.3)
-- (adapt) To API change of build 92 of NCP.
-
-(6.2.2)
-- (bugfix) critical: Insta break hook uses a stack now.
-- (adjust) Also exempt mcMMO from WrongBlock check, limit to 20 blockbreaks per second by default.
-
-(6.2.1)
-- (bugfix) Fix priorities of InstaBreak hook.
-
-(6.2.0)
-- (add) Generic insta break hook.
-- (add) Option to let mcMMO use the insta break hook.
-
-(6.1.3)
-- (adapt) Adjust mcMMO hook to build 84 of NCP. Use exemption mechanisms where possible for better performance.
-
-(6.1.2)
-- (adapt) To NoCheatPlus build 82 and up.
-
-(6.1.1)
-- (bugfix) Corrected name of the mcMMO hook for cncp: mcMMO(default).
-
-(6.1.0)
-- (add) Generic hooks: block-break and block-place. Some defaults added for MachinaCraft.
-- (refactor) Re structured generic hooks configuration handling.
-
-(6.0.1)
-- (bugfix) Citizens2 hook should unregister correctly on reloading etc.
-
-(6.0.0)
-- (BIG CHANGE) Restructure to load before NoCheatPlus.  
-
-(5.3.0)
-- (change) Set speed is disabled by default and needs to be enabled by the config flag.
-- (add) Enable flags for the built in generic hooks.
-
-(5.2.0)
-- (add) Add hook to set player speed (simple).
-
-(5.1.0)
-- (add) Hook for Citizens 2 .
-
-(5.0.0)
-- (BIG CHANGE) Finally adapt to the new API fo NoCheatPlus (moved over there). 
-
-(4.0.0)
-- (BIG CHANGE) Internal structure and hooks.
-
-(3.0.0)
-- (BIG CHANGE) Back to NoCheatPlus !
-    This is a quick adaption only for a few check types,
-    it would probably not work with all thinkable external hooks.
-    Supported mappings: 
-        (all)
-        fight: speed, angle
-        moving: survivalfly, creativefly, nofall 
-        blockbreak: fastbreak, noswing, direction
-
-(2.0.1)
-- (bugfix?) Re release with corrected class name (something went wrong).
-
-(2.0.0)
-- (BIG CHANGE) THIS NOW IS FOR: DeadNoCheat
-
-(1.0.0)
-- (CHANGE) Packet naming.
-
-(0.3.0)
-- (add) Option to prevent adding hooks (only is effective if cncp has been loaded already).
-- (add) Generic hook for the Player class name, defaults to exempt all non CraftPlayer classes from checks.
-- (remove) Direct hooking of Citizens (+direct CraftBukkit dependency).
-
-(0.2.2)
-- (bugfix) Add noswing treatment for mcMMO.
-
-(0.2.1)
-- (bugfix) Checks if plugins are present for hooks.
-
-(0.2.0)
-- (add) Simple Citizens hook.
-
-(0.1.0)
-- (add) List to enable plugins: plugins.ensure-enable [Forces their events to be processed before NoCheatPlus gets them!]
-- (bugfix) Remove import of mcMMO-hook (use direct package reference instead).
-- (bugfix) Preserve order of entries in the lists read from the configuration.
-- (update) config/comaptlayer
-
-(0.0.0) [initial version]
+Add permissions (minimap).
