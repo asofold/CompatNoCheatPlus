@@ -61,5 +61,3 @@ hookiinstabreak: let hooks fail completely if listeners are failing to register 
 
 --------------------------
 
-
-Add permissions (minimap).
