@@ -39,7 +39,7 @@ public class HookInstaBreak extends AbstractHook implements ConfigurableHook, Li
 			tick = TickTask.getTick();
 		}
 		public boolean isOutdated(final int tick){
-			return tick > this.tick;
+			return tick != this.tick;
 		}
 	}
 	
