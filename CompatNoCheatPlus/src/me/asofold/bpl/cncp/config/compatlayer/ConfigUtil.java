@@ -9,7 +9,7 @@ public class ConfigUtil {
 	
 	public static final int canaryInt = Integer.MIN_VALUE +7;
 	public static final long canaryLong = Long.MIN_VALUE + 7L;
-	public static final double canaryDouble = Double.MIN_VALUE*.7;
+	public static final double canaryDouble = -Double.MAX_VALUE + 1.2593;
 	
 	public static String stringPath( String path){
 		return stringPath(path, '.');
