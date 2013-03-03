@@ -22,12 +22,15 @@ import me.asofold.bpl.cncp.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -46,6 +49,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	
 	private final Settings settings = new Settings();
 	
+	/** Hooks registered with cncp */
 	private static final Set<Hook> registeredHooks = new HashSet<Hook>();
 	
 	private final List<Hook> builtinHooks = new LinkedList<Hook>();
@@ -111,6 +115,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 			Bukkit.getLogger().info("[cncp] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
 			return false;
 		}
+		registeredHooks.add(hook);
 		if (enabled) registerListeners(hook);
 		boolean added = checkAddNCPHook(hook); // Add if plugin is present, otherwise queue for adding.
 		Bukkit.getLogger().info("[cncp] Registered hook"+(added?"":"(NCPHook might get added later)")+": "+hook.getHookName() + " / " + hook.getHookVersion());
@@ -123,7 +128,6 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	 * @return
 	 */
 	private static boolean checkAddNCPHook(Hook hook) {
-		registeredHooks.add(hook);
 		PluginManager pm =  Bukkit.getPluginManager();
 		Plugin plugin = pm.getPlugin("NoCheatPlus");
 		if (plugin == null || !pm.isPluginEnabled(plugin))
@@ -175,6 +179,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 			builtinHooks.add(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
 		}
 		catch (Throwable t){}
+
 		// Simple generic hooks
 		for (Hook hook : new Hook[]{
 			new HookPlayerClass(),
@@ -314,12 +319,13 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	public void onDisable() {
 		enabled = false;
 		// remove all registered cncp hooks:
-		unregisterHooks();
+		unregisterNCPHooks();
+		registeredHooks.clear();
 		instance = null; // Set last.
 		super.onDisable();
 	}
 	
-	private int unregisterHooks() {
+	private int unregisterNCPHooks() {
 		int n = 0;
 		for (Hook hook : registeredHooks){
 			NCPHook ncpHook = hook.getNCPHook();
@@ -358,7 +364,70 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		Plugin plugin = event.getPlugin();
 		if (!plugin.getName().equals("NoCheatPlus")) return;
 		if (registeredHooks.isEmpty()) return;
-		unregisterHooks();
+		unregisterNCPHooks();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		// Permission has already been checked.
+		sendInfo(sender);
+		return true;
+	}
+
+	/**
+	 * Send general version and hooks info.
+	 * @param sender
+	 */
+	private void sendInfo(CommandSender sender) {
+		List<String> infos = new LinkedList<String>();
+		infos.add("---- Version infomation ----");
+		// Server
+		infos.add("#### Server ####");
+		infos.add(getServer().getVersion());
+		// Core plugins (NCP + cncp)
+		infos.add("#### Core plugins ####");
+		infos.add("cncp: " + getDescription().getFullName());
+		String temp = getOtherVersion("NoCheatPlus");
+		infos.add(temp.isEmpty() ? "NoCheatPlus is missing or not yet enabled." : temp);
+		infos.add("#### Typical plugin dependencies ####");
+		for (String pluginName : new String[]{
+			"mcMMO", "Citizens", "MachinaCraft", "MagicSpells", 
+			// TODO: extend
+		}){
+			temp = getOtherVersion(pluginName);
+			if (!temp.isEmpty()) infos.add(temp);
+		}
+		// Hooks
+		infos.add("#### Registered hooks (cncp) ###");
+		for (final Hook hook : registeredHooks){
+			temp = hook.getHookName() + ": " + hook.getHookVersion();
+			if (hook instanceof ConfigurableHook){
+				temp += ((ConfigurableHook) hook).isEnabled() ? " (enabled)" : " (disabled)";
+			}
+			infos.add(temp);
+		}
+		// TODO: Registered hooks (ncp) ?
+		infos.add("#### Registered hooks (ncp) ####");
+		for (final NCPHook hook : NCPHookManager.getAllHooks()){
+			infos.add(hook.getHookName() + ": " + hook.getHookVersion());
+		}
+		final String[] a = new String[infos.size()];
+		infos.toArray(a);
+		sender.sendMessage(a);
+	}
+	
+	/**
+	 * 
+	 * @param pluginName Empty string or "name: version".
+	 */
+	private String getOtherVersion(String pluginName){
+		Plugin plg = getServer().getPluginManager().getPlugin(pluginName);
+		if (plg == null) return "";
+		PluginDescriptionFile pdf = plg.getDescription();
+		return pdf.getFullName();
 	}
 
 }
