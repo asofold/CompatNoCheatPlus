@@ -61,3 +61,6 @@ hookiinstabreak: let hooks fail completely if listeners are failing to register 
 
 --------------------------
 
+? register listeners with NCP directly? also use annotations ?
+
+! if SpoutPlugin is present: add blocks to ignorepassable automatically / adjust flags ? [generic block setup]

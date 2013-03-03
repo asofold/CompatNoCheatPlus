@@ -6,3 +6,4 @@ loadbefore:
 softdepend:
 - mcMMO
 - Citizens
+- MagicSpells

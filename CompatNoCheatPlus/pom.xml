@@ -51,6 +51,13 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib-maven/citizens.jar</systemPath>
        </dependency>
+       <dependency>
+       	<groupId>com.nisovin</groupId>
+       	<artifactId>MagicSpells</artifactId>
+       	<version>todo</version>
+       	<scope>system</scope>
+       	<systemPath>${basedir}/lib-maven/MagicSpells.jar</systemPath>
+       </dependency>
     </dependencies>
   
     <!-- Building -->
