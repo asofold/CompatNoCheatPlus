@@ -18,6 +18,8 @@ import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public final class HookPlayerClass extends AbstractHook implements ConfigurableHook {
 	
+	private static final boolean defaultEnabled = false;
+	
 	protected final Set<String> classNames = new HashSet<String>();
 	
 	protected boolean exemptAll = true;
@@ -26,7 +28,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 	
 	protected Object ncpHook = null;
 	
-	protected boolean enabled = true;
+	protected boolean enabled = defaultEnabled;
 	
 	/**
 	 * Normal class name.
@@ -92,7 +94,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 
 	@Override
 	public void applyConfig(CompatConfig cfg, String prefix) {
-		enabled = cfg.getBoolean(prefix + "player-class.enabled", true);
+		enabled = cfg.getBoolean(prefix + "player-class.enabled", defaultEnabled);
 		ConfigUtil.readStringSetFromList(cfg, prefix + "player-class.exempt-names", classNames, true, true, false);
 		exemptAll = cfg.getBoolean(prefix + "player-class.exempt-all",  true);
 		ConfigUtil.readStringSetFromList(cfg, prefix + "player-class.class-names", playerClassNames, true, true, false);
@@ -102,7 +104,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 	@Override
 	public boolean updateConfig(CompatConfig cfg, String prefix) {
 		CompatConfig defaults = CompatConfigFactory.getConfig(null);
-		defaults.set(prefix + "player-class.enabled", true);
+		defaults.set(prefix + "player-class.enabled", defaultEnabled);
 		defaults.set(prefix + "player-class.exempt-names", new LinkedList<String>());
 		defaults.set(prefix + "player-class.exempt-all", true);
 		defaults.set(prefix + "player-class.class-names", new LinkedList<String>(playerClassNames));
