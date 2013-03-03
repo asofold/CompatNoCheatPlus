@@ -91,7 +91,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 
 	@Override
 	public String getHookVersion() {
-		return "2.2";
+		return "2.3";
 	}
 
 	@Override

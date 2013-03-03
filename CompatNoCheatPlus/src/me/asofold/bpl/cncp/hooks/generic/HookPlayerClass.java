@@ -47,7 +47,7 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 
 	@Override
 	public final String getHookVersion() {
-		return "2.2";
+		return "2.3";
 	}
 
 	@Override
