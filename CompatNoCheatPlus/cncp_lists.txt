@@ -5,14 +5,12 @@ Compatibility hooks for NoCheatPlus!
 
 LICENSE
 -------------------------
-Minimal license + NCP: Minimal on top of what can be done with the licenses of Bukkit/CraftBukkit/NoCheatPlus.
+LICENSE.txt (Same as NoCheatPlus).
 
 
 STACK
 ---------
-?(add) more intricate load order stuff ?
-!(add) Limit blockbreaking speed by mcmmo (config) !
-
+?(add) more intricate load order stuff ? [best would be to force managelisteners with ncp]
 
 ***
 !(add) reload command
@@ -23,10 +21,7 @@ STACK
 
 !add check type and permission hooks, also for worldguard regions.
 
-***
-
 Citizens2 / Player class: make configurable (hidden) Or do internally: List of checks to use , exclude moving if possible.
-
 
 Generic abstract class for the mcMMO style cancelling of next x events + ticks alive etc
 
@@ -34,7 +29,7 @@ add stats hook ?
 
 add a good mechanism for adding external configurable hooks (read automatically from the cncp config).
 
-*** 6.1.X
+
 !(add) Use some exemption mechanism for npcs (generic player class hook + citizens).
 !consider remove: clearing the VL ? => probably not, needs redesign to also monitor block break. + only clear the necessary bits (not frequency)
 
@@ -61,6 +56,9 @@ hookiinstabreak: let hooks fail completely if listeners are failing to register 
 
 --------------------------
 
+support for instant spells ? [internalName or name ? <- guess: name]
+
 ? register listeners with NCP directly? also use annotations ?
 
+! Smarter way to enable / disable PlayerClassHoook (disable by default for now).
 ! if SpoutPlugin is present: add blocks to ignorepassable automatically / adjust flags ? [generic block setup]
