@@ -396,7 +396,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		infos.add(getServer().getVersion());
 		// Core plugins (NCP + cncp)
 		infos.add("#### Core plugins ####");
-		infos.add("cncp: " + getDescription().getFullName());
+		infos.add(getDescription().getFullName());
 		String temp = getOtherVersion("NoCheatPlus");
 		infos.add(temp.isEmpty() ? "NoCheatPlus is missing or not yet enabled." : temp);
 		infos.add("#### Typical plugin dependencies ####");
