@@ -62,3 +62,5 @@ support for instant spells ? [internalName or name ? <- guess: name]
 
 ! Smarter way to enable / disable PlayerClassHoook (disable by default for now).
 ! if SpoutPlugin is present: add blocks to ignorepassable automatically / adjust flags ? [generic block setup]
+
+? add info command: show all hooks and so on.

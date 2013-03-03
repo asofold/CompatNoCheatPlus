@@ -179,7 +179,11 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 			builtinHooks.add(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
 		}
 		catch (Throwable t){}
-
+		// MagicSpells
+		try{
+			builtinHooks.add(new me.asofold.bpl.cncp.hooks.magicspells.HookMagicSpells());
+		}
+		catch (Throwable t){}
 		// Simple generic hooks
 		for (Hook hook : new Hook[]{
 			new HookPlayerClass(),
@@ -237,6 +241,9 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 		
 		// Start ticktask 2
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickTask2(), 1, 1);
+		
+		// Finished.
+		getLogger().info(getDescription().getFullName() + " is enabled. Some hooks might get registered with NoCheatPlus later on.");
 	}
 
 	public boolean loadSettings() {

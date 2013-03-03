@@ -1,8 +1,18 @@
 package me.asofold.bpl.cncp.hooks.magicspells;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfigFactory;
+import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
 import me.asofold.bpl.cncp.hooks.AbstractConfigurableHook;
 import me.asofold.bpl.cncp.utils.TickTask2;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,8 +28,10 @@ import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 
 public class HookMagicSpells extends AbstractConfigurableHook implements Listener{
 	
+	protected final Map<String, CheckType[]> spellMap = new HashMap<String, CheckType[]>();
+	
 	public HookMagicSpells(){
-		super("MagicSpells(default)", "0.0", "magicspells.");
+		super("MagicSpells(default)", "1.0", "magicspells.");
 		assertPluginPresent("MagicSpells");
 	}
 
@@ -61,8 +73,59 @@ public class HookMagicSpells extends AbstractConfigurableHook implements Listene
 	}
 	
 	protected CheckType[] getCheckTypes(final Spell spell){
-		// TODO: Find checktypes according to spell (config ?)
-		// TODO: Use config !
-		return null;
+		return spellMap.get(spell.getName());
 	}
+
+	/* (non-Javadoc)
+	 * @see me.asofold.bpl.cncp.hooks.AbstractConfigurableHook#applyConfig(me.asofold.bpl.cncp.config.compatlayer.CompatConfig, java.lang.String)
+	 */
+	@Override
+	public void applyConfig(CompatConfig cfg, String prefix) {
+		super.applyConfig(cfg, prefix);
+		prefix += this.configPrefix;
+		List<String> keys = cfg.getStringKeys(prefix + "exempt-spells");
+		for (String key : keys){
+			String fullKey = ConfigUtil.bestPath(cfg, prefix + "exempt-spells." + key);
+			String types = cfg.getString(fullKey);
+			if (types == null) continue;
+			String[] split = types.split(",");
+			Set<CheckType> checkTypes = new HashSet<CheckType>();
+			for (String input : split){
+				input = input.trim().toUpperCase().replace('-', '_').replace(' ', '_').replace('.', '_');
+				CheckType type = null;
+				try{
+					type = CheckType.valueOf(input);
+				}
+				catch(Throwable t){
+				}
+				if (type == null){
+					Bukkit.getLogger().warning("[cncp] HookMagicSpells: Bad check type at " + fullKey + ": " + input);
+				}
+				else checkTypes.add(type);
+			}
+			if (checkTypes.isEmpty()){
+				Bukkit.getLogger().warning("[cncp] HookMagicSpells: No CheckType entries at: " + fullKey);
+			}
+			else{
+				CheckType[] a = new CheckType[checkTypes.size()];
+				checkTypes.toArray(a);
+				spellMap.put(key, a);
+			}
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see me.asofold.bpl.cncp.hooks.AbstractConfigurableHook#updateConfig(me.asofold.bpl.cncp.config.compatlayer.CompatConfig, java.lang.String)
+	 */
+	@Override
+	public boolean updateConfig(CompatConfig cfg, String prefix) {
+		super.updateConfig(cfg, prefix);
+		CompatConfig defaults = CompatConfigFactory.getConfig(null);
+		prefix += this.configPrefix;
+		// TODO: Write default section.
+		defaults.set(prefix + "NOTE", "MagicSpells support is experimental, only instant spells can be added here.");
+		defaults.set(prefix + "exempt-spells.NameOfExampleSpell", "COMBINED_MUNCHHAUSEN, UNKNOWN, BLOCKPLACE_NOSWING");
+		return ConfigUtil.forceDefaults(defaults, cfg);
+	}
+	
 }
