@@ -10,7 +10,10 @@ import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 
 /**
  * Auxiliary methods and data structure to handle simple sort of exemption. <br>
- * NOTER: Not thread safe.
+ * NOTE: Not thread safe.
+ * 
+ * @deprecated: Buggy / outdated concept - should not rely on nested stuff, use TickTask2 to unexempt timely if in doubt.
+ * 
  * @author mc_dev
  *
  */
