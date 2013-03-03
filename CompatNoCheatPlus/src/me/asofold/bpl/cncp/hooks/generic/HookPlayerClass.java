@@ -36,7 +36,8 @@ public final class HookPlayerClass extends AbstractHook implements ConfigurableH
 	protected Set<String> playerClassNames = new HashSet<String>();
 	
 	public HookPlayerClass(){
-		this.playerClassNames.addAll(Arrays.asList(new String[]{"CraftPlayer", "SpoutPlayer", "SpoutClientPlayer"}));
+		// TODO: Might need cleanup.
+		this.playerClassNames.addAll(Arrays.asList(new String[]{"CraftPlayer", "SpoutCraftPlayer", "SpoutPlayer", "SpoutClientPlayer", "SpoutPlayerSnapshot"}));
 	}
 
 	@Override
