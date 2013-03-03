@@ -1,6 +1,8 @@
 name: CompatNoCheatPlus
 main: me.asofold.bpl.cncp.CompatNoCheatPlus
 version: ${project.version}-b${BUILD_NUMBER}
+dev-url: 'http://dev.bukkit.org/server-mods/compatnocheatplus-cncp/'
+
 loadbefore:
 - NoCheatPlus
 softdepend:
