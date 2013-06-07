@@ -25,6 +25,7 @@ import fr.neatmonster.nocheatplus.utilities.BlockProperties;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolProps;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolType;
 
+@SuppressWarnings("deprecation")
 public class HookFacadeImpl implements HookFacade, NCPHook {
 
 	
