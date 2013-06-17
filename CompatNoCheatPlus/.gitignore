@@ -3,3 +3,5 @@
 /.project
 /jar_desc.jardesc
 /target
+/bin
+/.gitignore
