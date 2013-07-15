@@ -14,9 +14,11 @@ import fr.neatmonster.nocheatplus.checks.CheckType;
 
 public class HookSetSpeed extends AbstractHook implements Listener, ConfigurableHook{
 	
-	protected float flySpeed = 1.0f;
+	private static final float defaultFlySpeed = 0.1f;
+	private static final float defaultWalkSpeed = 0.2f;
 	
-	protected float walkSpeed = 1.0f;
+	protected float flySpeed = defaultFlySpeed;
+	protected float walkSpeed = defaultWalkSpeed;
 	
 	protected boolean enabled = false;
 	
@@ -70,8 +72,8 @@ public class HookSetSpeed extends AbstractHook implements Listener, Configurable
 	@Override
 	public void applyConfig(CompatConfig cfg, String prefix) {
 		enabled = cfg.getBoolean(prefix + "set-speed.enabled", false);
-		flySpeed = cfg.getDouble(prefix + "set-speed.fly-speed", 1.0).floatValue();
-		walkSpeed = cfg.getDouble(prefix + "set-speed.walk-speed", 1.0).floatValue();
+		flySpeed = cfg.getDouble(prefix + "set-speed.fly-speed", (double) defaultFlySpeed).floatValue();
+		walkSpeed = cfg.getDouble(prefix + "set-speed.walk-speed", (double) defaultWalkSpeed).floatValue();
 //		allowFlightPerm = cfg.getString(prefix + "set-speed.allow-flight-permission", ref.allowFlightPerm);
 	}
 
@@ -79,8 +81,8 @@ public class HookSetSpeed extends AbstractHook implements Listener, Configurable
 	public boolean updateConfig(CompatConfig cfg, String prefix) {
 		CompatConfig defaults = CompatConfigFactory.getConfig(null);
 		defaults.set(prefix + "set-speed.enabled", false);
-		defaults.set(prefix + "set-speed.fly-speed", 1.0);
-		defaults.set(prefix + "set-speed.walk-speed", 1.0);
+		defaults.set(prefix + "set-speed.fly-speed", defaultFlySpeed);
+		defaults.set(prefix + "set-speed.walk-speed", defaultWalkSpeed);
 //		cfg.set(prefix + "set-speed.allow-flight-permission", ref.allowFlightPerm);
 		return ConfigUtil.forceDefaults(defaults, cfg);
 	}
