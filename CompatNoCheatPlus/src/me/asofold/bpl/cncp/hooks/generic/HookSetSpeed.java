@@ -7,6 +7,8 @@ import me.asofold.bpl.cncp.hooks.AbstractHook;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -65,7 +67,8 @@ public class HookSetSpeed extends AbstractHook implements Listener, Configurable
 		player.setFlySpeed(flySpeed);
 	}
 	
-	final void onPlayerJoin(final PlayerJoinEvent event){
+	@EventHandler(priority=EventPriority.LOWEST)
+	public final void onPlayerJoin(final PlayerJoinEvent event){
 		setSpeed(event.getPlayer());
 	}
 
