@@ -43,7 +43,7 @@ public class HookSetSpeed extends AbstractHook implements Listener, Configurable
 
 	@Override
 	public String getHookVersion() {
-		return "2.1";
+		return "2.2";
 	}
 
 	@Override
