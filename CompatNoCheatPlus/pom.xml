@@ -110,5 +110,7 @@
    <!-- Properties -->
    <properties>
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <BUILD_SERIES>?</BUILD_SERIES>
+       <BUILD_NUMBER>?</BUILD_NUMBER>
    </properties>
 </project>
