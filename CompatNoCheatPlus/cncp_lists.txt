@@ -67,3 +67,6 @@ support for instant spells ? [internalName or name ? <- guess: name]
 
 
 add class-name inspection methods (!).
+
+set-speed: per world options ? [per world config concept]
+set-speed: add option to set speed to default speed on player quit/kick
