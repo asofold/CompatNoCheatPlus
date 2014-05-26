@@ -46,7 +46,7 @@
        </dependency>
        <dependency>
             <groupId>net.citizensnpcs</groupId>
-            <artifactId>citizens</artifactId>
+            <artifactId>Citizens</artifactId>
             <version>todo</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib-maven/Citizens.jar</systemPath>
