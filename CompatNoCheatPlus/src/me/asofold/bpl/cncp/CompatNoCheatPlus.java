@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.asofold.bpl.cncp.config.Settings;
@@ -28,7 +29,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -36,6 +36,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import fr.neatmonster.nocheatplus.NCPAPIProvider;
+import fr.neatmonster.nocheatplus.components.DisableListener;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
 
@@ -326,24 +328,34 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
+		unregisterNCPHooks(); // Just in case.
 		enabled = false;
-		// remove all registered cncp hooks:
-		unregisterNCPHooks();
-		registeredHooks.clear();
 		instance = null; // Set last.
 		super.onDisable();
 	}
 	
-	private int unregisterNCPHooks() {
+	protected int unregisterNCPHooks() {
+		// TODO: Clear list here !? Currently done externally...
 		int n = 0;
-		for (Hook hook : registeredHooks){
-			NCPHook ncpHook = hook.getNCPHook();
-			if (ncpHook != null){
-				NCPHookManager.removeHook(ncpHook);
-				n ++;
+		for (Hook hook : registeredHooks) {
+			String hookDescr = null;
+			try {
+				NCPHook ncpHook = hook.getNCPHook();
+				if (ncpHook != null){
+					hookDescr = ncpHook.getHookName() + ": " + ncpHook.getHookVersion();
+					NCPHookManager.removeHook(ncpHook);
+					n ++;
+				}
+			} catch (Throwable e)
+			{
+				if (hookDescr != null) {
+					// Some error with removing a hook.
+					getLogger().log(Level.WARNING, "Failed to unregister hook: " + hookDescr, e);
+				}
 			}
 		}
 		getLogger().info("[cncp] Removed "+n+" registered hooks from NoCheatPlus.");
+		registeredHooks.clear();
 		return n;
 	}
 	
@@ -363,17 +375,21 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	void onPluginEnable(PluginEnableEvent event){
 		Plugin plugin = event.getPlugin();
-		if (!plugin.getName().equals("NoCheatPlus")) return;
-		if (registeredHooks.isEmpty()) return;
+		if (!plugin.getName().equals("NoCheatPlus")) {
+			return;
+		}
+		// Register to rmeove hooks when NCP is disabling.
+		NCPAPIProvider.getNoCheatPlusAPI().addComponent(new DisableListener(){
+			@Override
+			public void onDisable() {
+				// Remove all registered cncp hooks:
+				unregisterNCPHooks();
+			}
+		});
+		if (registeredHooks.isEmpty()) {
+			return;
+		}
 		registerHooks();
-	}
-
-	@EventHandler(priority = EventPriority.NORMAL)
-	void onPluginDisable(PluginDisableEvent event){
-		Plugin plugin = event.getPlugin();
-		if (!plugin.getName().equals("NoCheatPlus")) return;
-		if (registeredHooks.isEmpty()) return;
-		unregisterNCPHooks();
 	}
 
 	/* (non-Javadoc)
