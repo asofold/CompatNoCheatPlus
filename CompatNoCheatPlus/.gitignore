@@ -5,3 +5,4 @@
 /target
 /bin
 /.gitignore
+/local-maven/

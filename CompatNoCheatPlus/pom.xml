@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>CompatNoCheatPlus</groupId>
   <artifactId>CompatNoCheatPlus</artifactId>
-  <version>6.5.1-SNAPSHOT</version>
+  <version>6.6.0-RC</version>
   <name>CompatNoCheatPlus</name>
   
   
@@ -42,28 +42,28 @@
 	        <artifactId>mcMMO</artifactId>
 	        <version>todo</version>
 	        <scope>system</scope>
-	        <systemPath>${basedir}/lib-maven/mcMMO.jar</systemPath>
+	        <systemPath>${basedir}/local-maven/mcMMO.jar</systemPath>
        </dependency>
        <dependency>
             <groupId>fr.neatmonster.nocheatplus</groupId>
             <artifactId>NoCheatPlus</artifactId>
             <version>todo</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib-maven/NoCheatPlus.jar</systemPath>
+            <systemPath>${basedir}/local-maven/NoCheatPlus.jar</systemPath>
        </dependency>
        <dependency>
             <groupId>net.citizensnpcs</groupId>
-            <artifactId>Citizens</artifactId>
-            <version>todo</version>
+            <artifactId>citizensapi</artifactId>
+            <version>2.0.16-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib-maven/Citizens.jar</systemPath>
+            <systemPath>${basedir}/local-maven/citizensapi-2.0.16-SNAPSHOT.jar</systemPath>
        </dependency>
        <dependency>
        	<groupId>com.nisovin</groupId>
        	<artifactId>MagicSpells</artifactId>
        	<version>todo</version>
        	<scope>system</scope>
-       	<systemPath>${basedir}/lib-maven/MagicSpells.jar</systemPath>
+       	<systemPath>${basedir}/local-maven/MagicSpells.jar</systemPath>
        </dependency>
     </dependencies>
   

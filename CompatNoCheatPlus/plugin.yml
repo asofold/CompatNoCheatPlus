@@ -12,7 +12,7 @@ softdepend:
 
 commands:
   compatnocheatplus:
-    description: 'Manage cncp, currently only showing some info is available.'
+    description: 'Show general version information of cncp and dependencies.'
     usage: '/<command>'
     permission: 'cncp.cmd.info'
     aliases:
