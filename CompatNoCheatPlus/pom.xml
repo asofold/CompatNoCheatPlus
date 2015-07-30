@@ -27,6 +27,10 @@
       <id>cititensnpcs</id>
       <url>http://repo.citizensnpcs.co/</url>
     </repository>
+    <repository>
+      <id>drtshock-repo</id>
+      <url>https://ci.drtshock.net/plugin/repository/everything/</url>
+    </repository>
   </repositories>
 
     <!-- Dependencies -->
@@ -38,11 +42,10 @@
           <scope>provided</scope>
         </dependency>
        <dependency>
-          <groupId>com.gmail.nossr50</groupId>
+          <groupId>com.gmail.nossr50.mcMMO</groupId>
           <artifactId>mcMMO</artifactId>
-          <version>todo</version>
-          <scope>system</scope>
-          <systemPath>${basedir}/local-maven/mcMMO.jar</systemPath>
+          <version>1.5.04-SNAPSHOT</version>
+          <scope>compile</scope>
        </dependency>
        <dependency>
         <groupId>fr.neatmonster</groupId>
