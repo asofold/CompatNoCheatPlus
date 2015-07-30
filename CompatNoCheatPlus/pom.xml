@@ -23,35 +23,38 @@
       <id>md_5-releases</id>
       <url>http://repo.md-5.net/content/repositories/releases/</url>
     </repository>
+    <repository>
+      <id>cititensnpcs</id>
+      <url>http://repo.citizensnpcs.co/</url>
+    </repository>
   </repositories>
 
     <!-- Dependencies -->
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
+          <version>1.8-R0.1-SNAPSHOT</version>
+          <scope>provided</scope>
         </dependency>
        <dependency>
-	        <groupId>com.gmail.nossr50</groupId>
-	        <artifactId>mcMMO</artifactId>
-	        <version>todo</version>
-	        <scope>system</scope>
-	        <systemPath>${basedir}/local-maven/mcMMO.jar</systemPath>
+          <groupId>com.gmail.nossr50</groupId>
+          <artifactId>mcMMO</artifactId>
+          <version>todo</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/local-maven/mcMMO.jar</systemPath>
        </dependency>
        <dependency>
-          <groupId>fr.neatmonster</groupId>
-          <artifactId>nocheatplus</artifactId>
-          <version>3.12.1-SNAPSHOT</version>
+        <groupId>fr.neatmonster</groupId>
+        <artifactId>nocheatplus</artifactId>
+        <version>3.12.1-SNAPSHOT</version>
+        <scope>compile</scope>
+       </dependency>
+       <dependency>
+          <groupId>net.citizensnpcs</groupId>
+          <artifactId>citizensapi</artifactId>
+          <version>2.0.16-SNAPSHOT</version>
           <scope>compile</scope>
-       </dependency>
-       <dependency>
-            <groupId>net.citizensnpcs</groupId>
-            <artifactId>citizensapi</artifactId>
-            <version>2.0.16-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/local-maven/citizensapi-2.0.16-SNAPSHOT.jar</systemPath>
        </dependency>
        <dependency>
        	<groupId>com.nisovin</groupId>
