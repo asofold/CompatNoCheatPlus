@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>CompatNoCheatPlus</groupId>
   <artifactId>CompatNoCheatPlus</artifactId>
-  <version>6.6.0-RC</version>
+  <version>6.6.1-SNAPSHOT</version>
   <name>CompatNoCheatPlus</name>
   
   
@@ -16,16 +16,12 @@
         <!-- Repositories -->
   <repositories>
     <repository>
-      <id>bukkit</id>
-      <url>http://repo.bukkit.org/content/groups/public/</url>
+      <id>md_5-snapshots</id>
+      <url>http://repo.md-5.net/content/repositories/snapshots/</url>
     </repository>
     <repository>
       <id>md_5-releases</id>
       <url>http://repo.md-5.net/content/repositories/releases/</url>
-    </repository>
-    <repository>
-      <id>md_5-snapshots</id>
-      <url>http://repo.md-5.net/content/repositories/snapshots/</url>
     </repository>
   </repositories>
 
@@ -45,11 +41,10 @@
 	        <systemPath>${basedir}/local-maven/mcMMO.jar</systemPath>
        </dependency>
        <dependency>
-            <groupId>fr.neatmonster.nocheatplus</groupId>
-            <artifactId>NoCheatPlus</artifactId>
-            <version>todo</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/local-maven/NoCheatPlus.jar</systemPath>
+          <groupId>fr.neatmonster</groupId>
+          <artifactId>nocheatplus</artifactId>
+          <version>3.12.1-SNAPSHOT</version>
+          <scope>compile</scope>
        </dependency>
        <dependency>
             <groupId>net.citizensnpcs</groupId>
