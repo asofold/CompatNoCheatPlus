@@ -22,7 +22,7 @@ public class Settings {
 	public static CompatConfig getDefaultConfig(){
 		CompatConfig cfg = new NewConfig(null);
 		cfg.set("plugins.force-enable-later", new LinkedList<String>()); // ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
-		cfg.set("plugins.ensure-enable", ConfigUtil.asList(new String[]{ "WorldGuard" }));
+		cfg.set("plugins.ensure-enable", new LinkedList<String>()); // ConfigUtil.asList(new String[]{ "WorldGuard" }));
 		cfg.set("hooks.prevent-add", new LinkedList<String>());
 		cfg.set("configversion", configVersion);
 		return cfg;
