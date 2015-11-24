@@ -10,6 +10,7 @@ import me.asofold.bpl.cncp.CompatNoCheatPlus;
 import me.asofold.bpl.cncp.hooks.generic.ExemptionManager;
 import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO.HookFacade;
+import me.asofold.bpl.cncp.utils.ActionFrequency;
 import me.asofold.bpl.cncp.utils.TickTask2;
 
 import org.bukkit.Bukkit;
@@ -20,7 +21,6 @@ import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.checks.access.IViolationInfo;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.players.DataManager;
-import fr.neatmonster.nocheatplus.utilities.ActionFrequency;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolProps;
 import fr.neatmonster.nocheatplus.utilities.BlockProperties.ToolType;
