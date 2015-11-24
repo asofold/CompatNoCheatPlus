@@ -17,7 +17,7 @@
   <repositories>
     <repository>
       <id>spigot-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+      <url>http://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
     </repository>
     <repository>
       <id>md_5-snapshots</id>
@@ -33,7 +33,7 @@
     </repository>
     <repository>
       <id>drtshock-repo</id>
-      <url>https://ci.drtshock.net/plugin/repository/everything/</url>
+      <url>http://ci.drtshock.net/plugin/repository/everything/</url>
     </repository>
   </repositories>
 
