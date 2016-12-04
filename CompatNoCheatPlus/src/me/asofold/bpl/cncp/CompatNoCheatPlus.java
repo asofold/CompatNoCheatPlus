@@ -19,6 +19,7 @@ import me.asofold.bpl.cncp.hooks.generic.HookBlockPlace;
 import me.asofold.bpl.cncp.hooks.generic.HookEntityDamageByEntity;
 import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
+import me.asofold.bpl.cncp.hooks.generic.HookPlayerInteract;
 import me.asofold.bpl.cncp.utils.TickTask2;
 import me.asofold.bpl.cncp.utils.Utils;
 
@@ -194,6 +195,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
                 new HookBlockPlace(),
                 new HookInstaBreak(),
                 new HookEntityDamageByEntity(),
+                new HookPlayerInteract()
         }){
             builtinHooks.add(hook);
         }
