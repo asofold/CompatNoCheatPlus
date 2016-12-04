@@ -20,7 +20,9 @@ public class HookEntityDamageByEntity extends ClassExemptionHook implements
 		super("entity-damage-by-entity.");
 		defaultClasses.addAll(Arrays.asList(new String[] {
 		// CrackShot
-		"WeaponDamageEntityEvent", }));
+		"WeaponDamageEntityEvent",
+		// MagicSpells
+		"MagicSpellsEntityDamageByEntityEvent" }));
 	}
 
 	@Override

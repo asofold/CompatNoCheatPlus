@@ -25,6 +25,8 @@ public class HookBlockBreak extends ClassExemptionHook implements Listener {
 			"ArtificialBlockBreakEvent",
 			// mcMMO
 			"FakeBlockBreakEvent",
+			// MagicSpells
+			"MagicSpellsBlockBreakEvent"
 		}));
 	}
 
