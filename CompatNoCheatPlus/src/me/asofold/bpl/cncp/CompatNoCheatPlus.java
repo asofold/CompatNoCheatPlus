@@ -9,20 +9,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.asofold.bpl.cncp.config.Settings;
-import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
-import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
-import me.asofold.bpl.cncp.hooks.Hook;
-import me.asofold.bpl.cncp.hooks.generic.ConfigurableHook;
-import me.asofold.bpl.cncp.hooks.generic.HookBlockBreak;
-import me.asofold.bpl.cncp.hooks.generic.HookBlockPlace;
-import me.asofold.bpl.cncp.hooks.generic.HookEntityDamageByEntity;
-import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
-import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
-import me.asofold.bpl.cncp.hooks.generic.HookPlayerInteract;
-import me.asofold.bpl.cncp.utils.TickTask2;
-import me.asofold.bpl.cncp.utils.Utils;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -38,9 +24,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import fr.neatmonster.nocheatplus.NCPAPIProvider;
-import fr.neatmonster.nocheatplus.components.DisableListener;
+import fr.neatmonster.nocheatplus.components.registry.feature.IDisableListener;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
+import me.asofold.bpl.cncp.config.Settings;
+import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
+import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
+import me.asofold.bpl.cncp.hooks.Hook;
+import me.asofold.bpl.cncp.hooks.generic.ConfigurableHook;
+import me.asofold.bpl.cncp.hooks.generic.HookBlockBreak;
+import me.asofold.bpl.cncp.hooks.generic.HookBlockPlace;
+import me.asofold.bpl.cncp.hooks.generic.HookEntityDamageByEntity;
+import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
+import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
+import me.asofold.bpl.cncp.hooks.generic.HookPlayerInteract;
+import me.asofold.bpl.cncp.utils.TickTask2;
+import me.asofold.bpl.cncp.utils.Utils;
 
 /**
  * Quick attempt to provide compatibility to NoCheatPlus (by NeatMonster) for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
@@ -389,8 +388,8 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         if (!plugin.getName().equals("NoCheatPlus")) {
             return;
         }
-        // Register to rmeove hooks when NCP is disabling.
-        NCPAPIProvider.getNoCheatPlusAPI().addComponent(new DisableListener(){
+        // Register to remove hooks when NCP is disabling.
+        NCPAPIProvider.getNoCheatPlusAPI().addComponent(new IDisableListener(){
             @Override
             public void onDisable() {
                 // Remove all registered cncp hooks:
