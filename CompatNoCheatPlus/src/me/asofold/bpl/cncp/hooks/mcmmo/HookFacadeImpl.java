@@ -133,7 +133,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
 
     public ToolProps getToolProps(final ItemStack stack){
         if (stack == null) return BlockProperties.noTool;
-        else return BlockProperties.getToolProps(stack.getTypeId());
+        else return BlockProperties.getToolProps(stack);
     }
 
     public void addExemption(final Player player, final CheckType[] types){
