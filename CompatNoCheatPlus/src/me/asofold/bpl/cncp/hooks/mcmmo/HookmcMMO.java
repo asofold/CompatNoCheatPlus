@@ -1,5 +1,6 @@
 package me.asofold.bpl.cncp.hooks.mcmmo;
 
+import me.asofold.bpl.cncp.CompatNoCheatPlus;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfigFactory;
 import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
@@ -19,160 +20,167 @@ import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
+import fr.neatmonster.nocheatplus.components.registry.order.RegistrationOrder.RegisterMethodWithOrder;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 
 public final class HookmcMMO extends AbstractHook implements Listener, ConfigurableHook {
-	
-	/**
-	 * To let the listener access this.
-	 * @author mc_dev
-	 *
-	 */
-	public static interface HookFacade{
-		public void damageLowest(Player player);
-		public void damageMonitor(Player player);
-		public void blockDamageLowest(Player player);
-		public void blockDamageMonitor(Player player);
-		/**
-		 * If to cancel the event.
-		 * @param player
-		 * @return
-		 */
-		public boolean blockBreakLowest(Player player);
-		public void blockBreakMontitor(Player player);
-	}
-	
-	protected HookFacade ncpHook = null;
-	
-	protected boolean enabled = true;
-	
-	protected String configPrefix = "mcmmo.";
-	
-	protected boolean useInstaBreakHook = true;
-	
 
-	public HookmcMMO(){
-		assertPluginPresent("mcMMO");
-	}
-	
-	
-	protected final PluginGetter<mcMMO> fetch = new PluginGetter<mcMMO>("mcMMO");
+    /**
+     * To let the listener access this.
+     * @author mc_dev
+     *
+     */
+    public static interface HookFacade{
+        public void damageLowest(Player player);
+        public void damageMonitor(Player player);
+        public void blockDamageLowest(Player player);
+        public void blockDamageMonitor(Player player);
+        /**
+         * If to cancel the event.
+         * @param player
+         * @return
+         */
+        public boolean blockBreakLowest(Player player);
+        public void blockBreakMontitor(Player player);
+    }
 
-	protected int blocksPerSecond = 30;
-	
+    protected HookFacade ncpHook = null;
 
-	
-	@Override
-	public String getHookName() {
-		return "mcMMO(default)";
-	}
+    protected boolean enabled = true;
 
-	@Override
-	public String getHookVersion() {
-		return "2.1";
-	}
+    protected String configPrefix = "mcmmo.";
 
-	@Override
-	public CheckType[] getCheckTypes() {
-		return new CheckType[]{
-				CheckType.BLOCKBREAK_FASTBREAK, CheckType.BLOCKBREAK_NOSWING, // old ones
-				
-//				CheckType.BLOCKBREAK_DIRECTION, CheckType.BLOCKBREAK_FREQUENCY,
-//				CheckType.BLOCKBREAK_WRONGBLOCK, CheckType.BLOCKBREAK_REACH,
-//				
-//				CheckType.FIGHT_ANGLE, CheckType.FIGHT_SPEED, // old ones
-//				
-//				CheckType.FIGHT_DIRECTION, CheckType.FIGHT_NOSWING,
-//				CheckType.FIGHT_REACH, 
-			};
-	}
-	
-	@Override
-	public Listener[] getListeners() {
-		fetch.fetchPlugin();
-		return new Listener[]{this, fetch};
-	}
-	
-	@Override
-	public NCPHook getNCPHook() {
-		if (ncpHook == null){
-			ncpHook = new HookFacadeImpl(useInstaBreakHook, blocksPerSecond);
-		}
-		return (NCPHook) ncpHook;
-	}
-	
-	///////////////////////////
-	// Damage (fight)
-	//////////////////////////
-	
-	@EventHandler(priority=EventPriority.LOWEST)
-	final void onDamageLowest(final FakeEntityDamageByEntityEvent event){
-		final Entity entity = event.getDamager();
-		if (entity instanceof Player)
-			ncpHook.damageLowest((Player) entity);
-	}
-	
-	@EventHandler(priority=EventPriority.MONITOR)
-	final void onDamageMonitor(final FakeEntityDamageByEntityEvent event){
-		final Entity entity = event.getDamager();
-		if (entity instanceof Player)
-			ncpHook.damageMonitor((Player) entity);
-	}
-	
-	///////////////////////////
-	// Block damage
-	//////////////////////////
-	
-	@EventHandler(priority=EventPriority.LOWEST)
-	final void onBlockDamageLowest(final FakeBlockDamageEvent event){
-		ncpHook.blockDamageLowest(event.getPlayer());
-	}
-	
-	@EventHandler(priority=EventPriority.LOWEST)
-	final void onBlockDamageMonitor(final FakeBlockDamageEvent event){
-		ncpHook.blockDamageMonitor(event.getPlayer());
-	}
-	
-	///////////////////////////
-	// Block break
-	//////////////////////////
-	
-	@EventHandler(priority=EventPriority.LOWEST)
-	final void onBlockBreakLowest(final FakeBlockBreakEvent event){
-		if (ncpHook.blockBreakLowest(event.getPlayer())){
-			event.setCancelled(true);
-//			System.out.println("Cancelled for frequency.");
-		}
-	}
-	
-	@EventHandler(priority=EventPriority.MONITOR)
-	final void onBlockBreakLMonitor(final FakeBlockBreakEvent event){
-		ncpHook.blockBreakMontitor(event.getPlayer());
-	}
-	
-	/////////////////////////////////
-	// Config
-	/////////////////////////////////
-	
-	@Override
-	public void applyConfig(CompatConfig cfg, String prefix) {
-		enabled = cfg.getBoolean(prefix + configPrefix + "enabled",  true);
-		useInstaBreakHook = cfg.getBoolean(prefix + configPrefix + "use-insta-break-hook",  true);
-		blocksPerSecond  = cfg.getInt(prefix + configPrefix + "clickspersecond", 20);
-	}
+    protected boolean useInstaBreakHook = true;
 
-	@Override
-	public boolean updateConfig(CompatConfig cfg, String prefix) {
-		CompatConfig defaults = CompatConfigFactory.getConfig(null);
-		defaults.set(prefix + configPrefix + "enabled",  true);
-		defaults.set(prefix + configPrefix + "use-insta-break-hook",  true);
-		defaults.set(prefix + configPrefix + "clickspersecond", 20);
-		return ConfigUtil.forceDefaults(defaults, cfg);
-	}
 
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public HookmcMMO(){
+        assertPluginPresent("mcMMO");
+    }
+
+
+    protected final PluginGetter<mcMMO> fetch = new PluginGetter<mcMMO>("mcMMO");
+
+    protected int blocksPerSecond = 30;
+
+
+
+    @Override
+    public String getHookName() {
+        return "mcMMO(default)";
+    }
+
+    @Override
+    public String getHookVersion() {
+        return "2.1";
+    }
+
+    @Override
+    public CheckType[] getCheckTypes() {
+        return new CheckType[]{
+                CheckType.BLOCKBREAK_FASTBREAK, CheckType.BLOCKBREAK_NOSWING, // old ones
+
+                //				CheckType.BLOCKBREAK_DIRECTION, CheckType.BLOCKBREAK_FREQUENCY,
+                //				CheckType.BLOCKBREAK_WRONGBLOCK, CheckType.BLOCKBREAK_REACH,
+                //				
+                //				CheckType.FIGHT_ANGLE, CheckType.FIGHT_SPEED, // old ones
+                //				
+                //				CheckType.FIGHT_DIRECTION, CheckType.FIGHT_NOSWING,
+                //				CheckType.FIGHT_REACH, 
+        };
+    }
+
+    @Override
+    public Listener[] getListeners() {
+        fetch.fetchPlugin();
+        return new Listener[]{this, fetch};
+    }
+
+    @Override
+    public NCPHook getNCPHook() {
+        if (ncpHook == null){
+            ncpHook = new HookFacadeImpl(useInstaBreakHook, blocksPerSecond);
+        }
+        return (NCPHook) ncpHook;
+    }
+
+    ///////////////////////////
+    // Damage (fight)
+    //////////////////////////
+
+    @EventHandler(priority=EventPriority.LOWEST)
+    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
+    final void onDamageLowest(final FakeEntityDamageByEntityEvent event){
+        final Entity entity = event.getDamager();
+        if (entity instanceof Player)
+            ncpHook.damageLowest((Player) entity);
+    }
+
+    @EventHandler(priority=EventPriority.MONITOR)
+    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
+    final void onDamageMonitor(final FakeEntityDamageByEntityEvent event){
+        final Entity entity = event.getDamager();
+        if (entity instanceof Player)
+            ncpHook.damageMonitor((Player) entity);
+    }
+
+    ///////////////////////////
+    // Block damage
+    //////////////////////////
+
+    @EventHandler(priority=EventPriority.LOWEST)
+    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
+    final void onBlockDamageLowest(final FakeBlockDamageEvent event){
+        ncpHook.blockDamageLowest(event.getPlayer());
+    }
+
+    @EventHandler(priority=EventPriority.LOWEST)
+    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
+    final void onBlockDamageMonitor(final FakeBlockDamageEvent event){
+        ncpHook.blockDamageMonitor(event.getPlayer());
+    }
+
+    ///////////////////////////
+    // Block break
+    //////////////////////////
+
+    @EventHandler(priority=EventPriority.LOWEST)
+    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
+    final void onBlockBreakLowest(final FakeBlockBreakEvent event){
+        if (ncpHook.blockBreakLowest(event.getPlayer())){
+            event.setCancelled(true);
+            //			System.out.println("Cancelled for frequency.");
+        }
+    }
+
+    @EventHandler(priority=EventPriority.MONITOR)
+    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
+    final void onBlockBreakLMonitor(final FakeBlockBreakEvent event){
+        ncpHook.blockBreakMontitor(event.getPlayer());
+    }
+
+    /////////////////////////////////
+    // Config
+    /////////////////////////////////
+
+    @Override
+    public void applyConfig(CompatConfig cfg, String prefix) {
+        enabled = cfg.getBoolean(prefix + configPrefix + "enabled",  true);
+        useInstaBreakHook = cfg.getBoolean(prefix + configPrefix + "use-insta-break-hook",  true);
+        blocksPerSecond  = cfg.getInt(prefix + configPrefix + "clickspersecond", 20);
+    }
+
+    @Override
+    public boolean updateConfig(CompatConfig cfg, String prefix) {
+        CompatConfig defaults = CompatConfigFactory.getConfig(null);
+        defaults.set(prefix + configPrefix + "enabled",  true);
+        defaults.set(prefix + configPrefix + "use-insta-break-hook",  true);
+        defaults.set(prefix + configPrefix + "clickspersecond", 20);
+        return ConfigUtil.forceDefaults(defaults, cfg);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 
 }

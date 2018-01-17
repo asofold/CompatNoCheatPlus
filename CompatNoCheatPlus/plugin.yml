@@ -3,7 +3,7 @@ main: me.asofold.bpl.cncp.CompatNoCheatPlus
 version: ${project.version}-s${BUILD_SERIES}-b${BUILD_NUMBER}
 dev-url: http://dev.bukkit.org/server-mods/compatnocheatplus-cncp/
 
-loadbefore:
+depend:
 - NoCheatPlus
 softdepend:
 - mcMMO
