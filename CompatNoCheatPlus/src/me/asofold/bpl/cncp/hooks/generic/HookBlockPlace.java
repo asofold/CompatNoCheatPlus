@@ -53,13 +53,13 @@ public class HookBlockPlace extends ClassExemptionHook implements Listener{
 
     @EventHandler(priority = EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onBlockPlaceLowest(final BlockPlaceEvent event){
+    public final void onBlockPlaceLowest(final BlockPlaceEvent event){
         checkExempt(event.getPlayer(), event.getClass(), CheckType.BLOCKPLACE);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    final void onBlockPlaceMonitor(final BlockPlaceEvent event){
+    public final void onBlockPlaceMonitor(final BlockPlaceEvent event){
         checkUnexempt(event.getPlayer(), event.getClass(), CheckType.BLOCKPLACE);
     }
 

@@ -49,13 +49,13 @@ public class HookPlayerInteract extends ClassExemptionHook implements Listener{
 
     @EventHandler(priority = EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onPlayerInteractLowest(final PlayerInteractEvent event){
+    public final void onPlayerInteractLowest(final PlayerInteractEvent event){
         checkExempt(event.getPlayer(), event.getClass(), CheckType.BLOCKINTERACT);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    final void onPlayerInteractMonitor(final PlayerInteractEvent event){
+    public final void onPlayerInteractMonitor(final PlayerInteractEvent event){
         checkUnexempt(event.getPlayer(), event.getClass(), CheckType.BLOCKINTERACT);
     }
 

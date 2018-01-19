@@ -109,7 +109,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 
     @EventHandler(priority=EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onDamageLowest(final FakeEntityDamageByEntityEvent event){
+    public final void onDamageLowest(final FakeEntityDamageByEntityEvent event){
         final Entity entity = event.getDamager();
         if (entity instanceof Player)
             ncpHook.damageLowest((Player) entity);
@@ -117,7 +117,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 
     @EventHandler(priority=EventPriority.MONITOR)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    final void onDamageMonitor(final FakeEntityDamageByEntityEvent event){
+    public final void onDamageMonitor(final FakeEntityDamageByEntityEvent event){
         final Entity entity = event.getDamager();
         if (entity instanceof Player)
             ncpHook.damageMonitor((Player) entity);
@@ -129,13 +129,13 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 
     @EventHandler(priority=EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onBlockDamageLowest(final FakeBlockDamageEvent event){
+    public final void onBlockDamageLowest(final FakeBlockDamageEvent event){
         ncpHook.blockDamageLowest(event.getPlayer());
     }
 
     @EventHandler(priority=EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onBlockDamageMonitor(final FakeBlockDamageEvent event){
+    public final void onBlockDamageMonitor(final FakeBlockDamageEvent event){
         ncpHook.blockDamageMonitor(event.getPlayer());
     }
 
@@ -145,7 +145,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 
     @EventHandler(priority=EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onBlockBreakLowest(final FakeBlockBreakEvent event){
+    public final void onBlockBreakLowest(final FakeBlockBreakEvent event){
         if (ncpHook.blockBreakLowest(event.getPlayer())){
             event.setCancelled(true);
             //			System.out.println("Cancelled for frequency.");
@@ -154,7 +154,7 @@ public final class HookmcMMO extends AbstractHook implements Listener, Configura
 
     @EventHandler(priority=EventPriority.MONITOR)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    final void onBlockBreakLMonitor(final FakeBlockBreakEvent event){
+    public final void onBlockBreakLMonitor(final FakeBlockBreakEvent event){
         ncpHook.blockBreakMontitor(event.getPlayer());
     }
 

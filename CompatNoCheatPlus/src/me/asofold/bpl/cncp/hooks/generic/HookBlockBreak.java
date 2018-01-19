@@ -55,13 +55,13 @@ public class HookBlockBreak extends ClassExemptionHook implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onBlockBreakLowest(final BlockBreakEvent event){
+    public final void onBlockBreakLowest(final BlockBreakEvent event){
         checkExempt(event.getPlayer(), event.getClass(), CheckType.BLOCKBREAK);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    final void onBlockBreakMonitor(final BlockBreakEvent event){
+    public final void onBlockBreakMonitor(final BlockBreakEvent event){
         checkUnexempt(event.getPlayer(), event.getClass(), CheckType.BLOCKBREAK);
     }
 

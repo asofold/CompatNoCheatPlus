@@ -51,7 +51,7 @@ Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    final void onDamageLowest(final EntityDamageByEntityEvent event) {
+    public final void onDamageLowest(final EntityDamageByEntityEvent event) {
         final Entity damager = event.getDamager();
         if (damager instanceof Player) {
             checkExempt((Player) damager, event.getClass(), CheckType.FIGHT);
@@ -60,7 +60,7 @@ Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    final void onDamageMonitor(final EntityDamageByEntityEvent event) {
+    public final void onDamageMonitor(final EntityDamageByEntityEvent event) {
         final Entity damager = event.getDamager();
         if (damager instanceof Player) {
             checkUnexempt((Player) damager, event.getClass(), CheckType.FIGHT);
