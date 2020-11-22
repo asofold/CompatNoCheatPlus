@@ -32,8 +32,8 @@
       <url>http://repo.citizensnpcs.co/</url>
     </repository>
     <repository>
-      <id>drtshock-repo</id>
-      <url>http://ci.drtshock.net/plugin/repository/everything/</url>
+      <id>repo-public</id>
+      <url>https://repo.codemc.org/repository/maven-public/</url>
     </repository>
   </repositories>
 
@@ -48,13 +48,13 @@
        <dependency>
           <groupId>com.gmail.nossr50.mcMMO</groupId>
           <artifactId>mcMMO</artifactId>
-          <version>1.5.04-SNAPSHOT</version>
+          <version>2.1.158</version>
           <scope>provided</scope>
        </dependency>
        <dependency>
         <groupId>fr.neatmonster</groupId>
         <artifactId>nocheatplus</artifactId>
-        <version>3.16.0-SNAPSHOT</version>
+        <version>3.16.1-SNAPSHOT</version>
         <scope>provided</scope>
        </dependency>
        <dependency>
@@ -63,9 +63,42 @@
           <version>2.0.16-SNAPSHOT</version>
           <scope>provided</scope>
        </dependency>
+	   <dependency>
+	      <groupId>com.benzoft.gravitytubes</groupId>
+	      <artifactId>gravitytubes</artifactId>
+	      <version>1.0</version>
+	      <scope>system</scope>
+	      <systemPath>${basedir}/libs/GravityTubes.jar</systemPath>
+       </dependency>
     </dependencies>
-  
-    <!-- Building -->
+
+    <!-- Build Description Profiles -->
+	<profiles>
+		<profile>
+			<id>timestamp</id>
+			<activation>
+				<property>
+					<name>!env.BUILD_NUMBER</name>
+				</property>
+			</activation>
+			<properties>
+				<buildDescription>${maven.build.timestamp}</buildDescription>
+			</properties>
+		</profile>
+		<profile>
+			<id>dynamic_build_number</id>
+			<activation>
+				<property>
+					<name>env.BUILD_NUMBER</name>
+				</property>
+			</activation>
+			<properties>
+				<buildDescription>b${env.BUILD_NUMBER}</buildDescription>
+			</properties>
+		</profile>
+	</profiles>
+
+	<!-- Building -->
     <build>
         <defaultGoal>clean package</defaultGoal>
         <sourceDirectory>${basedir}/src</sourceDirectory>
@@ -86,8 +119,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -106,7 +139,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            
         </plugins>
     </build>
   
@@ -115,7 +147,6 @@
    <!-- Properties -->
    <properties>
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <BUILD_SERIES>?</BUILD_SERIES>
-       <BUILD_NUMBER>?</BUILD_NUMBER>
+       <maven.build.timestamp.format>yyyy_MM_dd-HH_mm</maven.build.timestamp.format>
    </properties>
 </project>
