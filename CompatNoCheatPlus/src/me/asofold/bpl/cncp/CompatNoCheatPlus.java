@@ -2,23 +2,29 @@ package me.asofold.bpl.cncp;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import fr.neatmonster.nocheatplus.NCPAPIProvider;
 import fr.neatmonster.nocheatplus.components.registry.feature.IDisableListener;
-import fr.neatmonster.nocheatplus.components.registry.order.RegistrationOrder;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
 import me.asofold.bpl.cncp.config.Settings;
@@ -33,42 +39,16 @@ import me.asofold.bpl.cncp.hooks.generic.HookInstaBreak;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerClass;
 import me.asofold.bpl.cncp.hooks.generic.HookPlayerInteract;
 import me.asofold.bpl.cncp.utils.TickTask2;
+import me.asofold.bpl.cncp.utils.Utils;
 
 /**
- * Quick attempt to provide compatibility to NoCheatPlus (by NeatMonster) for
- * some other plugins that change the vanilla game mechanichs, for instance by
- * fast block breaking.
- * 
- * @author asofold
+ * Quick attempt to provide compatibility to NoCheatPlus (by NeatMonster) for some other plugins that change the vanilla game mechanichs, for instance by fast block breaking. 
+ * @author mc_dev
  *
  */
-public class CompatNoCheatPlus extends JavaPlugin {
+public class CompatNoCheatPlus extends JavaPlugin implements Listener {
 
-    //TODO: Adjust, once NCP has order everywhere (generic + ncp-specific?).
-
-    public static final String tagEarlyFeature = "cncp.feature.early";
-    public static final String beforeTagEarlyFeature = ".*nocheatplus.*|.*NoCheatPlus.*";
-
-    public static final String tagLateFeature = "cncp.feature.late";
-    public static final String afterTagLateFeature = "cncp.system.early.*|.*nocheatplus.*|.*NoCheatPlus.*)";
-
-    public static final String tagEarlySystem = "cncp.system.early";
-    public static final String beforeTagEarlySystem = beforeTagEarlyFeature; // ...
-
-    public static final RegistrationOrder defaultOrderSystemEarly = new RegistrationOrder(
-            tagEarlySystem, 
-            beforeTagEarlySystem,
-            null);
-
-    public static final RegistrationOrder defaultOrderFeatureEarly = new RegistrationOrder(
-            tagEarlyFeature, 
-            beforeTagEarlyFeature,
-            "cncp.system.early.*");
-
-    public static final RegistrationOrder defaultOrderFeatureLate = new RegistrationOrder(
-            tagLateFeature, 
-            null, 
-            afterTagLateFeature);
+    private static CompatNoCheatPlus instance = null;
 
     private final Settings settings = new Settings();
 
@@ -81,6 +61,15 @@ public class CompatNoCheatPlus extends JavaPlugin {
      * Flag if plugin is enabled.
      */
     private static boolean enabled = false;
+
+    /**
+     * Experimental: static method to enable this plugin, only enables if it is not already enabled.
+     * @return
+     */
+    public static boolean enableCncp(){
+        if (enabled) return true;
+        return enablePlugin("CompatNoCheatPlus");
+    }
 
     /**
      * Static method to enable a plugin (might also be useful for hooks).
@@ -115,7 +104,7 @@ public class CompatNoCheatPlus extends JavaPlugin {
      * @return
      */
     public static CompatNoCheatPlus getInstance(){
-        return CompatNoCheatPlus.getPlugin(CompatNoCheatPlus.class);
+        return instance;
     }
 
     /**
@@ -158,25 +147,19 @@ public class CompatNoCheatPlus extends JavaPlugin {
      * @return
      */
     public  static boolean registerListeners(Hook hook) {
-        if (!enabled) {
-            return false;
-        }
+        if (!enabled) return false;
         Listener[] listeners = hook.getListeners();
         if (listeners != null){
             // attempt to register events:
-            Plugin plg = CompatNoCheatPlus.getPlugin(CompatNoCheatPlus.class);
-            if (plg == null) {
-                return false;
-            }
+            PluginManager pm = Bukkit.getPluginManager();
+            Plugin plg = pm.getPlugin("CompatNoCheatPlus");
+            if (plg == null) return false;
             for (Listener listener : listeners) {
-                NCPAPIProvider.getNoCheatPlusAPI().getEventRegistry().register(listener, 
-                        defaultOrderFeatureEarly, plg);
+                pm.registerEvents(listener, plg);
             }
         }
         return true;
     }
-
-    // ----
 
     /**
      * Called before loading settings, adds available hooks into a list, so they will be able to read config.
@@ -199,11 +182,11 @@ public class CompatNoCheatPlus extends JavaPlugin {
             builtinHooks.add(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
         }
         catch (Throwable t){}
-        //        // MagicSpells
-        //        try{
-        //            builtinHooks.add(new me.asofold.bpl.cncp.hooks.magicspells.HookMagicSpells());
-        //        }
-        //        catch (Throwable t){}
+//        // MagicSpells
+//        try{
+//            builtinHooks.add(new me.asofold.bpl.cncp.hooks.magicspells.HookMagicSpells());
+//        }
+//        catch (Throwable t){}
         // Simple generic hooks
         for (Hook hook : new Hook[]{
                 new HookPlayerClass(),
@@ -240,6 +223,7 @@ public class CompatNoCheatPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         enabled = false; // make sure
+        instance = this;
         // (no cleanup)
 
         // Settings:
@@ -247,7 +231,8 @@ public class CompatNoCheatPlus extends JavaPlugin {
         setupBuiltinHooks();
         loadSettings();
         // Register own listener:
-        //NCPAPIProvider.getNoCheatPlusAPI().getEventRegistry().register(this, defaultOrderSystemEarly, this);
+        final PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(this, this);
         super.onEnable();
 
         // Add  Hooks:
@@ -259,36 +244,32 @@ public class CompatNoCheatPlus extends JavaPlugin {
             registerListeners(hook);
         }
 
-        // Register to remove hooks when NCP is disabling.
-        NCPAPIProvider.getNoCheatPlusAPI().addComponent(new IDisableListener(){
-            @Override
-            public void onDisable() {
-                // Remove all registered cncp hooks:
-                unregisterNCPHooks();
-            }
-        });
-        if (!registeredHooks.isEmpty()) {
-            registerHooks();
-        }
-
         // Start ticktask 2
-        // TODO: Replace by using TickTask ? Needs order (depend is used now)?
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickTask2(), 1, 1);
+
+        // Check for the NoCheatPlus plugin.
+        Plugin plugin = pm.getPlugin("NoCheatPlus");
+        if (plugin == null) {
+            getLogger().severe("[CompatNoCheatPlus] The NoCheatPlus plugin is not present.");
+        }
+        else if (plugin.isEnabled()) {
+            getLogger().severe("[CompatNoCheatPlus] The NoCheatPlus plugin already is enabled, this might break several hooks.");
+        }
 
         // Finished.
         getLogger().info(getDescription().getFullName() + " is enabled. Some hooks might get registered with NoCheatPlus later on.");
     }
 
     public boolean loadSettings() {
+        final Set<String> oldForceEnableLater = new LinkedHashSet<String>();
+        oldForceEnableLater.addAll(settings.forceEnableLater);
         // Read and apply config to settings:
         File file = new File(getDataFolder() , "cncp.yml");
         CompatConfig cfg = new NewConfig(file);
         cfg.load();
         boolean changed = false;
         // General settings:
-        if (Settings.addDefaults(cfg)) {
-            changed = true;
-        }
+        if (Settings.addDefaults(cfg)) changed = true;
         settings.fromConfig(cfg);
         // Settings for builtin hooks:
         for (Hook hook : builtinHooks){
@@ -305,8 +286,51 @@ public class CompatNoCheatPlus extends JavaPlugin {
             }
         }
         // save back config if changed:
-        if (changed) {
-            cfg.save();
+        if (changed) cfg.save();
+
+
+
+        // Re-enable plugins that were not yet on the list:
+        Server server = getServer();
+        Logger logger = server.getLogger();
+        for (String plgName : settings.loadPlugins){
+            try{
+                if (CompatNoCheatPlus.enablePlugin(plgName)){
+                    System.out.println("[cncp] Ensured that the following plugin is enabled: " + plgName);
+                }
+            }
+            catch (Throwable t){
+                logger.severe("[cncp] Failed to enable the plugin: " + plgName);
+                logger.severe(Utils.toString(t));
+            }
+        }
+        BukkitScheduler sched = server.getScheduler();
+        for (String plgName : settings.forceEnableLater){
+            if (!oldForceEnableLater.remove(plgName)) oldForceEnableLater.add(plgName);
+        }
+        if (!oldForceEnableLater.isEmpty()){
+            System.out.println("[cncp] Schedule task to re-enable plugins later...");
+            sched.scheduleSyncDelayedTask(this, new Runnable() {
+                @Override
+                public void run() {
+                    // (Later maybe re-enabling this plugin could be added.)
+                    // TODO: log levels !
+                    for (String plgName : oldForceEnableLater){
+                        try{
+                            if (disablePlugin(plgName)){
+                                if (enablePlugin(plgName)) System.out.println("[cncp] Re-enabled plugin: " + plgName);
+                                else System.out.println("[cncp] Could not re-enable plugin: "+plgName);
+                            }
+                            else{
+                                System.out.println("[cncp] Could not disable plugin (already disabled?): "+plgName);
+                            }
+                        }
+                        catch(Throwable t){
+                            // TODO: maybe log ?
+                        }
+                    }
+                }
+            }); 
         }
 
         return true;
@@ -316,6 +340,7 @@ public class CompatNoCheatPlus extends JavaPlugin {
     public void onDisable() {
         unregisterNCPHooks(); // Just in case.
         enabled = false;
+        instance = null; // Set last.
         super.onDisable();
     }
 
@@ -355,6 +380,26 @@ public class CompatNoCheatPlus extends JavaPlugin {
         }
         getLogger().info("[cncp] Added "+n+" registered hooks to NoCheatPlus.");
         return n;
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    void onPluginEnable(PluginEnableEvent event){
+        Plugin plugin = event.getPlugin();
+        if (!plugin.getName().equals("NoCheatPlus")) {
+            return;
+        }
+        // Register to remove hooks when NCP is disabling.
+        NCPAPIProvider.getNoCheatPlusAPI().addComponent(new IDisableListener(){
+            @Override
+            public void onDisable() {
+                // Remove all registered cncp hooks:
+                unregisterNCPHooks();
+            }
+        });
+        if (registeredHooks.isEmpty()) {
+            return;
+        }
+        registerHooks();
     }
 
     /* (non-Javadoc)

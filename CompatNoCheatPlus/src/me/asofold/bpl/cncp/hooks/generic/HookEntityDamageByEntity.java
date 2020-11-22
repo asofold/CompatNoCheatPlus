@@ -2,7 +2,6 @@ package me.asofold.bpl.cncp.hooks.generic;
 
 import java.util.Arrays;
 
-import me.asofold.bpl.cncp.CompatNoCheatPlus;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 
 import org.bukkit.entity.Entity;
@@ -13,58 +12,55 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.components.registry.order.RegistrationOrder.RegisterMethodWithOrder;
 
 public class HookEntityDamageByEntity extends ClassExemptionHook implements
-Listener {
+		Listener {
 
-    public HookEntityDamageByEntity() {
-        super("entity-damage-by-entity.");
-        defaultClasses.addAll(Arrays.asList(new String[] {
-                // CrackShot
-                "WeaponDamageEntityEvent",
-                // MagicSpells
-        "MagicSpellsEntityDamageByEntityEvent" }));
-    }
+	public HookEntityDamageByEntity() {
+		super("entity-damage-by-entity.");
+		defaultClasses.addAll(Arrays.asList(new String[] {
+		// CrackShot
+		"WeaponDamageEntityEvent",
+		// MagicSpells
+		"MagicSpellsEntityDamageByEntityEvent" }));
+	}
 
-    @Override
-    public String getHookName() {
-        return "EntityDamageByEntity(default)";
-    }
+	@Override
+	public String getHookName() {
+		return "EntityDamageByEntity(default)";
+	}
 
-    @Override
-    public String getHookVersion() {
-        return "0.0";
-    }
+	@Override
+	public String getHookVersion() {
+		return "0.0";
+	}
 
-    @Override
-    public Listener[] getListeners() {
-        return new Listener[] { this };
-    }
+	@Override
+	public Listener[] getListeners() {
+		return new Listener[] { this };
+	}
 
-    @Override
-    public void applyConfig(CompatConfig cfg, String prefix) {
-        super.applyConfig(cfg, prefix);
-        if (classes.isEmpty())
-            enabled = false;
-    }
+	@Override
+	public void applyConfig(CompatConfig cfg, String prefix) {
+		super.applyConfig(cfg, prefix);
+		if (classes.isEmpty())
+			enabled = false;
+	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagEarlyFeature, beforeTag = CompatNoCheatPlus.beforeTagEarlyFeature)
-    public final void onDamageLowest(final EntityDamageByEntityEvent event) {
-        final Entity damager = event.getDamager();
-        if (damager instanceof Player) {
-            checkExempt((Player) damager, event.getClass(), CheckType.FIGHT);
-        }
-    }
+	@EventHandler(priority = EventPriority.LOWEST)
+	final void onDamageLowest(final EntityDamageByEntityEvent event) {
+		final Entity damager = event.getDamager();
+		if (damager instanceof Player) {
+			checkExempt((Player) damager, event.getClass(), CheckType.FIGHT);
+		}
+	}
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    @RegisterMethodWithOrder(tag = CompatNoCheatPlus.tagLateFeature, afterTag = CompatNoCheatPlus.afterTagLateFeature)
-    public final void onDamageMonitor(final EntityDamageByEntityEvent event) {
-        final Entity damager = event.getDamager();
-        if (damager instanceof Player) {
-            checkUnexempt((Player) damager, event.getClass(), CheckType.FIGHT);
-        }
-    }
+	@EventHandler(priority = EventPriority.MONITOR)
+	final void onDamageMonitor(final EntityDamageByEntityEvent event) {
+		final Entity damager = event.getDamager();
+		if (damager instanceof Player) {
+			checkUnexempt((Player) damager, event.getClass(), CheckType.FIGHT);
+		}
+	}
 
 }
