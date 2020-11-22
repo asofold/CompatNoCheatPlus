@@ -9,8 +9,6 @@ softdepend:
 - mcMMO
 - Citizens
 - MagicSpells
-- GravityTubes
-- CMI
 
 commands:
   compatnocheatplus:
