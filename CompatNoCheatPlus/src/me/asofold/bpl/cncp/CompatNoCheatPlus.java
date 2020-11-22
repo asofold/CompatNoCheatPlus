@@ -187,6 +187,11 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         	builtinHooks.add(new me.asofold.bpl.cncp.hooks.GravityTubes.HookGravityTubes());
         }
         catch(Throwable t){}
+        // CMI
+        try {
+            builtinHooks.add(new me.asofold.bpl.cncp.hooks.CMI.HookCMI());
+        }
+        catch (Throwable t){}
 //        // MagicSpells
 //        try{
 //            builtinHooks.add(new me.asofold.bpl.cncp.hooks.magicspells.HookMagicSpells());
