@@ -137,7 +137,7 @@ public class ConfigUtil {
                     final CheckType checkType = CheckType.valueOf(entry);
                     set.add(checkType);
                 } catch (Exception e) {
-                    System.out.print("[cncp] Unknow check " + entry + " is. Skipping!");
+                    System.out.println("[cncp] Unknow check " + entry + " is. Skipping!");
                 }
             }
         }
