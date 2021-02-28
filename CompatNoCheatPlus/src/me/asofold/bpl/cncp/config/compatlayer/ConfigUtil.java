@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.neatmonster.nocheatplus.checks.CheckType;
+
 public class ConfigUtil {
 	
 	public static final int canaryInt = Integer.MIN_VALUE +7;
@@ -114,6 +116,32 @@ public class ConfigUtil {
 			}
 		}
 	}
+
+	/**
+     * Add StringList entries to a set.
+     * @param cfg
+     * @param path
+     * @param set
+     * @param clear If to clear the set.
+     * @param trim
+     * @param upperCase
+     */
+    public static void readCheckTypeSetFromList(CompatConfig cfg, String path, Set<CheckType> set, boolean clear, boolean trim, boolean upperCase){
+        if (clear) set.clear();
+        List<String> tempList = cfg.getStringList(path , null);
+        if (tempList != null){
+            for (String entry : tempList) {
+                if (trim) entry = entry.trim();
+                if (upperCase) entry = entry.toUpperCase();
+                try {
+                    final CheckType checkType = CheckType.valueOf(entry);
+                    set.add(checkType);
+                } catch (Exception e) {
+                    System.out.print("[cncp] Unknow check " + entry + " is. Skipping!");
+                }
+            }
+        }
+    }
 	
 	/**
 	 * Return an ArrayList.

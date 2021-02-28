@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 
+import fr.neatmonster.nocheatplus.checks.CheckType;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.ConfigUtil;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
@@ -16,6 +17,7 @@ public class Settings {
 	
 	public Set<String> forceEnableLater = new LinkedHashSet<String>();
 	public Set<String> loadPlugins = new LinkedHashSet<String>();
+	public Set<CheckType> extemptChecks = new LinkedHashSet<CheckType>();
 	
 	public static Set<String> preventAddHooks = new HashSet<String>();
 	
@@ -23,6 +25,19 @@ public class Settings {
 		CompatConfig cfg = new NewConfig(null);
 		cfg.set("plugins.force-enable-later", new LinkedList<String>()); // ConfigUtil.asList(new String[]{ "NoCheatPlus" }));
 		cfg.set("plugins.ensure-enable", new LinkedList<String>()); // ConfigUtil.asList(new String[]{ "WorldGuard" }));
+		cfg.set("plugins.bedrock-extempt-checks", ConfigUtil.asList(new String[]{ 
+		        "BLOCKINTERACT_VISIBLE",
+		        "BLOCKINTERACT_DIRECTION",
+		        "BLOCKINTERACT_REACH",
+		        "BLOCKBREAK_DIRECTION",
+		        "BLOCKBREAK_NOSWING",
+		        "BLOCKBREAK_REACH",
+		        "BLOCKPLACE_NOSWING",
+		        "BLOCKPLACE_DIRECTION",
+		        "BLOCKPLACE_REACH",
+		        "BLOCKPLACE_SCAFFOLD",
+		        "FIGHT_DIRECTION",
+		        })); 
 		cfg.set("hooks.prevent-add", new LinkedList<String>());
 		cfg.set("configversion", configVersion);
 		return cfg;
@@ -61,7 +76,9 @@ public class Settings {
 		// plugins to force enabling after this plugin.
 		ConfigUtil.readStringSetFromList(cfg, "plugins.force-enable-later", forceEnableLater,  true, true, false);
 		ConfigUtil.readStringSetFromList(cfg, "plugins.ensure-enable", loadPlugins,  true, true, false);
-		
+
+		ConfigUtil.readCheckTypeSetFromList(cfg, "plugins.bedrock-extempt-checks", extemptChecks, true, true, true);
+
 		// General
 		ConfigUtil.readStringSetFromList(cfg, "hooks.prevent-add", preventAddHooks, true, true, false);
 		return true;

@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,11 +23,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-
 import fr.neatmonster.nocheatplus.NCPAPIProvider;
 import fr.neatmonster.nocheatplus.components.registry.feature.IDisableListener;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
+import me.asofold.bpl.cncp.bedrock.BedrockPlayerListener;
 import me.asofold.bpl.cncp.config.Settings;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
@@ -51,6 +52,8 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
     private static CompatNoCheatPlus instance = null;
 
     private final Settings settings = new Settings();
+
+    private boolean bungee;
 
     /** Hooks registered with cncp */
     private static final Set<Hook> registeredHooks = new HashSet<Hook>();
@@ -243,6 +246,18 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         // Register own listener:
         final PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
+        pm.registerEvents(new BedrockPlayerListener(), this);
+        getServer().getMessenger().registerIncomingPluginChannel(this, "cncp:geyser", new BedrockPlayerListener());
+        try {
+            bungee = getServer().spigot().getConfig().getBoolean("settings.bungeecord");
+
+            // sometimes not work, try the hard way
+            if (!bungee) {
+                bungee = YamlConfiguration.loadConfiguration(new File("spigot.yml")).getBoolean("settings.bungeecord");
+            }
+        } catch (Throwable t) {
+            bungee = false;
+        }
         super.onEnable();
 
         // Add  Hooks:
@@ -351,6 +366,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         unregisterNCPHooks(); // Just in case.
         enabled = false;
         instance = null; // Set last.
+        getServer().getMessenger().unregisterIncomingPluginChannel(this, "cncp:geyser");
         super.onDisable();
     }
 
@@ -475,4 +491,11 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         return pdf.getFullName();
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public boolean isBungeeEnabled() {
+        return bungee;
+    }
 }
