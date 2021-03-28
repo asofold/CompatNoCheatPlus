@@ -1,0 +1,72 @@
+CompatNoCheatPlus lists file
+-------------------------------------------------------
+
+Compatibility hooks for NoCheatPlus!
+
+LICENSE
+-------------------------
+LICENSE.txt (Same as NoCheatPlus).
+
+
+STACK
+---------
+?(add) more intricate load order stuff ? [best would be to force managelisteners with ncp]
+
+***
+!(add) reload command
+
+? another sequence number (for standard events)
+
+*** ADD MORE GENERIC HOOKS
+
+!add check type and permission hooks, also for worldguard regions.
+
+Citizens2 / Player class: make configurable (hidden) Or do internally: List of checks to use , exclude moving if possible.
+
+Generic abstract class for the mcMMO style cancelling of next x events + ticks alive etc
+
+add stats hook ?
+
+add a good mechanism for adding external configurable hooks (read automatically from the cncp config).
+
+
+!(add) Use some exemption mechanism for npcs (generic player class hook + citizens).
+!consider remove: clearing the VL ? => probably not, needs redesign to also monitor block break. + only clear the necessary bits (not frequency)
+
+! try: insta break: keep exemption (unless cancelled) for next block break event (!). -> maybe ncp
+
+
+? HookInstaBreak : add static method to sset check types to exempt from for next break ?
+
+cncp: check at least for logs / leaves for skill specific block types
+
+
+hookiinstabreak: let hooks fail completely if listeners are failing to register ?
+
+
+*** CLEANUP THIS, BETTER METHODS, INTEGRATE SOME INTO NCP MAYBE
+
+* Auto detection of unknown events + log on disable + info command.
+? analysis tools like event-Mirror ?
+
+* More generic hooks, clean methods!
+
+! Strip down mcMMO hook to add a new one / integrate into instabreak
+! Clean up hooks, use TickTask and "next" to confine fuzzy unexemption to a minimum.
+
+--------------------------
+
+support for instant spells ? [internalName or name ? <- guess: name]
+
+? register listeners with NCP directly? also use annotations ?
+
+! Smarter way to enable / disable PlayerClassHoook (disable by default for now).
+! if SpoutPlugin is present: add blocks to ignorepassable automatically / adjust flags ? [generic block setup]
+
+? add info command: show all hooks and so on.
+
+
+add class-name inspection methods (!).
+
+set-speed: per world options ? [per world config concept]
+set-speed: add option to set speed to default speed on player quit/kick
