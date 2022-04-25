@@ -10,15 +10,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.geysermc.connector.GeyserConnector;
 import org.geysermc.connector.network.session.GeyserSession;
-import org.geysermc.floodgate.FloodgateAPI;
-
-import com.github.steveice10.mc.auth.data.GameProfile;
-import com.github.steveice10.mc.protocol.MinecraftProtocol;
+import org.geysermc.floodgate.api.FloodgateApi;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
-import fr.neatmonster.nocheatplus.checks.moving.MovingData;
 import fr.neatmonster.nocheatplus.players.DataManager;
 import fr.neatmonster.nocheatplus.players.IPlayerData;
 import me.asofold.bpl.cncp.CompatNoCheatPlus;
@@ -26,7 +22,7 @@ import me.asofold.bpl.cncp.config.Settings;
 
 public class BedrockPlayerListener implements Listener, PluginMessageListener {
     
-    private Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate-bukkit");
+    private Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate");
     private Plugin geyser    = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
     private final Settings settings = CompatNoCheatPlus.getInstance().getSettings();
     
@@ -34,18 +30,15 @@ public class BedrockPlayerListener implements Listener, PluginMessageListener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         if (floodgate != null && floodgate.isEnabled()) {
-            if (FloodgateAPI.isBedrockPlayer(player.getUniqueId())) {
+            if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
                 processExemption(player);
             }
         } else
         if (geyser != null && geyser.isEnabled()) {
-            if (GeyserConnector.getInstance().getPlayers().stream()
-            .map(GeyserSession::getProtocol)
-            .map(MinecraftProtocol::getProfile)
-            .map(GameProfile::getName)
-            .anyMatch(name -> player.getName().equals(name))) {
-                processExemption(player);
-            }
+            try {
+                GeyserSession session = GeyserConnector.getInstance().getPlayerByUuid(player.getUniqueId());
+                if (session != null) processExemption(player);
+            } catch (NullPointerException e) {}
         }
     }
 
@@ -53,8 +46,7 @@ public class BedrockPlayerListener implements Listener, PluginMessageListener {
         final IPlayerData pData = DataManager.getPlayerData(player);
         if (pData != null) {
             for (CheckType check : settings.extemptChecks) pData.exempt(check);
-            MovingData data = pData.getGenericInstance(MovingData.class);
-            data.bedrockPlayer = true;
+            pData.setBedrockPlayer(true);
         }
     }
 
@@ -62,8 +54,7 @@ public class BedrockPlayerListener implements Listener, PluginMessageListener {
         final IPlayerData pData = DataManager.getPlayerData(playername);
         if (pData != null) {
             for (CheckType check : settings.extemptChecks) pData.exempt(check);
-            MovingData data = pData.getGenericInstance(MovingData.class);
-            data.bedrockPlayer = true;
+            pData.setBedrockPlayer(true);
         }
     }
 

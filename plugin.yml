@@ -2,6 +2,7 @@ name: CompatNoCheatPlus
 main: me.asofold.bpl.cncp.CompatNoCheatPlus
 version: ${project.version}-${buildDescription}
 dev-url: http://dev.bukkit.org/server-mods/compatnocheatplus-cncp/
+api-version: 1.13
 
 loadbefore:
 - NoCheatPlus

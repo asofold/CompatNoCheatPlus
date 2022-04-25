@@ -16,16 +16,22 @@
     <!-- Repositories -->
   <repositories>
     <repository>
+      <id>opencollab-snapshot-repo</id>
+      <url>https://repo.opencollab.dev/maven-snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>repo-public</id>
       <url>https://repo.codemc.org/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>opencollab-snapshot-repo</id>
-      <url>https://repo.opencollab.dev/maven-snapshots/</url>
-    </repository>
-    <repository>
-      <id>repo-nms</id>
-      <url>https://repo.codemc.org/repository/nms/</url>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -64,44 +70,31 @@
           <systemPath>${basedir}/libs/CMIAPI7.6.2.0.jar</systemPath>
        </dependency>
        <dependency>
-          <groupId>fr.neatmonster</groupId>
-          <artifactId>nocheatplus</artifactId>
-          <version>3.17-SNAPSHOT-Updated</version>
-          <scope>system</scope>
-          <systemPath>${basedir}/libs/NoCheatPlus.jar</systemPath>
+	      <groupId>com.github.updated-nocheatplus.nocheatplus</groupId>
+	      <artifactId>nocheatplus</artifactId>
+	      <version>master-SNAPSHOT</version>
        </dependency>
        <dependency>
           <groupId>org.geysermc</groupId>
-          <artifactId>connector</artifactId>
-          <version>1.2.0-SNAPSHOT</version>
+          <artifactId>core</artifactId>
+          <version>2.0.0-SNAPSHOT</version>
           <scope>provided</scope>
        </dependency>
        <dependency>
-          <groupId>org.geysermc</groupId>
-          <artifactId>floodgate-bukkit</artifactId>
-          <version>1.0-SNAPSHOT</version>
+          <groupId>org.geysermc.floodgate</groupId>
+          <artifactId>api</artifactId>
+          <version>2.0-SNAPSHOT</version>
           <scope>provided</scope>
-       </dependency>
-       <dependency>
-          <groupId>org.geysermc</groupId>
-          <artifactId>floodgate-bungee</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>provided</scope>
-       </dependency>
-       <dependency>
-          <groupId>com.github.steveice10</groupId>
-          <artifactId>mcprotocollib</artifactId>
-          <version>1.16.4-2-20210115.210558-6</version>
        </dependency>
        <dependency>
           <groupId>net.md-5</groupId>
           <artifactId>bungeecord-api</artifactId>
-          <version>1.16-R0.5-20210213.224112-6</version>
+          <version>1.18-R0.1-20220408.230221-26</version>
        </dependency>
        <dependency>
           <groupId>net.md-5</groupId>
           <artifactId>bungeecord-event</artifactId>
-          <version>1.16-R0.5-20210213.224052-6</version>
+          <version>1.18-R0.1-20220408.230147-26</version>
        </dependency>
     </dependencies>
 

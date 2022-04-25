@@ -6,10 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.geysermc.connector.GeyserConnector;
 import org.geysermc.connector.network.session.GeyserSession;
-import org.geysermc.floodgate.FloodgateAPI;
-
-import com.github.steveice10.mc.auth.data.GameProfile;
-import com.github.steveice10.mc.protocol.MinecraftProtocol;
+import org.geysermc.floodgate.api.FloodgateApi;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -45,22 +42,25 @@ public class CompatNoCheatPlus extends Plugin implements Listener {
     }
 
     private boolean checkFloodgate() {
-        return ProxyServer.getInstance().getPluginManager().getPlugin("floodgate-bungee") != null;
+        return ProxyServer.getInstance().getPluginManager().getPlugin("floodgate") != null;
     }
 
     private boolean checkGeyser() {
         return ProxyServer.getInstance().getPluginManager().getPlugin("Geyser-BungeeCord") != null;
     }
 
+    @SuppressWarnings("deprecation")
     private boolean isBedrockPlayer(ProxiedPlayer player) {
         if (floodgate) {
-            return FloodgateAPI.isBedrockPlayer(player.getUniqueId());
-        } else if (geyser) {
-            return GeyserConnector.getInstance().getPlayers().stream()
-                    .map(GeyserSession::getProtocol)
-                    .map(MinecraftProtocol::getProfile)
-                    .map(GameProfile::getName)
-                    .anyMatch(name -> player.getName().equals(name));
+            return FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId());
+        }
+        if (geyser) {
+            try {
+                GeyserSession session = GeyserConnector.getInstance().getPlayerByUuid(player.getUniqueId());
+                return session != null;
+            } catch (NullPointerException e) {
+                return false;
+            }
         }
         return false;
     }
@@ -73,14 +73,14 @@ public class CompatNoCheatPlus extends Plugin implements Listener {
         if (!isBedrockPlayer(player)) return;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
         try {
-            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
             dataOutputStream.writeUTF(player.getName());
-            getProxy().getScheduler().schedule(this, () -> {
-                server.sendData("cncp:geyser", outputStream.toByteArray());
-            }, 1L, TimeUnit.SECONDS);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        getProxy().getScheduler().schedule(this, () -> {
+            server.sendData("cncp:geyser", outputStream.toByteArray());
+        }, 1L, TimeUnit.SECONDS);
     }
 }
