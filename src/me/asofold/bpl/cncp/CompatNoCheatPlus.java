@@ -28,6 +28,7 @@ import fr.neatmonster.nocheatplus.components.registry.feature.IDisableListener;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
 import me.asofold.bpl.cncp.bedrock.BedrockPlayerListener;
+import me.asofold.bpl.cncp.ClientVersion.ClientVersionListener;
 import me.asofold.bpl.cncp.config.Settings;
 import me.asofold.bpl.cncp.config.compatlayer.CompatConfig;
 import me.asofold.bpl.cncp.config.compatlayer.NewConfig;
@@ -171,25 +172,25 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         builtinHooks.clear();
         // Might-fail hooks:
         // Set speed
-        try{
+        try {
             builtinHooks.add(new me.asofold.bpl.cncp.hooks.generic.HookSetSpeed());
         }
-        catch (Throwable t){}
+        catch (Throwable t) {}
         // Citizens 2
-        try{
+        try {
             builtinHooks.add(new me.asofold.bpl.cncp.hooks.citizens2.HookCitizens2());
         }
-        catch (Throwable t){}
+        catch (Throwable t) {}
         // mcMMO
-        try{
+        try {
             builtinHooks.add(new me.asofold.bpl.cncp.hooks.mcmmo.HookmcMMO());
         }
-        catch (Throwable t){}
+        catch (Throwable t) {}
         // GravityTubes
         try {
         	builtinHooks.add(new me.asofold.bpl.cncp.hooks.GravityTubes.HookGravityTubes());
         }
-        catch(Throwable t){}
+        catch (Throwable t) {}
         // CMI
         try {
             builtinHooks.add(new me.asofold.bpl.cncp.hooks.CMI.HookCMI());
@@ -247,6 +248,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         final PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
         pm.registerEvents(new BedrockPlayerListener(), this);
+        pm.registerEvents(new ClientVersionListener(), this);
         getServer().getMessenger().registerIncomingPluginChannel(this, "cncp:geyser", new BedrockPlayerListener());
         try {
             bungee = getServer().spigot().getConfig().getBoolean("settings.bungeecord");
