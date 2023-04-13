@@ -106,13 +106,6 @@
           <artifactId>bungeecord-event</artifactId>
           <version>1.19-R0.1-SNAPSHOT</version>
        </dependency>
-       <dependency>
-            <groupId>protocolsupport</groupId>
-            <artifactId>protocolsupport</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/libs/ProtocolSupport.jar</systemPath>
-        </dependency>
     </dependencies>
 
     <!-- Build Description Profiles -->
