@@ -34,8 +34,8 @@
         <url>https://repo.viaversion.com</url>
     </repository>
     <repository>
-      <id>repo-public</id>
-      <url>https://repo.codemc.org/repository/maven-public/</url>
+        <id>bungeecord-repo</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
   </repositories>
 
@@ -51,7 +51,8 @@
           <groupId>com.gmail.nossr50.mcMMO</groupId>
           <artifactId>mcMMO</artifactId>
           <version>2.1.158</version>
-          <scope>provided</scope>
+          <scope>system</scope>
+          <systemPath>${basedir}/libs/mcMMO-2.1.158.jar</systemPath>
        </dependency>
        <dependency>
           <groupId>net.citizensnpcs</groupId>
@@ -76,7 +77,7 @@
        <dependency>
 	      <groupId>com.github.updated-nocheatplus.nocheatplus</groupId>
 	      <artifactId>nocheatplus</artifactId>
-	      <version>master-SNAPSHOT</version>
+	      <version>-SNAPSHOT</version>
        </dependency>
        <dependency>
           <groupId>org.geysermc</groupId>
@@ -93,7 +94,7 @@
        <dependency>
           <groupId>net.md-5</groupId>
           <artifactId>bungeecord-api</artifactId>
-          <version>1.18-R0.1-20220408.230221-26</version>
+          <version>1.19-R0.1-SNAPSHOT</version>
        </dependency>
        <dependency>
            <groupId>com.viaversion</groupId>
@@ -103,7 +104,7 @@
        <dependency>
           <groupId>net.md-5</groupId>
           <artifactId>bungeecord-event</artifactId>
-          <version>1.18-R0.1-20220408.230147-26</version>
+          <version>1.19-R0.1-SNAPSHOT</version>
        </dependency>
        <dependency>
             <groupId>protocolsupport</groupId>
@@ -184,15 +185,6 @@
             </plugin>
         </plugins>
     </build>
-   
-   <!--
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </pluginRepository>
-    </pluginRepositories>
-    -->
   
    <!-- Properties -->
    <properties>

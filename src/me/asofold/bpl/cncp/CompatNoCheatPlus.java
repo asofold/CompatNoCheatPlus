@@ -24,6 +24,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import fr.neatmonster.nocheatplus.NCPAPIProvider;
+import fr.neatmonster.nocheatplus.compat.Folia;
 import fr.neatmonster.nocheatplus.components.registry.feature.IDisableListener;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.hooks.NCPHookManager;
@@ -272,7 +273,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         }
 
         // Start ticktask 2
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickTask2(), 1, 1);
+        Folia.runSyncRepatingTask(this, (arg) -> new TickTask2().run(), 1, 1);
 
         // Check for the NoCheatPlus plugin.
         Plugin plugin = pm.getPlugin("NoCheatPlus");

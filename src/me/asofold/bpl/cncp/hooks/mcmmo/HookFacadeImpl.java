@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.checks.access.IViolationInfo;
+import fr.neatmonster.nocheatplus.compat.Bridge1_9;
+import fr.neatmonster.nocheatplus.compat.Folia;
 import fr.neatmonster.nocheatplus.hooks.NCPHook;
 import fr.neatmonster.nocheatplus.players.DataManager;
 import fr.neatmonster.nocheatplus.utilities.map.BlockProperties;
@@ -160,14 +162,14 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
     public final void blockDamageLowest(final Player player) {
         //		System.out.println("block damage lowest");
         //		setPlayer(player, cancelChecksBlockDamage);
-        if (getToolProps(player.getItemInHand()).toolType == ToolType.AXE) addExemption(player, exemptBreakMany);
+        if (getToolProps(Bridge1_9.getItemInMainHand(player)).toolType == ToolType.AXE) addExemption(player, exemptBreakMany);
         else addExemption(player, exemptBreakNormal);
     }
 
     @Override
     public final boolean blockBreakLowest(final Player player) {
         //		System.out.println("block break lowest");
-        final boolean isAxe = getToolProps(player.getItemInHand()).toolType == ToolType.AXE;
+        final boolean isAxe = getToolProps(Bridge1_9.getItemInMainHand(player)).toolType == ToolType.AXE;
         if (breakCancel > 0){
             breakCancel ++;
             return true;
@@ -200,12 +202,7 @@ public class HookFacadeImpl implements HookFacade, NCPHook {
         }
         else if (!isAxe){
             setPlayer(player, cancelChecksBlockBreak);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(CompatNoCheatPlus.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    DataManager.removeData(player.getName(), CheckType.BLOCKBREAK_FASTBREAK);
-                }
-            });
+            Folia.runSyncTask(CompatNoCheatPlus.getInstance(), (arg) -> DataManager.removeData(player.getName(), CheckType.BLOCKBREAK_FASTBREAK));
         }
         return false;
     }

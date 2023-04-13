@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.viaversion.viaversion.api.Via;
 import protocolsupport.api.ProtocolSupportAPI;
-
+import fr.neatmonster.nocheatplus.compat.Folia;
 import fr.neatmonster.nocheatplus.players.DataManager;
 import fr.neatmonster.nocheatplus.players.IPlayerData;
 import me.asofold.bpl.cncp.CompatNoCheatPlus;
@@ -25,23 +25,19 @@ public class ClientVersionListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        Bukkit.getScheduler()
-              .runTaskLater(CompatNoCheatPlus.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    final IPlayerData pData = DataManager.getPlayerData(player);
-                    if (pData != null) {
-                        if (ViaVersion != null && ViaVersion.isEnabled()) {
-                            // Give precedence to ViaVersion
-                            pData.setClientVersionID(Via.getAPI().getPlayerVersion(player));
-                        } 
-                        else if (ProtocolSupport != null && ProtocolSupport.isEnabled()) {
-                            // Fallback to PS
-                            pData.setClientVersionID(ProtocolSupportAPI.getProtocolVersion(player).getId());
-                        }
-                        // (Client version stays unknown (-1))
-                    }
+        Folia.runSyncDelayedTask(CompatNoCheatPlus.getInstance(), (arg) -> {
+            final IPlayerData pData = DataManager.getPlayerData(player);
+            if (pData != null) {
+                if (ViaVersion != null && ViaVersion.isEnabled()) {
+                    // Give precedence to ViaVersion
+                    pData.setClientVersionID(Via.getAPI().getPlayerVersion(player));
+                } 
+                else if (ProtocolSupport != null && ProtocolSupport.isEnabled()) {
+                    // Fallback to PS
+                    pData.setClientVersionID(ProtocolSupportAPI.getProtocolVersion(player).getId());
                 }
-            }, 20); // Wait 20 ticks before setting client data
+                // (Client version stays unknown (-1))
+            }
+        }, 20); // Wait 20 ticks before setting client data
     }
 }
