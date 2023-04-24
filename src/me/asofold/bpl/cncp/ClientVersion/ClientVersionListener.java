@@ -23,7 +23,7 @@ public class ClientVersionListener implements Listener {
     private Plugin ProtocolSupport = Bukkit.getPluginManager().getPlugin("ProtocolSupport");
     private final Class<?> ProtocolSupportAPIClass = ReflectionUtil.getClass("protocolsupport.api.ProtocolSupportAPI");
     private final Class<?> ProtocolVersionClass = ReflectionUtil.getClass("protocolsupport.api.ProtocolVersion");
-    private final Method getProtocolVersion = ReflectionUtil.getMethod(ProtocolSupportAPIClass, "getProtocolVersion", Player.class);
+    private final Method getProtocolVersion = ProtocolSupportAPIClass == null ? null : ReflectionUtil.getMethod(ProtocolSupportAPIClass, "getProtocolVersion", Player.class);
     
     @SuppressWarnings("unchecked")
     @EventHandler(priority = EventPriority.MONITOR)
@@ -36,7 +36,7 @@ public class ClientVersionListener implements Listener {
                     // Give precedence to ViaVersion
                     pData.setClientVersionID(Via.getAPI().getPlayerVersion(player));
                 } 
-                else if (ProtocolSupport != null && ProtocolSupport.isEnabled()) {
+                else if (ProtocolSupport != null && getProtocolVersion != null && ProtocolSupport.isEnabled()) {
                     // Fallback to PS
                     Object protocolVersion = ReflectionUtil.invokeMethod(getProtocolVersion, null, player);
                     Method getId = ReflectionUtil.getMethodNoArgs(ProtocolVersionClass, "getId", int.class);
