@@ -89,12 +89,12 @@ public class HookMagicSpells extends AbstractConfigurableHook implements Listene
 				catch(Throwable t){
 				}
 				if (type == null){
-					Bukkit.getLogger().warning("[cncp] HookMagicSpells: Bad check type at " + fullKey + ": " + input);
+					Bukkit.getLogger().warning("[CompatNoCheatPlus] HookMagicSpells: Bad check type at " + fullKey + ": " + input);
 				}
 				else checkTypes.add(type);
 			}
 			if (checkTypes.isEmpty()){
-				Bukkit.getLogger().warning("[cncp] HookMagicSpells: No CheckType entries at: " + fullKey);
+				Bukkit.getLogger().warning("[CompatNoCheatPlus] HookMagicSpells: No CheckType entries at: " + fullKey);
 			}
 			else{
 				CheckType[] a = new CheckType[checkTypes.size()];

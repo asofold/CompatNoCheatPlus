@@ -120,13 +120,13 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
      */
     public static boolean addHook(Hook hook){
         if (Settings.preventAddHooks.contains(hook.getHookName())){
-            Bukkit.getLogger().info("[cncp] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
+            Bukkit.getLogger().info("[CompatNoCheatPlus] Prevented adding hook: "+hook.getHookName() + " / " + hook.getHookVersion());
             return false;
         }
         registeredHooks.add(hook);
         if (enabled) registerListeners(hook);
         boolean added = checkAddNCPHook(hook); // Add if plugin is present, otherwise queue for adding.
-        Bukkit.getLogger().info("[cncp] Registered hook"+(added?"":"(NCPHook might get added later)")+": "+hook.getHookName() + " / " + hook.getHookVersion());
+        Bukkit.getLogger().info("[CompatNoCheatPlus] Registered hook"+(added?"":"(NCPHook might get added later)")+": "+hook.getHookName() + " / " + hook.getHookVersion());
         return true;
     }
 
@@ -308,7 +308,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
                     cfgHook.applyConfig(cfg, "hooks.");
                 }
                 catch (Throwable t){
-                    getLogger().severe("[cncp] Hook failed to process config ("+hook.getHookName() +" / " + hook.getHookVersion()+"): " + t.getClass().getSimpleName() + ": "+t.getMessage());
+                    getLogger().severe("[CompatNoCheatPlus] Hook failed to process config ("+hook.getHookName() +" / " + hook.getHookVersion()+"): " + t.getClass().getSimpleName() + ": "+t.getMessage());
                     t.printStackTrace();
                 }
             }
@@ -324,11 +324,11 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         for (String plgName : settings.loadPlugins){
             try{
                 if (CompatNoCheatPlus.enablePlugin(plgName)){
-                    System.out.println("[cncp] Ensured that the following plugin is enabled: " + plgName);
+                    System.out.println("[CompatNoCheatPlus] Ensured that the following plugin is enabled: " + plgName);
                 }
             }
             catch (Throwable t){
-                logger.severe("[cncp] Failed to enable the plugin: " + plgName);
+                logger.severe("[CompatNoCheatPlus] Failed to enable the plugin: " + plgName);
                 logger.severe(Utils.toString(t));
             }
         }
@@ -337,7 +337,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
             if (!oldForceEnableLater.remove(plgName)) oldForceEnableLater.add(plgName);
         }
         if (!oldForceEnableLater.isEmpty()){
-            System.out.println("[cncp] Schedule task to re-enable plugins later...");
+            System.out.println("[CompatNoCheatPlus] Schedule task to re-enable plugins later...");
             sched.scheduleSyncDelayedTask(this, new Runnable() {
                 @Override
                 public void run() {
@@ -346,14 +346,14 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
                     for (String plgName : oldForceEnableLater){
                         try{
                             if (disablePlugin(plgName)){
-                                if (enablePlugin(plgName)) System.out.println("[cncp] Re-enabled plugin: " + plgName);
-                                else System.out.println("[cncp] Could not re-enable plugin: "+plgName);
+                                if (enablePlugin(plgName)) System.out.println("[CompatNoCheatPlus] Re-enabled plugin: " + plgName);
+                                else System.out.println("[CompatNoCheatPlus] Could not re-enable plugin: "+plgName);
                             }
                             else{
-                                System.out.println("[cncp] Could not disable plugin (already disabled?): "+plgName);
+                                System.out.println("[CompatNoCheatPlus] Could not disable plugin (already disabled?): "+plgName);
                             }
                         }
-                        catch(Throwable t){
+                        catch (Throwable t){
                             // TODO: maybe log ?
                         }
                     }
@@ -393,7 +393,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
                 }
             }
         }
-        getLogger().info("[cncp] Removed "+n+" registered hooks from NoCheatPlus.");
+        getLogger().info("[CompatNoCheatPlus] Removed "+n+" registered hooks from NoCheatPlus.");
         registeredHooks.clear();
         return n;
     }
@@ -407,7 +407,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
             NCPHookManager.addHook(hook.getCheckTypes(), ncpHook);
             n ++;
         }
-        getLogger().info("[cncp] Added "+n+" registered hooks to NoCheatPlus.");
+        getLogger().info("[CompatNoCheatPlus] Added "+n+" registered hooks to NoCheatPlus.");
         return n;
     }
 
@@ -458,8 +458,7 @@ public class CompatNoCheatPlus extends JavaPlugin implements Listener {
         infos.add(temp.isEmpty() ? "NoCheatPlus is missing or not yet enabled." : temp);
         infos.add("#### Typical plugin dependencies ####");
         for (String pluginName : new String[]{
-                "mcMMO", "Citizens", "MachinaCraft", "MagicSpells", 
-                // TODO: extend
+                "mcMMO", "Citizens", "MachinaCraft", "MagicSpells", "ViaVersion", "ProtocolSupport", "GravityTubes", "Geyser-Spigot", "floodgate", "CMI", "Geyser-BungeeCord"
         }){
             temp = getOtherVersion(pluginName);
             if (!temp.isEmpty()) infos.add(temp);

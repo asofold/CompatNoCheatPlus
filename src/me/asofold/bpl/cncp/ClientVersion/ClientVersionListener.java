@@ -37,7 +37,7 @@ public class ClientVersionListener implements Listener {
                     pData.setClientVersionID(Via.getAPI().getPlayerVersion(player));
                 } 
                 else if (ProtocolSupport != null && getProtocolVersion != null && ProtocolSupport.isEnabled()) {
-                    // Fallback to PS
+                    // Fallback to PS (reflectively, due to PS not having a valid mvn repo)
                     Object protocolVersion = ReflectionUtil.invokeMethod(getProtocolVersion, null, player);
                     Method getId = ReflectionUtil.getMethodNoArgs(ProtocolVersionClass, "getId", int.class);
                     int version = (int) ReflectionUtil.invokeMethodNoArgs(getId, protocolVersion);

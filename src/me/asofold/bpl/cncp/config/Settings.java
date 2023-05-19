@@ -55,12 +55,12 @@ public class Settings {
             if (cfg.getDouble("hooks.set-speed.fly-speed", 0.1) != 0.1){
                 changed = true;
                 cfg.set("hooks.set-speed.fly-speed", 0.1);
-                Bukkit.getLogger().warning("[cncp] Reset fly-speed for the set-speed hook to 0.1 (default) as a safety measure.");
+                Bukkit.getLogger().warning("[CompatNoCheatPlus] Reset fly-speed for the set-speed hook to 0.1 (default) as a safety measure.");
             }
             if (cfg.getDouble("hooks.set-speed.walk-speed", 0.2) != 0.2){
                 changed = true;
                 cfg.set("hooks.set-speed.walk-speed", 0.2);
-                Bukkit.getLogger().warning("[cncp] Reset walk-speed for the set-speed hook to 0.2 (default) as a safety measure.");
+                Bukkit.getLogger().warning("[CompatNoCheatPlus] Reset walk-speed for the set-speed hook to 0.2 (default) as a safety measure.");
             }
         }
         if (ConfigUtil.forceDefaults(getDefaultConfig(), cfg)) changed = true;

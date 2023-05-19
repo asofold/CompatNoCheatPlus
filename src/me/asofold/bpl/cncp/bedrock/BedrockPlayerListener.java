@@ -23,22 +23,23 @@ import me.asofold.bpl.cncp.config.Settings;
 public class BedrockPlayerListener implements Listener, PluginMessageListener {
     
     private Plugin floodgate = Bukkit.getPluginManager().getPlugin("floodgate");
-    private Plugin geyser    = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
+    private Plugin geyser = Bukkit.getPluginManager().getPlugin("Geyser-Spigot");
     private final Settings settings = CompatNoCheatPlus.getInstance().getSettings();
     
-    @EventHandler(priority=EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         if (floodgate != null && floodgate.isEnabled()) {
             if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
                 processExemption(player);
             }
-        } else
-        if (geyser != null && geyser.isEnabled()) {
+        } 
+        else if (geyser != null && geyser.isEnabled()) {
             try {
                 GeyserSession session = GeyserConnector.getInstance().getPlayerByUuid(player.getUniqueId());
                 if (session != null) processExemption(player);
-            } catch (NullPointerException e) {}
+            } 
+            catch (NullPointerException e) {}
         }
     }
 
